@@ -23,6 +23,7 @@ fi
 
 fail=0
 echo "domain pre-commit (engine: $ENGINE):"
+"$ENGINE/scripts/check-exec-bits" . || fail=1
 "$ENGINE/scripts/check-secrets" || fail=1
 "$ENGINE/scripts/check-kb" . || fail=1
 [ "$fail" -ne 0 ] && { echo; echo "Commit blocked."; exit 1; }
