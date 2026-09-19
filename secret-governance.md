@@ -36,5 +36,5 @@ Source: [[knowledge-agent-architecture-combination-plan]] (§5.4)
 Verified: 2026-09-19 · by: agent · method: doc-review
 
 This workspace's current, concrete standing on both points — what is enforced, dormant, or
-absent here specifically — is recorded in [[adr-0002-governance-without-enforcement]], not
+absent here specifically — is recorded in `ai-kb:documents/decisions/0002-governance-without-enforcement.md`, not
 restated here.

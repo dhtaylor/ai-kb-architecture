@@ -20,8 +20,10 @@ knowledge from behavior, the scope tiers and their homes, provenance and currenc
 contract agents are held to, the lifecycle roles that keep facts current, and the guardrails that
 keep the whole thing honest.
 
-Scope tiers, provenance, currency, contradictions, the retrieval contract and frontmatter schema
-are the operative contract — see `knowledge/CONVENTIONS.md`, not duplicated here.
+Scope tiers, provenance, currency, contradictions, the retrieval contract and the frontmatter
+schema are the operative contract and are not duplicated here. The contract lives in the engine:
+`ai-kb:CONVENTIONS.md`. Repo-qualified, not a relative path — this domain is portable and must not
+assume the engine sits at any particular place beside it.
 
 - [design-thesis](design-thesis.md) — why knowledge and behavior are separated, the
   knowledge-as-behavior anti-pattern, and the target layering
@@ -29,3 +31,5 @@ are the operative contract — see `knowledge/CONVENTIONS.md`, not duplicated he
   roles, PR-review and rollback governance for KB mutation, and the orchestrator's cost bounds
 - [secret-governance](secret-governance.md) — why rotating a leaked secret isn't removal, and why
   a pre-commit scan isn't the enforcement boundary
+- [knowledge-architecture-golden](knowledge-architecture-golden.md) — the retrieval oracle for this domain: what must be answerable, what must be refused
+- [sources](sources/INDEX.md) — citation stubs for the artifacts these facts came from

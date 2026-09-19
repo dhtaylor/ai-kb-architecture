@@ -58,7 +58,7 @@ Verified: 2026-09-19 · by: agent · method: doc-review
 ## Mutation governance
 
 The standing rule is automate detection, gate mutation (three bands, decided for this workspace in
-[[adr-0005-currency-cadence]]). What follows is the operational detail behind the middle and last
+`ai-kb:documents/decisions/0005-currency-cadence.md`). What follows is the operational detail behind the middle and last
 band, beyond what that decision records:
 
 - **The PR gate is cosmetic unless the review is defined.** A reviewer who trusts the agent's
@@ -76,7 +76,7 @@ band, beyond what that decision records:
   developers (the shared repo posts a post-merge webhook of what changed). For the shared tier the
   blast radius is every project on every machine, so this path must be named and rehearsed.
 - **A corrections-log makes silent propagation visible.** Because the shared tier is latest-wins
-  (decided in [[adr-0003-scoping-topology]]), maintain a per-domain `corrections-log.md` (date ·
+  (decided in `ai-kb:documents/decisions/0003-scoping-topology.md`), maintain a per-domain `corrections-log.md` (date ·
   fact slug · old→new summary · PR link) — a wrong correction propagates exactly the same way a
   right one does, and the log is how a consumer notices.
 

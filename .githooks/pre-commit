@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Domain library guardrail.
+#
+# The checkers live in the ai-kb engine, which this repository does NOT depend on:
+# a domain library is portable and may be cloned anywhere, with or without an
+# engine beside it. So the engine is located if it can be, and its absence is
+# graceful — the contract's own rule for a missing root: warn, never crash,
+# never guess.
+set -uo pipefail
+
+find_engine() {
+  [ -n "${KB_ENGINE_ROOT:-}" ] && [ -x "$KB_ENGINE_ROOT/scripts/check-kb" ] && { echo "$KB_ENGINE_ROOT"; return; }
+  # Designed layout: <engine>/kb/<this-domain>
+  [ -x ../../scripts/check-kb ] && { echo "../.."; return; }
+}
+
+ENGINE=$(find_engine)
+if [ -z "$ENGINE" ]; then
+  echo "domain pre-commit: ai-kb engine not found — structural checks SKIPPED."
+  echo "  Set KB_ENGINE_ROOT, or clone this library under an engine's kb/ directory."
+  exit 0
+fi
+
+fail=0
+echo "domain pre-commit (engine: $ENGINE):"
+"$ENGINE/scripts/check-secrets" || fail=1
+"$ENGINE/scripts/check-kb" . || fail=1
+[ "$fail" -ne 0 ] && { echo; echo "Commit blocked."; exit 1; }
+echo "domain pre-commit: clean"
