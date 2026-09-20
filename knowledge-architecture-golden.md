@@ -13,6 +13,14 @@ keywords: [golden set, retrieval eval, negative case, positive case]
 ---
 # Knowledge-architecture golden set
 
+Excerpts are **markup-free prose**. An excerpt carrying markdown emphasis can exist in the file and
+never in an answer, so it tests formatting rather than grounding — found by the first eval run, where
+a correct answer failed on a pair of asterisks.
+
+This file is **test apparatus, not knowledge**. It is deliberately NOT routed from the domain
+`INDEX.md`: an agent that can descend to the oracle can read the answers, and its refusals then prove
+nothing. Retrieval agents must never read it.
+
 Seeded by the first fold of `knowledge-agent-architecture-combination-plan.md`. Cross-root case:
 **not applicable** — nothing in this domain currently links across a `[[general:...]]` boundary
 into a repo-tier KB, so no cross-root case is included rather than one invented to satisfy a
@@ -39,7 +47,7 @@ cannot yet be written without fabricating a conflict. Add one the day a real con
 - case: positive
   question: Does rotating a leaked secret remove it from git history?
   expected_file: secret-governance.md
-  expected_excerpt: "Rotating a leaked secret does not erase it from git *history*"
+  expected_excerpt: "does not erase it from git"
 
 - case: negative
   question: What is the production database's deploy target for this workspace?

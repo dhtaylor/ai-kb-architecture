@@ -31,5 +31,8 @@ assume the engine sits at any particular place beside it.
   roles, PR-review and rollback governance for KB mutation, and the orchestrator's cost bounds
 - [secret-governance](secret-governance.md) — why rotating a leaked secret isn't removal, and why
   a pre-commit scan isn't the enforcement boundary
-- [knowledge-architecture-golden](knowledge-architecture-golden.md) — the retrieval oracle for this domain: what must be answerable, what must be refused
 - [sources](sources/INDEX.md) — citation stubs for the artifacts these facts came from
+
+The library also holds `knowledge-architecture-golden.md` — the retrieval oracle — and `documents/`,
+the archived evidence these facts were folded from. Neither is routed: they are apparatus and
+provenance, not knowledge, and an agent that can descend to the oracle can read the answers.
