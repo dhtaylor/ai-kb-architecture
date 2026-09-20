@@ -70,5 +70,11 @@ confined to exactly one of them each:
 - **Guardrails** — a secret scan over *both* trees (the knowledge substrate and the behavior
   layer), plus least-privilege enforcement for production operations.
 
+**How this holds in practice depends on the runtime.** The claim that behaviour "retrieves at
+runtime" is about where facts live, not about when the behaviour itself is loaded — and those differ:
+in Claude Code, plugin behaviour is loaded once at session start while facts are read live per query
+(`[[claude-code-runtime:behaviour-loading]]`). The separation holds; the two halves simply refresh on
+different clocks.
+
 Source: [[knowledge-agent-architecture-combination-plan]] (§1)
 Verified: 2026-09-19 · by: agent · method: doc-review

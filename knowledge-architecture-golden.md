@@ -22,9 +22,8 @@ This file is **test apparatus, not knowledge**. It is deliberately NOT routed fr
 nothing. Retrieval agents must never read it.
 
 Seeded by the first fold of `knowledge-agent-architecture-combination-plan.md`. Cross-root case:
-**not applicable** — nothing in this domain currently links across a `[[general:...]]` boundary
-into a repo-tier KB, so no cross-root case is included rather than one invented to satisfy a
-count. Unresolved case: **not applicable** — this fold produced no contradiction (see the fold
+**not applicable** — this domain now holds one cross-library reference, into
+claude-code-runtime, so a cross-root case is included. Unresolved case: **not applicable** — this fold produced no contradiction (see the fold
 report); nothing in the domain today carries `status: CONFLICTED`, so a genuine UNRESOLVED case
 cannot yet be written without fabricating a conflict. Add one the day a real contradiction lands.
 
@@ -59,3 +58,8 @@ cannot yet be written without fabricating a conflict. Add one the day a real con
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
 ```
+
+- case: cross-root
+  question: Does the behaviour layer being "thin" mean it is reloaded whenever knowledge changes?
+  expected_file: design-thesis.md
+  expected_excerpt: "loaded once at session start while facts are read live per query"
