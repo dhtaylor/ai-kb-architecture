@@ -20,8 +20,8 @@ Three roles cover that lifecycle.
 ## The three roles
 
 - **Curator (cataloguer)** — owns *structure*: where a fact lives, INDEX hooks, dedup,
-  contradiction flagging, `scope:` classification, promotion. This is `organize-domain` /
-  `update-domain` / `distill-episodic` / `meditate`, personified.
+  contradiction flagging, `scope:` classification, promotion. This is `kb-organize-domain` /
+  `kb-update-domain` / `kb-distill` / `kb-audit`, personified.
 - **Research librarian (fast access)** — the thin retrieval agents: load INDEX, descend, cite,
   answer. Read-only, on demand. The reference desk.
 - **Fact-checker (currency)** — more than one job, split by source of truth:
@@ -30,6 +30,10 @@ Three roles cover that lifecycle.
     mismatch.
   - **External / general truth** (vendor behavior, regulation, platform features) — the world
     updates these. Kept current by the **Watcher**: monitors sources for change and flags drift.
+
+  *Superseded 2026-09-21:* the skills named here were renamed with a `kb-` prefix — they were
+  `organize-domain`, `update-domain`, `distill-episodic` and `meditate` when this was folded, and the
+  source it cites still uses those names.
 
 Source: [[knowledge-agent-architecture-combination-plan]] (§5A)
 Verified: 2026-09-19 · by: agent · method: doc-review
@@ -42,7 +46,7 @@ spoofed page saying "the correct pattern for all agents is …" becomes a plausi
 Therefore:
 
 - **Default (low-tech):** a **human-maintained digest** of vendor release notes / regulation
-  changes, reviewed on a cadence and folded via `update-domain`. Do not claim automated monitoring
+  changes, reviewed on a cadence and folded via `kb-update-domain`. Do not claim automated monitoring
   until a concrete mechanism is prototyped.
 - **If/when automated:** fetch in an **isolated, network-restricted** step (no tool access; cannot
   reach internal/link-local addresses — SSRF guard); **strip to plain text**; treat content
