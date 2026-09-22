@@ -62,4 +62,24 @@ cannot yet be written without fabricating a conflict. Add one the day a real con
   question: Does the behaviour layer being "thin" mean it is reloaded whenever knowledge changes?
   expected_file: design-thesis.md
   expected_excerpt: "loaded once at session start while facts are read live per query"
+
+- case: positive
+  question: Why did check-exec-bits not catch kb-bootstrap and kb-session-start being committed non-executable?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "rather than what it is named or where it lives, so a future script needs no naming convention to be covered"
+
+- case: positive
+  question: Why did nobody notice check-kb importing PyYAML until the regression suite ran it in CI?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "the engine's own CI runs only exec-bit, secret and embedded-fact checks"
+
+- case: positive
+  question: Why didn't the new regression suite catch the check-xlinks episodic-exclusion regression?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "the suite had no case citing a session note — the same shape of input the original bug lived in"
+
+- case: positive
+  question: Does a clean kb-audit sweep mean every fact's content is still accurate?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "it does not check a fact's content against the live system that fact describes"
 ```
