@@ -6,6 +6,8 @@ domain: knowledge-architecture
 scope: general
 freshness_horizon: 90d
 verifier_budget: 5
+sweep_interval: 30d
+last_swept: never
 metadata:
   type: index
   node_type: router
