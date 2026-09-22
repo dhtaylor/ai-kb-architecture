@@ -1,0 +1,25 @@
+# Ownership for the knowledge-architecture library.
+#
+# STATUS: DORMANT AS ENFORCEMENT. CODEOWNERS is advisory text until branch
+# protection makes owner review a required check (ai-kb:documents/decisions/0002-governance-without-enforcement.md).
+# What it does today is answer one question: when a kb-audit sweep files a
+# finding, who is it for? Without this file every finding reads `unassigned`,
+# which is a queue nobody owns — the state in which a queue is ignored.
+#
+# The architecture asks for >=2 named owners per domain, so one departure does
+# not orphan it. With a single contributor that is not satisfiable; it is
+# recorded as an accepted risk rather than quietly dropped. Add the second owner
+# before this library has real consumers.
+#
+# LAST MATCHING PATTERN WINS — not the most specific. Keep the broad rule first.
+# `kb-owner <repo> <path>` resolves any path the way a sweep will.
+
+# Every fact in the library.
+*                                  @dhtaylor
+
+# The router: it decides what retrieval can reach at all.
+/INDEX.md                          @dhtaylor
+
+# The oracle. A change here can make a rotted set report success — the one file
+# whose corruption is silent by construction.
+/knowledge-architecture-golden.md                    @dhtaylor
