@@ -57,9 +57,9 @@ cannot yet be written without fabricating a conflict. Add one the day a real con
   question: What did Dandy's personal debugging session on Tuesday conclude?
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
-```
 
 - case: cross-root
   question: Does the behaviour layer being "thin" mean it is reloaded whenever knowledge changes?
   expected_file: design-thesis.md
   expected_excerpt: "loaded once at session start while facts are read live per query"
+```
