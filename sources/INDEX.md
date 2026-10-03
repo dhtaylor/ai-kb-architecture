@@ -17,6 +17,7 @@ keywords: [sources, citations, stubs, provenance]
 - [knowledge-agent-architecture-combination-plan-revised](knowledge-agent-architecture-combination-plan-revised.md) — the plan as revised from build findings; supersedes the entry above
 - [adr-0002-governance-without-enforcement](adr-0002-governance-without-enforcement.md) — engine decision: governance written in full, enforced only where enforceable
 - [adr-0007-engine-content-separation](adr-0007-engine-content-separation.md) — engine decision: the engine holds no knowledge; content lives in per-domain libraries
+- [adr-0008-machine-bootstrap](adr-0008-machine-bootstrap.md) — engine decision: one command registers the engine; hooks find it through git config, not a shell file
 - [adr-0009-recheck-assertions](adr-0009-recheck-assertions.md) — engine decision: facts carry an assertion; the verifier reports, never repairs
 - [adr-0011-no-orchestrator-until-routing-fails](adr-0011-no-orchestrator-until-routing-fails.md) — engine decision: no orchestrator built; revisit triggers
 - [adr-0012-phase-4-safety-scoped-to-one-maintainer](adr-0012-phase-4-safety-scoped-to-one-maintainer.md) — engine decision: safety controls as built, declared versus enforced, dormant
