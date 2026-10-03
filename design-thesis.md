@@ -4,7 +4,7 @@ description: The core design thesis of a governed-KB-plus-thin-agent architectur
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-09-19
+verified: 2026-10-02
 metadata:
   type: fact
   node_type: memory
@@ -29,8 +29,14 @@ The core design rule for combining a governed knowledge base with an agent layer
   system and re-stamp them. The KB gains currency; the behavior layer gains a single source of
   truth.
 
-Source: [[knowledge-agent-architecture-combination-plan]] (§0)
-Verified: 2026-09-19 · by: agent · method: doc-review
+Superseded 2026-10-02 (as built): the third bullet imagined agents querying live systems to re-verify
+facts. The environment had none, and the Verifier was built as a script that re-runs an assertion the fact
+carries beside it (`Recheck:`), with most facts carrying none; see [[agent-lifecycle-roles]], "The
+Verifier as built". The separation principle itself is unchanged: section 0 reads identically in the
+revised plan and the original.
+
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§0, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§0, identical text)
+Verified: 2026-10-02 · by: agent · method: doc-review
 
 ## The anti-pattern this rejects: knowledge-as-behavior
 
@@ -52,8 +58,8 @@ design. The optimum is the KB as substrate with a thin behavior layer on top of 
 **Knowledge-as-behavior is retained only as the anti-pattern to avoid** — the failure it embodies
 (duplicated, unsourced, drifting facts) is exactly what the governed substrate prevents.
 
-Source: [[knowledge-agent-architecture-combination-plan]] (§0)
-Verified: 2026-09-19 · by: agent · method: doc-review
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§0) · [[knowledge-agent-architecture-combination-plan]] (§0, identical text)
+Verified: 2026-10-02 · by: agent · method: doc-review
 
 ## Target layering
 

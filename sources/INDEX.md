@@ -35,3 +35,6 @@ keywords: [sources, citations, stubs, provenance]
 - [pr-8-distill-secrets-rule](pr-8-distill-secrets-rule.md) — engine pull request: reference-not-value at the distill gate, with the blind trap test
 - [issue-5-distill-secrets-gate](issue-5-distill-secrets-gate.md) — engine issue: why consolidating a security finding is where a literal gets pasted
 - [issue-9-kb-capture-scan](issue-9-kb-capture-scan.md) — engine issue and decision: capture refuses, because retrieval reads the working tree
+- [eval-2026-09-26-intelligence-analysis-skill](eval-2026-09-26-intelligence-analysis-skill.md) — engine evidence: the behavioural eval of a thin review skill, and the post hoc gold-key amendment
+- [eval-2026-09-28-intelligence-analysis-bakeoff](eval-2026-09-28-intelligence-analysis-bakeoff.md) — engine evidence: the blind head-to-head against the legacy skill
+- [eval-2026-09-28-routing-sample](eval-2026-09-28-routing-sample.md) — engine evidence: the 12-question routing sample behind ADR-0011

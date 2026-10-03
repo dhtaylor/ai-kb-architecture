@@ -22,10 +22,13 @@ keywords: [combination plan, revised, target architecture, three repository kind
 The revised plan. It **supersedes** [[knowledge-agent-architecture-combination-plan]] (the 2026-09-18
 version, kept as evidence and not rewritten). Section 1 (target architecture) was rewritten on
 2026-09-19 after building showed one tree violated the plan's own thesis; section 9 records what
-implementation proved. Folded from it in this fold: section 1, and the parts of sections 5A, 6 and 9
+implementation proved. Folded from it so far: section 1, and the parts of sections 5A, 6 and 9
 (9.13, 9.18, 9.19, and the Phase 4 and Phase 5 entries of section 6) that bear on the target
-layering and the lifecycle roles. Not folded here: section 9's general lessons, and sections 2, 3,
-4, 5, 7 and 8.
+layering and the lifecycle roles; and, in the general-lessons fold (c1), 9.1, 9.6 (the recurring
+defect and the scanner that exited 0), 9.8, 9.14, 9.15, 9.16 and 9.17 (retrieval eval integrity),
+9.19 (steady-state defaults) and section 0 (re-verified, identical to the original). Pending the
+second general-lessons fold (c2): 9.5, 9.9, 9.10, 9.11, 9.12, and the remaining guardrail lessons in
+9.6 and 9.18. Not folded: sections 2, 3, 4, 5, 7 and 8 and 9.2 to 9.4 and 9.7.
 
 **Redaction:** the author line of the archived copy originally named a person. The name was replaced
 with "[redacted: author]" because this library is public and records no personal names. Nothing else

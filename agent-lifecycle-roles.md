@@ -1,6 +1,6 @@
 ---
 name: agent-lifecycle-roles
-description: The three librarian roles that keep a governed KB operating (Curator, Research librarian, Fact-checker) and how the Verifier and Watcher were built, how mutation of the KB is governed (built, dormant and not-built controls), how the fact-checkers are tested, and why no orchestrator is built and how retrieval cost is bounded.
+description: The three librarian roles that keep a governed KB operating (Curator, Research librarian, Fact-checker) and how the Verifier and Watcher were built, how mutation of the KB is governed (built, dormant and not-built controls), how the fact-checkers are tested, and why no orchestrator is built and how retrieval cost is bounded, and what the steady-state defaults taught (a nudge must be true when idle, a hook's cost, a routed queue).
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, lifecycle, roles, governance, orchestrator]
-keywords: [curator, research librarian, fact-checker, verifier, watcher, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger]
+keywords: [curator, research librarian, fact-checker, verifier, watcher, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note]
 ---
 # Agent lifecycle roles
 
@@ -214,6 +214,17 @@ Superseded 2026-10-02: the Verifier criterion first read "must produce a `contra
 "reported, fact untouched"; the false-fresh-stamp half stands.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.18) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]]
+Verified: 2026-10-02 · by: agent · method: doc-review
+
+## Steady-state defaults are judged by what they say when nothing is wrong
+
+The session-start surfacing described under "Cadence is surfaced, not scheduled" (above) was reviewed before it landed, and the review found three defects whose common cause is that each was invisible in a test and obvious in daily use.
+
+- **A nudge that is wrong when idle gets ignored.** The first draft counted every episodic note as awaiting distillation. All four real notes had already been distilled, so it would have asked about them at every session start, forever, "which is how a nudge becomes noise nobody reads". A note now counts as distilled when it carries a heading beginning `## Distill`, and the nudge is silent on the real libraries, which is true.
+- **A session-start hook's cost is paid by every session.** The draft took the hook from 0.06s to 3s, because the file walk descended into `.git` and the evidence archives before filtering them out, and each directory visit is slow on a Windows drive under WSL. Pruning those directories during the walk brought it to 0.34s. The figures are this build's measurement on that machine, not a bound; the lesson is that the cost is invisible in a test and felt in every session.
+- **Detection output is still a file under the contract.** Neither queue writer had routed the queue it created, so the first real finding in a library would have blocked every commit there (the consequence is stated above under the Watcher). The general form: a detection tool that breaks the thing it watches is worse than none.
+
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.19) · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[script-kb-due]] · ai-kb@23fcc18 · ai-kb@4ad3422
 Verified: 2026-10-02 · by: agent · method: doc-review
 
 ## Orchestrator cost bounds
