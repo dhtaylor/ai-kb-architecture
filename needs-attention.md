@@ -17,7 +17,9 @@ Findings from automated drift checks and hygiene sweeps. Detection only — noth
 
 kb-audit sweep 2026-10-02: 15 stale facts found, 10 raised (cap 10 per owner), 5 held back — the
 four `guardrail-verification.md` sections other than "Environment differences…" and both
-`secret-governance.md` sections, all stamped 2026-09-22 (10 days). Every section in the library is
+`secret-governance.md` sections, all stamped 2026-09-22 (10 days). The `secret-governance.md` fold
+has since re-verified both of its two held-back sections (2026-10-02: sources re-read, Recheck
+lines run), so only the four `guardrail-verification.md` sections remain held back. Every section in the library is
 `by: agent`; the domain horizon is 90d, so an agent stamp is stale after 9 days. No item has passed
 the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
 

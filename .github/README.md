@@ -16,7 +16,7 @@ duplicated here.
 |---|---|
 | [`design-thesis.md`](../design-thesis.md) | Why knowledge and behavior are separated, the knowledge-as-behavior anti-pattern, and the target layering |
 | [`agent-lifecycle-roles.md`](../agent-lifecycle-roles.md) | The Curator, Research-librarian and Fact-checker roles with the Verifier and Watcher as built, how changes to the KB are governed (built, dormant and not-built controls), and why no orchestrator is built and how retrieval cost is bounded |
-| [`secret-governance.md`](../secret-governance.md) | Why rotating a leaked secret is not removing it, and why a pre-commit scan is not the enforcement boundary |
+| [`secret-governance.md`](../secret-governance.md) | Why rotating a leaked secret is not removing it, why a pre-commit scan is not the enforcement boundary, what the three-pass secret and identifier scan covers and cannot see, why capture refuses a note holding a credential, and the blind trap test of the distill gate |
 | [`guardrail-verification.md`](../guardrail-verification.md) | Why a guardrail that is correct on the machine that wrote it can still fail everywhere else, or catch nothing at all |
 
 Alongside the facts:

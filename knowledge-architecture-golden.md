@@ -22,7 +22,8 @@ This file is **test apparatus, not knowledge**. It is deliberately NOT routed fr
 nothing. Retrieval agents must never read it.
 
 Seeded by the first fold of `knowledge-agent-architecture-combination-plan.md`; extended by the fold
-of the revised plan (target layering and lifecycle roles as built). Cross-root case: included — the
+of the revised plan (target layering and lifecycle roles as built) and by the secret-governance fold
+(the three-pass scan, the capture boundary, and the blind trap test). Cross-root case: included — the
 domain holds one cross-library reference, from design-thesis into claude-code-runtime
 (`[[claude-code-runtime:behaviour-loading]]`), and the `cross-root` record below tests it. Unresolved
 case: **not applicable** — nothing in the domain today carries `status: CONFLICTED`, so a genuine
@@ -117,3 +118,48 @@ contradiction lands.
   expected_file: agent-lifecycle-roles.md
   expected_excerpt: "Routing accuracy falls below 95%"
 ```
+
+- case: positive
+  question: Which passes does check-secrets run, and does a hit in any one of them block?
+  expected_file: secret-governance.md
+  expected_excerpt: "runs three passes per file, and any pass blocks"
+
+- case: positive
+  question: Can the secret scan detect a person's name written in prose?
+  expected_file: secret-governance.md
+  expected_excerpt: "it cannot detect a personal NAME in prose"
+
+- case: positive
+  question: How does a line holding a deliberate example get past all of the secret scan's passes?
+  expected_file: secret-governance.md
+  expected_excerpt: "to clear a legitimate match from all three"
+
+- case: positive
+  question: Why does kb-capture refuse a note holding a credential instead of leaving the check to the commit hook?
+  expected_file: secret-governance.md
+  expected_excerpt: "Retrieval reads the working tree before any commit hook runs"
+
+- case: positive
+  question: Where does a note go when kb-capture refuses it?
+  expected_file: secret-governance.md
+  expected_excerpt: "outside the tree, with the retry command printed"
+
+- case: positive
+  question: Does the worktree secret scan cover files that are not yet tracked by git?
+  expected_file: secret-governance.md
+  expected_excerpt: "scans untracked, non-ignored files"
+
+- case: positive
+  question: Where is the rule for recording a security finding stated, and is it repeated in this library?
+  expected_file: secret-governance.md
+  expected_excerpt: "is not restated here"
+
+- case: positive
+  question: What did the blind trap test of the distill gate record in place of a pasted password?
+  expected_file: secret-governance.md
+  expected_excerpt: "It recorded the finding by vault reference, commit and rotate action"
+
+- case: negative
+  question: Is push protection switched on for the library's repository?
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"

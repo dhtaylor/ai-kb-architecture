@@ -33,8 +33,9 @@ assume the engine sits at any particular place beside it.
   roles with the Verifier and Watcher as built, governance for KB mutation (built, dormant and
   not-built controls), how the fact-checkers are tested, and why no orchestrator is built and how
   retrieval cost is bounded
-- [secret-governance](secret-governance.md) — why rotating a leaked secret isn't removal, and why
-  a pre-commit scan isn't the enforcement boundary
+- [secret-governance](secret-governance.md) — why rotating a leaked secret isn't removal, why a
+  pre-commit scan isn't the enforcement boundary, what the three-pass secret and identifier scan
+  covers and cannot see, why capture refuses a note holding a credential, and the blind trap test
 - [guardrail-verification](guardrail-verification.md) — why a guardrail correct on the authoring
   machine can still fail everywhere else, or catch nothing at all
 - [sources](sources/INDEX.md) — citation stubs for the artifacts these facts came from
