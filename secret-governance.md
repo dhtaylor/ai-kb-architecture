@@ -49,9 +49,16 @@ Verified: 2026-10-02 · by: agent · method: doc-review
 
 This workspace's current, concrete standing on both points — what is enforced, dormant, or
 absent here specifically — is recorded in `ai-kb:documents/decisions/0002-governance-without-enforcement.md`,
-not restated here. That record is dated 2026-09-19 and was amended 2026-09-22; this library has not
-re-verified its statements about enforcement, and they may lag the deployment — see
-[[knowledge-architecture-open-questions]].
+not restated here; its amendment of 2026-10-02 is the current account. What that amendment adds that
+holds generally: where a push-time rejection is available, it is the boundary only for the credential
+shapes the hosting platform recognises, so the server-side workflow "remains necessary" for the
+engine's own patterns, the entropy and identifier passes and the regression suite. A CI job that fails
+after a push has landed is detection behind that boundary — "detection, not prevention" — and not a
+substitute for it. A repository where neither is enforced is "recorded as unenforced rather than
+described as protected".
+
+Source: [[adr-0002-governance-without-enforcement]]
+Verified: 2026-10-02 · by: agent · method: doc-review
 
 ## What check-secrets covers: three passes
 
