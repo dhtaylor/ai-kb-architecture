@@ -2,7 +2,7 @@
 name: knowledge-agent-architecture-combination-plan
 description: Source stub — the advisory reference-design proposal for combining a governed knowledge base with a thin-agent fleet, whose decisions are recorded separately as ADRs.
 memory_type: reference
-domain: meta
+domain: knowledge-architecture
 scope: general
 metadata:
   type: source
@@ -29,3 +29,5 @@ Written to be reusable across projects. Its concrete *decisions* are recorded as
 reference design (mechanisms, roles, thresholds, failure modes) that is true independent of
 which option this workspace chose. Its §6 (phased implementation plan) and §8 (open
 decisions/next actions) are project management, not durable knowledge, and were not folded.
+
+**Superseded 2026-10-02** by [[knowledge-agent-architecture-combination-plan-revised]] (section 1 rewritten, section 9 added). This stub and its archive are kept as evidence of what was folded first.

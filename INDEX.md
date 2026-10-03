@@ -7,7 +7,7 @@ scope: general
 freshness_horizon: 90d
 verifier_budget: 5
 sweep_interval: 30d
-last_swept: 2026-09-22
+last_swept: 2026-10-02
 metadata:
   type: index
   node_type: router
@@ -28,9 +28,11 @@ schema are the operative contract and are not duplicated here. The contract live
 assume the engine sits at any particular place beside it.
 
 - [design-thesis](design-thesis.md) — why knowledge and behavior are separated, the
-  knowledge-as-behavior anti-pattern, and the target layering
+  knowledge-as-behavior anti-pattern, and the target layering (three repository kinds)
 - [agent-lifecycle-roles](agent-lifecycle-roles.md) — the Curator/Research-librarian/Fact-checker
-  roles, PR-review and rollback governance for KB mutation, and the orchestrator's cost bounds
+  roles with the Verifier and Watcher as built, governance for KB mutation (built, dormant and
+  not-built controls), how the fact-checkers are tested, and why no orchestrator is built and how
+  retrieval cost is bounded
 - [secret-governance](secret-governance.md) — why rotating a leaked secret isn't removal, and why
   a pre-commit scan isn't the enforcement boundary
 - [guardrail-verification](guardrail-verification.md) — why a guardrail correct on the authoring
@@ -42,3 +44,5 @@ the archived evidence these facts were folded from. Neither is routed: they are 
 provenance, not knowledge, and an agent that can descend to the oracle can read the answers.
 
 - [episodic](episodic/INDEX.md) — session notes, newest first: the raw record facts are distilled from
+- [knowledge-architecture-open-questions](knowledge-architecture-open-questions.md) — gaps the sources left open, recorded rather than filled
+- [needs-attention](needs-attention.md) — open findings from automated checks and sweeps; detection only, nothing here was fixed automatically
