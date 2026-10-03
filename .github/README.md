@@ -73,7 +73,9 @@ The checks live in the engine; this repository does not carry its own copies.
   scan.
 - **The `owner-approved` label.** The high-blast-radius scan fails a pull request that deletes or
   renames away a fact file, removes a `CONFLICTED` marker or promotes a fact's scope, unless the
-  pull request carries this label.
+  pull request carries this label. `main` is protected with `guardrails` as a required check, so
+  that failure blocks the merge. An admin can still push directly, but CI then only warns, and
+  the bypass shows up in the history.
 - **`CODEOWNERS`.** Names who owns each path, which is who a `kb-audit` finding is assigned to.
   It is advisory until branch protection makes owner review required.
 

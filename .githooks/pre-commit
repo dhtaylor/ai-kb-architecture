@@ -19,7 +19,7 @@ find_engine() {
 ENGINE=$(find_engine)
 if [ -z "$ENGINE" ]; then
   echo "domain pre-commit: ai-kb engine not found — structural checks SKIPPED."
-  echo "  Run kb-bootstrap on this machine, or clone this library under an engine's kb/ directory."
+  echo "  Run kb-bootstrap --apply on this machine, or clone this library under an engine's kb/ directory."
   exit 0
 fi
 
