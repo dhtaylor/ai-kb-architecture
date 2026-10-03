@@ -1,6 +1,6 @@
 ---
 name: knowledge-architecture-golden
-description: Golden retrieval set for the knowledge-architecture domain — routing and answer-grounding cases seeded by the first fold (design-thesis, agent-lifecycle-roles, secret-governance).
+description: Golden retrieval set for the knowledge-architecture domain — routing and answer-grounding cases for design-thesis, agent-lifecycle-roles, secret-governance and guardrail-verification.
 memory_type: reference
 domain: knowledge-architecture
 scope: general
@@ -21,11 +21,13 @@ This file is **test apparatus, not knowledge**. It is deliberately NOT routed fr
 `INDEX.md`: an agent that can descend to the oracle can read the answers, and its refusals then prove
 nothing. Retrieval agents must never read it.
 
-Seeded by the first fold of `knowledge-agent-architecture-combination-plan.md`. Cross-root case:
-**not applicable** — this domain now holds one cross-library reference, into
-claude-code-runtime, so a cross-root case is included. Unresolved case: **not applicable** — this fold produced no contradiction (see the fold
-report); nothing in the domain today carries `status: CONFLICTED`, so a genuine UNRESOLVED case
-cannot yet be written without fabricating a conflict. Add one the day a real contradiction lands.
+Seeded by the first fold of `knowledge-agent-architecture-combination-plan.md`; extended by the fold
+of the revised plan (target layering and lifecycle roles as built). Cross-root case: included — the
+domain holds one cross-library reference, from design-thesis into claude-code-runtime
+(`[[claude-code-runtime:behaviour-loading]]`), and the `cross-root` record below tests it. Unresolved
+case: **not applicable** — nothing in the domain today carries `status: CONFLICTED`, so a genuine
+UNRESOLVED case cannot yet be written without fabricating a conflict. Add one the day a real
+contradiction lands.
 
 ```yaml
 - case: positive
@@ -39,9 +41,10 @@ cannot yet be written without fabricating a conflict. Add one the day a real con
   expected_excerpt: "Curator (cataloguer)"
 
 - case: positive
-  question: How many workers can the orchestrator fan out to for a single interactive query?
+  question: Is there an orchestrator that routes questions across libraries, and if not, what does the routing?
   expected_file: agent-lifecycle-roles.md
-  expected_excerpt: "capped at 2 workers"
+  expected_excerpt: "no orchestrator is built"
+  alt_excerpt: "the system built has one retrieval agent"
 
 - case: positive
   question: Does rotating a leaked secret remove it from git history?
@@ -54,7 +57,7 @@ cannot yet be written without fabricating a conflict. Add one the day a real con
   expected_excerpt: "fact not found — check KB"
 
 - case: negative
-  question: What did Dandy's personal debugging session on Tuesday conclude?
+  question: What did the maintainer's personal debugging session on Tuesday conclude?
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
 
@@ -82,4 +85,35 @@ cannot yet be written without fabricating a conflict. Add one the day a real con
   question: Does a clean kb-audit sweep mean every fact's content is still accurate?
   expected_file: guardrail-verification.md
   expected_excerpt: "it does not check a fact's content against the live system that fact describes"
+
+- case: positive
+  question: How many kinds of repository does the target architecture use, and what does each hold?
+  expected_file: design-thesis.md
+  expected_excerpt: "three kinds of repository, not one tree"
+
+- case: positive
+  question: When the Verifier re-runs a fact's assertion and it fails, does it edit or flag the fact?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "A failure is never applied"
+
+- case: positive
+  question: Does the Watcher fetch pages itself, and does fetched page content ever reach a model?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "never fetches anything itself"
+  alt_excerpt: "page content never reaches one"
+
+- case: positive
+  question: Are the knowledge-base sweeps and distillations run on a schedule unattended?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "nothing happens unless a session starts"
+
+- case: positive
+  question: Is the two-reviewer, 24-hour rule for high-blast-radius facts enforced?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "dormant until a second owner exists"
+
+- case: positive
+  question: What would make the decision not to build an orchestrator be reopened?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "Routing accuracy falls below 95%"
 ```

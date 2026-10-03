@@ -1,6 +1,6 @@
 ---
 name: design-thesis
-description: The core design thesis of a governed-KB-plus-thin-agent architecture — why knowledge and behavior are separated, the anti-pattern this rejects, and the target layering.
+description: The core design thesis of a governed-KB-plus-thin-agent architecture — why knowledge and behavior are separated, the anti-pattern this rejects, and the target layering (three repository kinds: engine, domain library, project knowledge).
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -57,18 +57,49 @@ Verified: 2026-09-19 · by: agent · method: doc-review
 
 ## Target layering
 
-The combined architecture has four layers, and the discipline is that facts and secrets are
-confined to exactly one of them each:
+The architecture is three kinds of repository, not one tree holding both the governed substrate and
+the behaviour layer:
 
-- **Governed substrate** (`knowledge/`) — the *only* place facts live: per-domain INDEX +
-  single-topic files + provenance + contradictions, source citation stubs, currency stamps, and a
-  golden-retrieval eval set.
-- **Behavior layer** (thin) — domain-worker agents (least-privilege tools, "load knowledge/…,
-  descend, cite, act") and procedures/commands with confirmation gates for state-changing
-  operations, routed by a thin orchestrator. **No facts, no secrets** live here.
-- **Secrets** — vault or env only, referenced by name, never inlined.
-- **Guardrails** — a secret scan over *both* trees (the knowledge substrate and the behavior
-  layer), plus least-privilege enforcement for production operations.
+- **Engine** — behaviour only, no domains, no facts. It holds the contract every library conforms
+  to, the checking scripts, the plugins (skills, agents, commands — registered by consumers, never
+  inherited by directory accident) and the decision records. Its `kb/` directory is created by the
+  engine and never tracked by it.
+- **Domain library** — content only, one repository per domain, portable. `INDEX.md` is the
+  repository root and the domain router, with no tier chain above it. It holds gestalt-sized topic
+  files with per-section provenance and currency, its own `sources/`, the `documents/` it was folded
+  from, and its own golden set.
+- **Project knowledge** — the repo tier, inside each project repository, travelling with the clone.
+
+Two cross-cutting layers sit beside them. **Secrets** live in a vault or the environment only,
+referenced by name, never inlined. **Guardrails** are a secret scan (committer-side and server-side)
+plus an embedded-fact lint over the behaviour layer, and least-privilege enforcement for production
+operations.
+
+The rule that makes it hold: the engine holds no facts, a library holds no behaviour, and a library
+is self-contained enough to be cloned onto a machine with neither an engine nor a sibling library
+beside it. Anything reaching across a repository boundary uses a repo-qualified reference
+(`ai-kb:CONVENTIONS.md`), never a relative path; the contract states the citation rule at
+`ai-kb:CONVENTIONS.md` section 6.
+
+Why the engine does not hold the facts: an engine that held both would assert the separation
+principle in its own contract and violate it in its own layout, in the one place where the
+separation most needs to be visible, because everything downstream follows its example. There was
+also a practical failure: with one shared tier there was one shared `sources/`, one shared golden
+set and one router chain, so a domain could not be moved, shared or cloned without dragging the rest
+of the tier with it. There is no registry; libraries are discovered by being present under the
+engine's `kb/`, because a registry would have to live in the engine, which does not track `kb/`.
+
+The cost, stated by the decision that made the split: a library has no guardrails of its own. Its
+commit hook borrows the engine's checkers and skips when it cannot find them, so a library cloned
+alone is unguarded until an engine is in reach. That is the price of not making a portable library
+depend on an engine.
+
+Superseded 2026-10-02: the earlier text of this section described one `knowledge/` tree as the
+governed substrate, a thin behaviour layer of domain-worker agents with least-privilege tools routed
+by a thin orchestrator, and a secret scan over both trees. The plan rewrote its target architecture
+on 2026-09-19 to the three repository kinds above, and no orchestrator is built (see
+[[agent-lifecycle-roles]], "Orchestrator cost bounds"). Least-privilege enforcement remains in the
+guardrails list; its as-built strength is recorded under "Mutation governance" in the same file.
 
 **How this holds in practice depends on the runtime.** The claim that behaviour "retrieves at
 runtime" is about where facts live, not about when the behaviour itself is loaded — and those differ:
@@ -76,5 +107,5 @@ in Claude Code, plugin behaviour is loaded once at session start while facts are
 (`[[claude-code-runtime:behaviour-loading]]`). The separation holds; the two halves simply refresh on
 different clocks.
 
-Source: [[knowledge-agent-architecture-combination-plan]] (§1)
-Verified: 2026-09-19 · by: agent · method: doc-review
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§1) · [[knowledge-agent-architecture-combination-plan]] (§1, superseded) · [[adr-0007-engine-content-separation]]
+Verified: 2026-10-02 · by: agent · method: doc-review

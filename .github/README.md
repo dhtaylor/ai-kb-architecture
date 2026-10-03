@@ -15,7 +15,7 @@ duplicated here.
 | File | What it covers |
 |---|---|
 | [`design-thesis.md`](../design-thesis.md) | Why knowledge and behavior are separated, the knowledge-as-behavior anti-pattern, and the target layering |
-| [`agent-lifecycle-roles.md`](../agent-lifecycle-roles.md) | The Curator, Research-librarian and Fact-checker roles, how changes to the KB are reviewed and rolled back, and the orchestrator's cost bounds |
+| [`agent-lifecycle-roles.md`](../agent-lifecycle-roles.md) | The Curator, Research-librarian and Fact-checker roles with the Verifier and Watcher as built, how changes to the KB are governed (built, dormant and not-built controls), and why no orchestrator is built and how retrieval cost is bounded |
 | [`secret-governance.md`](../secret-governance.md) | Why rotating a leaked secret is not removing it, and why a pre-commit scan is not the enforcement boundary |
 | [`guardrail-verification.md`](../guardrail-verification.md) | Why a guardrail that is correct on the machine that wrote it can still fail everywhere else, or catch nothing at all |
 
