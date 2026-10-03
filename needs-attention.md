@@ -19,7 +19,8 @@ kb-audit sweep 2026-10-02: 15 stale facts found, 10 raised (cap 10 per owner), 5
 four `guardrail-verification.md` sections other than "Environment differences…" and both
 `secret-governance.md` sections, all stamped 2026-09-22 (10 days). The `secret-governance.md` fold
 has since re-verified both of its two held-back sections (2026-10-02: sources re-read, Recheck
-lines run), so only the four `guardrail-verification.md` sections remain held back. Every section in the library is
+lines run), and fold c1 has re-verified all four `guardrail-verification.md` sections (2026-10-02:
+sources re-read, the one Recheck line run), so none remain held back. Every section in the library is
 `by: agent`; the domain horizon is 90d, so an agent stamp is stale after 9 days. No item has passed
 the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
 
@@ -91,7 +92,7 @@ the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
 
 - id: 7cda739f
   category: stale fact
-  status: open
+  status: resolved
   file: design-thesis.md
   section: "The separation principle"
   severity: 5
@@ -100,6 +101,7 @@ the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
   age: 13d
   escalate: false
   date: 2026-10-02
+  resolved: "2026-10-02 — fold-lessons-c1 (fold c1, general lessons): section re-read against the revised combination plan's section 0 (textually identical to the original), supersede note added for the freshness-loop bullet, re-stamped, method doc-review"
 
 - id: a06fcd59
   category: stale fact
@@ -129,7 +131,7 @@ the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
 
 - id: b9e0e341
   category: stale fact
-  status: open
+  status: resolved
   file: design-thesis.md
   section: "The anti-pattern this rejects: knowledge-as-behavior"
   severity: 5
@@ -138,10 +140,11 @@ the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
   age: 13d
   escalate: false
   date: 2026-10-02
+  resolved: "2026-10-02 — fold-lessons-c1 (fold c1, general lessons): section re-read against the revised combination plan's section 0 (textually identical to the original), re-stamped, method doc-review"
 
 - id: 0260bac8
   category: stale fact
-  status: open
+  status: resolved
   file: guardrail-verification.md
   section: "Environment differences hide a defect from the authoring machine; guard by structure, not by filename"
   severity: 5
@@ -150,5 +153,6 @@ the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
   age: 10d
   escalate: false
   date: 2026-10-02
+  resolved: "2026-10-02 — fold-lessons-c1 (fold c1, general lessons): section re-verified: its Recheck assertion was run from the library directory and exited 0, the cited sources were re-read, re-stamped, method manual"
 
 ```

@@ -1,6 +1,6 @@
 ---
 name: knowledge-architecture-golden
-description: Golden retrieval set for the knowledge-architecture domain — routing and answer-grounding cases for design-thesis, agent-lifecycle-roles, secret-governance and guardrail-verification.
+description: Golden retrieval set for the knowledge-architecture domain — routing and answer-grounding cases for design-thesis, agent-lifecycle-roles, secret-governance, guardrail-verification and retrieval-eval-integrity.
 memory_type: reference
 domain: knowledge-architecture
 scope: general
@@ -23,7 +23,9 @@ nothing. Retrieval agents must never read it.
 
 Seeded by the first fold of `knowledge-agent-architecture-combination-plan.md`; extended by the fold
 of the revised plan (target layering and lifecycle roles as built) and by the secret-governance fold
-(the three-pass scan, the capture boundary, and the blind trap test). Cross-root case: included — the
+(the three-pass scan, the capture boundary, and the blind trap test), and by the first general-lessons
+fold, c1 (retrieval-eval-integrity, the guardrail lessons on reading versus running, a recurring defect and a
+scanner that exited 0, the steady-state defaults, and the as-built Verifier note in design-thesis). Cross-root case: included — the
 domain holds one cross-library reference, from design-thesis into claude-code-runtime
 (`[[claude-code-runtime:behaviour-loading]]`), and the `cross-root` record below tests it. Unresolved
 case: **not applicable** — nothing in the domain today carries `status: CONFLICTED`, so a genuine
@@ -75,7 +77,7 @@ contradiction lands.
 - case: positive
   question: Why did nobody notice check-kb importing PyYAML until the regression suite ran it in CI?
   expected_file: guardrail-verification.md
-  expected_excerpt: "the engine's own CI runs only exec-bit, secret and embedded-fact checks"
+  expected_excerpt: "the engine's own CI ran only exec-bit, secret and embedded-fact checks"
 
 - case: positive
   question: Why didn't the new regression suite catch the check-xlinks episodic-exclusion regression?
@@ -117,6 +119,98 @@ contradiction lands.
   question: What would make the decision not to build an orchestrator be reopened?
   expected_file: agent-lifecycle-roles.md
   expected_excerpt: "Routing accuracy falls below 95%"
+
+- case: positive
+  question: Why did refusals obtained while the golden set was routed from the domain router prove nothing?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "nobody can distinguish retrieval from recitation"
+
+- case: positive
+  question: Why did a correct, grounded answer fail the first run of the answer-grounding eval?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "a correct, grounded answer failed on a pair of asterisks"
+
+- case: positive
+  question: How does the grader treat a cited path that names a same-named file in another library?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "It now resolves a cited path to a file and still rejects a same-named file in another library"
+
+- case: positive
+  question: What does an agent cite when it refuses to answer, and where does it say what it checked?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "so a refusal cites nothing and names what it checked in its text"
+
+- case: positive
+  question: Why did an agent that handled a disputed fact correctly still fail the eval?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "still failed because the oracle expected the literal"
+
+- case: positive
+  question: Why not add alternative excerpts to the oracle after each run's misses?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "adding alternatives after each run would make the oracle follow the agent"
+  alt_excerpt: "An alternative added after results were seen is an amendment and is recorded as one"
+
+- case: positive
+  question: Why did one agent refuse four answerable questions with confidence?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "One agent concluded that library was the only one installed and refused four answerable questions with confidence"
+
+- case: positive
+  question: What does a clean pass say about a protocol that changed between eval runs?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "a clean pass, or anything about a protocol that changed between runs rather than one repeated"
+
+- case: positive
+  question: When independent reviewers keep reporting the same false positive on a clean control, what is checked first?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "check the key before the reviewer"
+
+- case: positive
+  question: What does a single trial per case in these evals establish?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "say which way things point, not how often they happen"
+
+- case: negative
+  question: How many trials per case does a retrieval eval need to measure frequency rather than direction?
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: positive
+  question: What was found to be the highest-value technique for finding the defects in the guardrails?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "handing an artifact to someone who had not written it and asking what was ambiguous"
+
+- case: positive
+  question: Why did the secret scan reject the contributor guide's own redaction example?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "because that shape matches a real credential"
+
+- case: positive
+  question: What finally held after the non-executable-script defect had recurred?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "The fix that held was not another fix but a check"
+
+- case: positive
+  question: Why did a secret scanner print its findings and still exit 0?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "so the counter it incremented lived in a subshell and was discarded"
+  alt_excerpt: "worse than no guardrail because it reads as protection"
+
+- case: positive
+  question: Why would the first draft of the session-start nudge have been ignored?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "so it would have asked about them at every session start, forever"
+
+- case: positive
+  question: What did the first draft of the session-start hook cost, and why?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "took the hook from 0.06s to 3s"
+
+- case: positive
+  question: As built, does the Verifier query live systems to re-verify a fact?
+  expected_file: design-thesis.md
+  expected_excerpt: "re-runs an assertion the fact carries beside it"
 ```
 
 - case: positive

@@ -10,7 +10,7 @@ metadata:
   node_type: open-questions
   created: 2026-10-02
 tags: [knowledge-architecture, open-questions]
-keywords: [open question, gap, not established, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002]
+keywords: [open question, gap, not established, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact]
 ---
 # Open questions
 
@@ -52,7 +52,7 @@ The plan's phase-4 finding that a declared tool scope is enforced in some places
 pre-approval in others is a claim about the Claude Code runtime. It was left out of this domain and
 no slug exists in claude-code-runtime for it yet, so there is nothing to link.
 
-Source: [[adr-0012-phase-4-safety-scoped-to-one-maintainer]]
+Source: [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[knowledge-agent-architecture-combination-plan-revised]] (§9.18)
 
 ## Does a CI job that fails after the push count as the enforcement boundary, or only as detection?
 
@@ -76,3 +76,23 @@ are deployment configuration and platform behaviour, and do not belong in this g
 [[secret-governance]] keeps the general fact and points at the record without restating it.
 
 Source: [[adr-0002-governance-without-enforcement]]
+
+## Would a `Recheck:` assertion have caught the stale hook fact sooner?
+
+[[guardrail-verification]] records that a clean `kb-audit` sweep passed over a fact quoting a hook body
+rewritten two commits earlier, and that the defect was found by reading the hook. The session note that
+recorded it states that adding `Recheck:` assertions to more facts "would probably have caught the stale hook
+fact sooner" and labels that a hypothesis, since the assertion that catches the fact today was written after
+the fact was already wrong. It was left out of the fact as a claim and no source read tests it.
+
+Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]]
+
+## Where does the runtime's behaviour on library discovery by a sub-agent belong?
+
+The plan (§9.14) and the contract (section 3 of `ai-kb:CONVENTIONS.md`) both state that an agent which did
+not receive the session-start list of libraries, a sub-agent being the example, must enumerate
+`kb/*/INDEX.md`. Whether sub-agents receive session-start context is a claim about the Claude Code runtime.
+It was left out of [[retrieval-eval-integrity]], which records only the general failure, and no slug exists in
+claude-code-runtime for it, so there is nothing to link.
+
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14)
