@@ -54,29 +54,6 @@ no slug exists in claude-code-runtime for it yet, so there is nothing to link.
 
 Source: [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[knowledge-agent-architecture-combination-plan-revised]] (§9.18)
 
-## Does a CI job that fails after the push count as the enforcement boundary, or only as detection?
-
-[[secret-governance]] records the plan's wording: the boundary is "a server-side/CI gate (push
-protection, or a CI job failing the build on any detected secret)". The engine decision record on
-governance describes CI as a check that runs after a push has landed ("detection, not prevention"),
-so that a real leak still needs rotation and a history rewrite. The sources read do not
-say whether the second counts as the boundary the plan means, or only as the compensating control
-behind it. Nothing was edited to match either.
-
-Source: [[knowledge-agent-architecture-combination-plan]] (§5.4) · [[adr-0002-governance-without-enforcement]]
-
-## What is the current standing of the server-side gate on the engine and on the libraries?
-
-The only source read that states it is the engine's governance decision record, dated 2026-09-19 and
-amended 2026-09-22. Its statements that a push-rejection control is unavailable and that libraries
-have no CI of their own are not confirmed by the later material read in the secret-governance fold,
-and this library's own contributor notes describe a CI workflow for it. No source read records a
-later change, so the record was neither superseded nor contradicted here. The settings themselves
-are deployment configuration and platform behaviour, and do not belong in this general library.
-[[secret-governance]] keeps the general fact and points at the record without restating it.
-
-Source: [[adr-0002-governance-without-enforcement]]
-
 ## Would a `Recheck:` assertion have caught the stale hook fact sooner?
 
 [[guardrail-verification]] records that a clean `kb-audit` sweep passed over a fact quoting a hook body

@@ -309,4 +309,9 @@ contradiction lands.
   question: Why did the end-to-end check for a drift record pass when no drift had been recorded?
   expected_file: guardrail-verification.md
   expected_excerpt: "because the word appears in the queue's own keywords line"
+
+- case: positive
+  question: Is a CI job that fails after a push the enforcement boundary for secrets?
+  expected_file: secret-governance.md
+  expected_excerpt: "after a push has landed is detection behind that boundary"
 ```
