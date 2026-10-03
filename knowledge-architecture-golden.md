@@ -25,9 +25,12 @@ Seeded by the first fold of `knowledge-agent-architecture-combination-plan.md`; 
 of the revised plan (target layering and lifecycle roles as built) and by the secret-governance fold
 (the three-pass scan, the capture boundary, and the blind trap test), and by the first general-lessons
 fold, c1 (retrieval-eval-integrity, the guardrail lessons on reading versus running, a recurring defect and a
-scanner that exited 0, the steady-state defaults, and the as-built Verifier note in design-thesis). Cross-root case: included — the
-domain holds one cross-library reference, from design-thesis into claude-code-runtime
-(`[[claude-code-runtime:behaviour-loading]]`), and the `cross-root` record below tests it. Unresolved
+scanner that exited 0, the steady-state defaults, and the as-built Verifier note in design-thesis), and by
+the second general-lessons fold, c2 (the guardrail lessons on silent skipping, topology, the contract, defaults and
+tests that pass for the wrong reason). Cross-root case: included — the
+domain holds two cross-library references into claude-code-runtime, one from design-thesis
+(`[[claude-code-runtime:behaviour-loading]]`) and one from guardrail-verification
+(`[[claude-code-runtime:config-resolution]]`), and a `cross-root` record below tests each. Unresolved
 case: **not applicable** — nothing in the domain today carries `status: CONFLICTED`, so a genuine
 UNRESOLVED case cannot yet be written without fabricating a conflict. Add one the day a real
 contradiction lands.
@@ -211,7 +214,6 @@ contradiction lands.
   question: As built, does the Verifier query live systems to re-verify a fact?
   expected_file: design-thesis.md
   expected_excerpt: "re-runs an assertion the fact carries beside it"
-```
 
 - case: positive
   question: Which passes does check-secrets run, and does a hit in any one of them block?
@@ -257,3 +259,54 @@ contradiction lands.
   question: Is push protection switched on for the library's repository?
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
+
+- case: positive
+  question: What happened to the project hook's secret scan when a structure check chained before it failed?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "any structural failure skipped the secret scan, so a pasted secret surfaced only on the retry"
+
+- case: positive
+  question: Why did a pre-commit hook fired outside an interactive terminal skip its checks while the commit went through?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "found no engine and skipped its checks while exiting 0"
+
+- case: cross-root
+  question: Where is the shell-startup behaviour that made that hook skip its checks recorded?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "The shell-startup behaviour itself is recorded in"
+
+- case: positive
+  question: Has a GUI git client or IDE been tested against the engine hook?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "a GUI git client or IDE has never been tested against a hook, only reasoned about"
+
+- case: positive
+  question: Why did restructuring the repositories invalidate the guardrail testing done before it?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "survives a change to that topology no better than a hardcoded path does"
+
+- case: positive
+  question: Why record a rule the architecture made unnecessary as obsolete instead of deleting it?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "a rule quietly dropped and a rule deliberately retired are indistinguishable"
+
+- case: positive
+  question: Why is a contract that contradicts itself a worse failure than one that disagrees with a skill?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "the precedence rule has nothing to say"
+
+- case: positive
+  question: Does kb-bootstrap change a machine's configuration when run without an apply flag?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "It now reports and changes nothing unless given"
+
+- case: positive
+  question: Why would a regression case that typed a literal date have failed by itself?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "would have started failing on its own once the sweep interval elapsed"
+
+- case: positive
+  question: Why did the end-to-end check for a drift record pass when no drift had been recorded?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "because the word appears in the queue's own keywords line"
+```

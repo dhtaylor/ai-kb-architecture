@@ -22,13 +22,16 @@ keywords: [combination plan, revised, target architecture, three repository kind
 The revised plan. It **supersedes** [[knowledge-agent-architecture-combination-plan]] (the 2026-09-18
 version, kept as evidence and not rewritten). Section 1 (target architecture) was rewritten on
 2026-09-19 after building showed one tree violated the plan's own thesis; section 9 records what
-implementation proved. Folded from it so far: section 1, and the parts of sections 5A, 6 and 9
-(9.13, 9.18, 9.19, and the Phase 4 and Phase 5 entries of section 6) that bear on the target
-layering and the lifecycle roles; and, in the general-lessons fold (c1), 9.1, 9.6 (the recurring
-defect and the scanner that exited 0), 9.8, 9.14, 9.15, 9.16 and 9.17 (retrieval eval integrity),
-9.19 (steady-state defaults) and section 0 (re-verified, identical to the original). Pending the
-second general-lessons fold (c2): 9.5, 9.9, 9.10, 9.11, 9.12, and the remaining guardrail lessons in
-9.6 and 9.18. Not folded: sections 2, 3, 4, 5, 7 and 8 and 9.2 to 9.4 and 9.7.
+implementation proved. Folded from it: section 0 (re-verified, identical to the original); section 1; the parts of 5A and 6
+that bear on the lifecycle roles (including the Phase 4 and Phase 5 entries of 6); and from section 9:
+9.1, 9.5 (the two general lessons only; the nine individual contract defects are rationale already
+encoded in the contract), 9.6, 9.8, 9.9, 9.11 (the retired-versus-dropped line only), 9.12, 9.13, 9.14,
+9.15, 9.16 (as a retrieval-eval lesson), 9.17 (the eval lessons only), 9.18 and 9.19. Not
+folded: 9.2 and 9.3 (Claude Code runtime behaviour, which belongs in the claude-code-runtime library),
+9.4 (cross-repository citation: the rule is in the contract, section 6), 9.7 (fold rules confirmed
+under test), 9.10 (on sequence), the skill-specific parts of 9.17 and the runtime's tool-scoping
+behaviour in 9.18 (an open question here), and sections 2, 3, 4, 5, 7 and 8 (the library cites 2 and 5.4
+only from the original plan's stub). The 8-of-roughly-30 ratio in 9.13 is also not folded.
 
 **Redaction:** the author line of the archived copy originally named a person. The name was replaced
 with "[redacted: author]" because this library is public and records no personal names. Nothing else
