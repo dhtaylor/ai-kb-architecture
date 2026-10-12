@@ -4,7 +4,7 @@ description: Secret and personal-identifier governance — why rotation is not r
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-02
+verified: 2026-10-12
 metadata:
   type: fact
   node_type: memory
