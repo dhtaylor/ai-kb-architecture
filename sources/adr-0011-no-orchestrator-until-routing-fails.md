@@ -1,6 +1,6 @@
 ---
 name: adr-0011-no-orchestrator-until-routing-fails
-description: Source stub — engine ADR-0011, no orchestrator is built until retrieval's own routing is shown to fall short.
+description: Source stub — engine ADR-0011, no orchestrator is built until retrieval's own routing is shown to fall short (as amended 2026-10-12).
 memory_type: reference
 domain: knowledge-architecture
 scope: general
@@ -15,8 +15,8 @@ keywords: [orchestrator, routing, fan-out, kb-retrieve, revisit trigger, ADR]
 
 - **Title:** ADR-0011: No orchestrator is built until retrieval's own routing is shown to fall short
 - **Author:** the engine's maintainer (named in the artifact; not recorded here — this library is public)
-- **Date:** 2026-09-28
+- **Date:** 2026-09-28, amended 2026-10-12
 - **Date ingested:** 2026-10-02
-- **Artifact location:** `ai-kb:documents/decisions/0011-no-orchestrator-until-routing-fails.md`, read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Artifact location:** `ai-kb:documents/decisions/0011-no-orchestrator-until-routing-fails.md`, read at engine commit `35f0e95` on 2026-10-02, and re-read with its 2026-10-12 amendment at engine commit `7541729`. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
-The engine's decision record not to build the orchestrator the plan specified. Folded from it: why one retrieval agent already does the routing, the 12-question sample and its results, the three revisit triggers, and the stated limits of the evidence. The sample's own evidence directory is in the engine and was not read in this fold.
+The engine's decision record not to build the orchestrator the plan specified. Folded from it: why one retrieval agent already does the routing, the 12-question sample and its results, the three revisit triggers, and the stated limits of the evidence; and, from the 2026-10-12 amendment, that two of the three agents read all six routers and the third read only three. The sample's own evidence directory is in the engine and was not read in this fold.

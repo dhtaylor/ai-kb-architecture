@@ -4,7 +4,7 @@ description: The three librarian roles that keep a governed KB operating (Curato
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-02
+verified: 2026-10-12
 metadata:
   type: fact
   node_type: memory
@@ -245,10 +245,11 @@ case, put to three `kb-retrieve` agents with four questions each.
   libraries but cited a library's router rather than the file that carries the cross-library link.
 - Content read from a library the question did not need: none. Beyond the routers, each agent
   opened only the one library the answer came from, or two on the cross-root question.
-- The only overhead was reading the routers: each agent read all six `INDEX.md` files once.
+- The only overhead was reading the routers: two of the three agents read all six `INDEX.md` files up
+  front; the third read only the three it needed.
 
 Limits stated by the decision: the evidence is a sample of 12 questions, not all of them (about 90);
-each agent answered four questions, so its router reads were shared, and a question asked alone pays
+each agent answered four questions, so its router reads were shared, and a question asked alone can pay
 for all six routers. That stays cheap at six libraries and is the first thing to watch as the number
 grows.
 
@@ -277,8 +278,8 @@ Reopen the no-orchestrator decision when any of these holds:
   tools, or workers operating on behalf of different people, which one read-only retrieval agent
   cannot serve.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded in part) · [[adr-0011-no-orchestrator-until-routing-fails]] · [[adr-0007-engine-content-separation]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded in part) · [[adr-0011-no-orchestrator-until-routing-fails]] (as amended 2026-10-12) · [[adr-0007-engine-content-separation]]
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## Cautions: human ownership and data handling
 
