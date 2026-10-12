@@ -4,7 +4,7 @@ description: Why a retrieval eval can pass or fail for reasons that have nothing
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-02
+verified: 2026-10-12
 metadata:
   type: fact
   node_type: memory
@@ -25,7 +25,7 @@ The same contamination returned in a new form on the second library. Eval eviden
 A pre-judging sweep for files changed outside the review folders, and a ban on listing folders at all, were the run-integrity measures of the head-to-head comparison of two skills. One reviewer there listed a scratchpad folder, which showed file names including the gold key and no file contents. It reported this itself, and the run was counted because a file name gives away no answer.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.8, §9.14, §9.15, §9.16) · [[eval-2026-09-28-intelligence-analysis-bakeoff]] · ai-kb@48467fd
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A grader must test grounding, not formatting
 
@@ -34,7 +34,7 @@ The first run scored 5/6 and both discrepancies were defects in the eval. An exp
 The grader still confused punctuation with grounding afterwards. It failed escaped, nested and curly quotes, and a quote that stopped before the excerpt's full stop, and it crashed outright on an answer missing a field. It now folds quote characters, ignores an excerpt's trailing punctuation, and fails a malformed record by name. A paraphrase still fails. Every earlier run, re-graded against its original oracle, kept its stored verdict.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.8, §9.15)
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A grader must resolve identity, and demand only what the contract requires
 
@@ -45,7 +45,7 @@ The second library's eval went 9/16, 14/16, 11/16 and 15/16 across four runs, an
 - **The oracle demanded a phrase nothing required the agent to say.** On a contradiction the agent served nothing, stated both claims and cited the file, and still failed because the oracle expected the literal `status: CONFLICTED`. The refusal is now fixed as "disputed — not served", then both claims, citing the conflicted file, which makes it the one refusal that cites. `check-golden` now requires an unresolved case to name a file that really holds a `CONFLICTED` section. In the next run the case passed.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14, §9.15) · ai-kb@510d09b · ai-kb@d978338 · ai-kb@43aee00
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A file may state a fact twice, and an oracle that follows the agent measures nothing
 
@@ -54,14 +54,14 @@ The oracle accepts one sentence per fact, and a file may state a fact twice, usu
 The plan first recorded whether a golden record should accept alternative excerpts as an open decision. It was taken on 2026-09-24: a record may name `alt_excerpt`, and the grader passes an answer quoting any listed excerpt while still requiring every one to be in the file (ai-kb@3bbd400; rules in `ai-kb:CONVENTIONS.md` §10). On the first library evaluated on a protocol that held still, `alt_excerpt` was judged to reduce the pattern but not eliminate it: "adding alternatives after each run would make the oracle follow the agent", so none was added. An alternative added after results were seen is an amendment and is recorded as one, as is a shortened excerpt: in one run an excerpt was shortened because two independent agents quoted around it, and the change is recorded as post hoc in the golden file and the evidence README.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14, §9.15, §9.16) · ai-kb@3bbd400
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## Library discovery must be exact, and checked from tool calls
 
 An agent that has not been given the list of installed libraries must find them itself, and in the third run of one eval the first listing of `kb/*` was swamped by one library's `.git` objects. One agent concluded that library was the only one installed and refused four answerable questions with confidence. The contract now enumerates `kb/*/INDEX.md`, one router per library, which is exact (`ai-kb:CONVENTIONS.md` §3). The fourth run was checked from the agents' tool calls, not from what they said, and all four had used that glob.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · ai-kb@48467fd
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A result is about the protocol that held still
 
@@ -70,7 +70,7 @@ Every drop across the four runs above had a cause outside the library. What the 
 The first library evaluated after the eval stopped changing scored 16/19, and that measures the knowledge and the agent, not the apparatus. No defect was found in the grader or the contract. Two of the three misses were the one-sentence pattern above. The third was a refusal that explained itself: the agent refused, then cited the files that showed why no answer exists, and paraphrased the fixed phrase. The contract already covers it (a refusal names what it checked in its text and cites nothing), so it is a miss, not a gap. The remaining misses were not patched one run at a time.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14, §9.16, §9.17)
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A clean control is a claim
 
@@ -81,7 +81,7 @@ The tell was that independent reviewers under three versions of the skill conver
 What generalises: a clean control is a claim, and it needs the same scrutiny as a planted flaw. When independent reviewers converge on the same "false positive", check the key before the reviewer.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.17) · [[eval-2026-09-26-intelligence-analysis-skill]] · ai-kb@889ab0b
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## One trial per case shows direction, not frequency
 
@@ -90,4 +90,4 @@ Each case in both skill evals ran once per round, and the plan says what that bu
 The routing sample behind the decision not to build an orchestrator had the same limit: 12 questions, three agents answering four each, graded by hand against a key; its limits are stated under "Orchestrator cost bounds" in [[agent-lifecycle-roles]] and are not restated here.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.17) · [[eval-2026-09-28-intelligence-analysis-bakeoff]] · [[eval-2026-09-28-routing-sample]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review

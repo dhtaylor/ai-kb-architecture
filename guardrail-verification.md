@@ -4,7 +4,7 @@ description: Why a guardrail that is correct on the machine that wrote it can st
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-02
+verified: 2026-10-12
 metadata:
   type: fact
   node_type: memory
@@ -25,7 +25,7 @@ Building this architecture found its defects by running something and checking t
 The same holds for documentation. A one-page contributor guide was tested by giving it, and nothing else, to a fresh agent, which recorded a realistic session correctly and whose feedback closed three real gaps in the page. The guide's own redaction example, a connection URL with the password starred out, was rejected by the engine's secret scan because that shape matches a real credential. A guide is proved by a reader, not by a word count.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.1, §9.19) · [[adr-0013-steady-state-surfaced-not-scheduled]] · ai-kb@32112f2
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## Environment differences hide a defect from the authoring machine; guard by structure, not by filename
 
@@ -52,7 +52,7 @@ Recheck: t=$(mktemp -d); git init -q "$t/r"; git -C "$t/r" config core.fileMode 
 The non-executable-script defect was found, fixed and written into a decision record, and then occurred twice more: once when new hook files were created during a restructure, once at library creation. The fix that held was not another fix but a check, `check-exec-bits`, run in every hook and in CI. That held for the files it knew how to find. It missed a fourth occurrence, described above, because its rule matched paths rather than what a file is. The commit that fixed the fourth occurrence says cloning into a throwaway directory and running the result as a teammate would is "the only way this class of bug is ever found".
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.6) · [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@21758c6
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A check nobody's CI executes guards nothing, even if it is correct on every developer's machine
 
@@ -72,7 +72,7 @@ high-blast-radius steps and the regression suite, as read from the workflow file
 reason `check-kb` was never among them is unchanged, since the engine still holds no knowledge for it to read.
 
 Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@13d81cf · ai-kb@3050ef8
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A regression suite inherits the blind spot of the bug it was built to catch, one case at a time
 
@@ -88,7 +88,7 @@ could never pass, because the harness checks output by grepping for a substring,
 nothing in empty output. The check failed even when the thing under test was behaving correctly.
 
 Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@3050ef8
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A clean kb-audit sweep proves structural soundness, not that a fact's content is still true
 
@@ -104,14 +104,14 @@ caught that fact sooner is untested: the assertion that catches it today was wri
 already wrong (see [[knowledge-architecture-open-questions]]).
 
 Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · [[knowledge-agent-architecture-combination-plan-revised]] (§9.13)
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A scanner that prints its findings and exits 0 is worse than none
 
 A secret scanner printed every finding and exited 0. It piped its output into a function, so the counter it incremented lived in a subshell and was discarded. It warned and then waved the commit through, which is worse than no guardrail because it reads as protection. The header of `check-secrets` now carries the reason in a comment: findings are captured through command substitution, "never by piping into a function", because "a pipeline component runs in a subshell, so a counter incremented there is discarded and the script would print findings while exiting 0". Like the other defects the plan lists, it was found by running the scanner and checking its exit status against what it had printed.
 
 Source: [[script-check-secrets]] · [[knowledge-agent-architecture-combination-plan-revised]] (§9.6)
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A guardrail can be skipped without anyone being told
 
@@ -121,7 +121,7 @@ The section above is about a scanner that ran and reported falsely. These are tw
 - **A setting must be readable by every consumer that depends on it.** On one machine the engine's location was exported from a shell startup file below the stock guard that returns early for non-interactive shells, so a pre-commit hook fired outside an interactive terminal "found no engine and skipped its checks while exiting 0". The plan's account: the guardrail "was weakest exactly where a human was not watching", and the general lesson is that "the consumer nobody thinks about is the one that fails silently". The shell-startup behaviour itself is recorded in [[claude-code-runtime:config-resolution]] and is not restated here. The decision's fix gives hooks a second channel, git's global configuration, because git reads it "in every context that can produce a commit", which no shell startup file does. Its test commit from a non-interactive shell in a fresh clone was refused where it had passed silently. Two qualifiers from the decision: a GUI git client or IDE has never been tested against a hook, only reasoned about; and a machine with the setting unset gets hooks that skip rather than fail, a deliberate choice that leaves an unbootstrapped clone unguarded.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.12) · [[adr-0008-machine-bootstrap]] · [[pr-6-secret-entropy-pass]] · ai-kb@df30ce8 · ai-kb@3b287a3
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## Verification is scoped to the structure it ran against
 
@@ -130,7 +130,7 @@ Moving the repository topology moved every hook, script, path and interface that
 A related discipline: when a restructure makes machinery unnecessary, record it as obsolete rather than deleting it, in the decision that first required it. "six months on, a rule quietly dropped and a rule deliberately retired are indistinguishable, and the first invites someone to reinstate it." The two retirements the plan names, cross-root slug uniqueness and the slug-to-path manifest, are recorded in `ai-kb:CONVENTIONS.md` section 5 and are not restated here.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.9, §9.11)
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A contract can only be tested by following it
 
@@ -140,14 +140,14 @@ The contract's own defects each read as coherent and were self-contradictory in 
 - **A known defect is not a fixed one.** One of the defects was flagged at a review gate and then "left unfixed for hours".
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.5)
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A default is part of the guardrail
 
 `kb-bootstrap`, the one script that writes machine-level configuration (user settings, global git configuration and a shell startup file), applied its changes by default, with `--check` as the opt-out. It now reports and changes nothing unless given `--apply`, the same idiom the Verifier uses. "Nobody had noticed, because it had only ever been run on purpose." The same commit's regression cases for both script gates were each shown to fail when the gate was removed (nine new cases, ai-kb@cabe940).
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.18) · [[state-change-gates]] · ai-kb@cabe940
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A test can pass for the wrong reason
 
@@ -157,4 +157,4 @@ Verified: 2026-10-02 · by: agent · method: doc-review
 Both join the two earlier cases in this file: a case that expected only an exit status and could never pass, and a test that passed its exit code for the wrong reason (above). The common remedy is the one in the section on the regression suite: break the thing on purpose and require the test to notice.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.18, §9.19) · ai-kb@386d30c · ai-kb@706d0dd
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review

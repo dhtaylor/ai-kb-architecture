@@ -155,4 +155,40 @@ the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
   date: 2026-10-02
   resolved: "2026-10-02 — fold-lessons-c1 (fold c1, general lessons): section re-verified: its Recheck assertion was run from the library directory and exited 0, the cited sources were re-read, re-stamped, method manual"
 
+- id: 2b7930a4
+  category: stale-recheck
+  status: open
+  file: agent-lifecycle-roles.md
+  section: "Orchestrator cost bounds"
+  severity: 5
+  stamp: "2026-10-02 · by: agent · method: doc-review"
+  age: 10d
+  escalate: false
+  date: 2026-10-12
+  finding: "Not restamped. The section says each agent read all six INDEX.md files once (as ADR-0011 does). The sample's own evidence README at engine c668ccd (documents/eval-2026-09-28-routing-sample/README.md) says two batches read all six routers up front and one read only the three it needed. The cited decision and the evidence behind it disagree; every other claim in the section matched its sources."
+
+- id: 8e1bd4ff
+  category: stale-recheck
+  status: open
+  file: secret-governance.md
+  section: "What check-secrets covers: three passes"
+  severity: 5
+  stamp: "2026-10-02 · by: agent · method: manual"
+  age: 10d
+  escalate: false
+  date: 2026-10-12
+  finding: "Not restamped. The paragraph records a one-off synthetic run (labelled password, email, home path and domain account blocked under --file; lint-allow passed; untracked file caught by --worktree). No cited source records that run, so it cannot be confirmed from sources. Re-run on 2026-10-12 against engine c668ccd, the behaviour it describes was observed again; the owner decides whether to restamp with method manual."
+
+- id: 5bbbb01c
+  category: stale-recheck
+  status: open
+  file: secret-governance.md
+  section: "The capture boundary: refuse before anything is written"
+  severity: 5
+  stamp: "2026-10-02 · by: agent · method: manual"
+  age: 10d
+  escalate: false
+  date: 2026-10-12
+  finding: "Not restamped. The paragraph records a one-off synthetic run of kb-capture (refusal leaves the tree byte-identical, --from file untouched, piped draft saved mode 0600 outside the tree, clean note filed). No cited source records that run, so it cannot be confirmed from sources. Re-run on 2026-10-12 against engine c668ccd, the refusal, exit 1, untouched tree, 0600 draft and clean filing were observed again; the owner decides whether to restamp with method manual."
+
 ```
