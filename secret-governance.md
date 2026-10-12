@@ -31,7 +31,7 @@ Recheck: t=$(mktemp -d); git init -q "$t/r"; printf "SECRET=abc123\n" > "$t/r/f"
 The engine's `check-secrets` says the same in its closing advice after a scan of git finds a hit, in these words: "A real leak needs rotation AND history rewrite — rotation alone does not erase it from git history; every existing clone still holds it." That advice is printed for the staged, worktree and full-history scans; for a scan of one file that has never been committed it prints "If this is a live credential, rotate it at the source — it is live wherever it was copied from, whether or not this file is ever committed" (see the capture boundary below).
 
 Source: [[script-check-secrets]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A pre-commit hook is not the enforcement boundary
 
@@ -45,7 +45,7 @@ Recheck: t=$(mktemp -d); git init -q "$t/r"; mkdir -p "$t/r/.githooks"; printf "
 The engine's `check-secrets` header states the same: "a pre-commit hook is bypassable with --no-verify, so the enforcement boundary is the server-side gate", and that the scan is "the committer-side half of the guardrail only". Of the committer-side scan and the server-side gate it says: "Both are required."
 
 Source: [[script-check-secrets]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 This workspace's current, concrete standing on both points — what is enforced, dormant, or
 absent here specifically — is recorded in `ai-kb:documents/decisions/0002-governance-without-enforcement.md`,
@@ -58,7 +58,7 @@ substitute for it. A repository where neither is enforced is "recorded as unenfo
 described as protected".
 
 Source: [[adr-0002-governance-without-enforcement]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## What check-secrets covers: three passes
 
@@ -77,7 +77,7 @@ The second pass has two rules. *Labelled*: a secret-ish label followed by `=` or
 The third pass has three rules: an email address; an uppercase domain-qualified account (a domain of 2-15 chars, a backslash, a user name); and a home-directory path under `/home/`, `/Users/`, or the Windows equivalent. A placeholder is not a name — `<user>`, `$USER`, `%USERNAME%` and `~` never match, and the generic names user, username, you, me, name, runner, public, default and shared are exempt.
 
 Source: [[script-check-secrets]] · [[script-secret-entropy]] · [[script-pii-scan]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 The behaviour was also run once against synthetic input in a scratch directory: a labelled password, an email address, a home path and a domain-qualified account each blocked under `--file`; the same password line carrying `lint-allow: <reason>` passed; an untracked file holding the password was caught by `--worktree`.
 
@@ -93,7 +93,7 @@ One miss is structural rather than statistical, and the headers do not state it:
 On identifiers: "The PII pass sees identifiers only: it cannot detect a personal NAME in prose — that is a human call at review." A name in prose therefore passes every scan, and only the human gate stops it. The personal-identifier pass also misses an account whose user name starts with an escape letter (n, t, r, f, v, a, b or 0), because it reads that as an escape sequence.
 
 Source: [[script-check-secrets]] · [[script-secret-entropy]] · [[script-pii-scan]] · [[pr-6-secret-entropy-pass]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## Why a finding is recorded by reference
 
@@ -102,7 +102,7 @@ The rule — record a finding by reference, never by value; redact before archiv
 Consolidating a security finding is the step where a literal is most likely to be pasted: when a model distills a note that says a system had a plaintext password, "the natural (wrong) move is to paste the literal value as evidence". A knowledge base that does so has leaked the secret "through the front door, as documentation". A fold's ethic of copying load-bearing values character for character is the same instinct, which is why `kb-update-domain` carries an explicit carve-out: "faithful copying stops at the secret". The scan is the net behind the rule, not a substitute for it, and it leaves names to the human gate.
 
 Source: [[issue-5-distill-secrets-gate]] · [[pr-8-distill-secrets-rule]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## The capture boundary: refuse before anything is written
 
@@ -111,7 +111,7 @@ Verified: 2026-10-02 · by: agent · method: doc-review
 A refusal writes nothing and routes nothing, and exits 1. A draft typed in an editor or piped in is saved to a private (`0600`) file outside the tree, with the retry command printed; a draft given with `--from FILE` is left untouched. `lint-allow: <reason>` on a line clears a deliberate example, as it does everywhere else. For the same reason `check-secrets --worktree` scans untracked, non-ignored files, so a sweep sees what retrieval sees.
 
 Source: [[script-kb-capture]] · [[issue-9-kb-capture-scan]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
 
 The refusal was also run once against synthetic input in a scratch tree: a note holding a labelled password was refused with the tree byte-identical afterwards, the `--from` file untouched, a piped draft saved with mode `-rw-------` outside the tree, and a clean note filed as normal.
 
@@ -125,4 +125,4 @@ The reference-not-value rule at the distill gate was tested once, blind, and the
 This is a single run by one agent, reported by the change's author; it has not been re-run here. It also found a gap: the raw note held the secret from the moment `kb-capture` wrote it, and nothing flagged it until commit time. That gap is what the capture boundary above closes.
 
 Source: [[pr-8-distill-secrets-rule]] · [[issue-9-kb-capture-scan]]
-Verified: 2026-10-02 · by: agent · method: doc-review
+Verified: 2026-10-12 · by: agent · method: doc-review
