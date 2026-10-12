@@ -44,7 +44,7 @@ starts with a shebang — rather than what it is named or where it lives, so a f
 naming convention to be covered.
 
 Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@21758c6
-Verified: 2026-10-02 · by: agent · method: manual
+Verified: 2026-10-12 · by: agent · method: manual
 Recheck: t=$(mktemp -d); git init -q "$t/r"; git -C "$t/r" config core.fileMode false; printf "#!/bin/sh\necho hi\n" > "$t/r/s"; chmod +x "$t/r/s"; git -C "$t/r" add -A; git -C "$t/r" -c user.email=t@t -c user.name=t commit -qm add; mode=$(git -C "$t/r" ls-files -s -- s | cut -d" " -f1); rm -rf "$t"; [ "$mode" = "100644" ]
 
 ## A defect that recurs needs a check that detects it, not another fix

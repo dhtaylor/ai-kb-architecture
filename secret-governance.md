@@ -25,7 +25,7 @@ existing leak requires **history rewrite** (e.g. `git filter-repo --invert-paths
 clone invalidation, and a clean full-log scan.
 
 Source: [[knowledge-agent-architecture-combination-plan]] (§5.4)
-Verified: 2026-10-02 · by: agent · method: manual
+Verified: 2026-10-12 · by: agent · method: manual
 Recheck: t=$(mktemp -d); git init -q "$t/r"; printf "SECRET=abc123\n" > "$t/r/f"; git -C "$t/r" add -A; git -C "$t/r" -c user.email=t@t -c user.name=t commit -qm add; rm "$t/r/f"; git -C "$t/r" add -A; git -C "$t/r" -c user.email=t@t -c user.name=t commit -qm remove; git -C "$t/r" log -p --all | grep -q "SECRET=abc123"; r=$?; rm -rf "$t"; exit $r
 
 The engine's `check-secrets` says the same in its closing advice after a scan of git finds a hit, in these words: "A real leak needs rotation AND history rewrite — rotation alone does not erase it from git history; every existing clone still holds it." That advice is printed for the staged, worktree and full-history scans; for a scan of one file that has never been committed it prints "If this is a live credential, rotate it at the source — it is live wherever it was copied from, whether or not this file is ever committed" (see the capture boundary below).
@@ -39,7 +39,7 @@ A pre-commit hook is bypassable (`--no-verify`). The enforcement boundary is a *
 gate** (push protection, or a CI job failing the build on any detected secret).
 
 Source: [[knowledge-agent-architecture-combination-plan]] (§5.4)
-Verified: 2026-10-02 · by: agent · method: manual
+Verified: 2026-10-12 · by: agent · method: manual
 Recheck: t=$(mktemp -d); git init -q "$t/r"; mkdir -p "$t/r/.githooks"; printf "#!/bin/sh\nexit 1\n" > "$t/r/.githooks/pre-commit"; chmod +x "$t/r/.githooks/pre-commit"; git -C "$t/r" config core.hooksPath .githooks; printf x > "$t/r/f"; git -C "$t/r" add -A; if git -C "$t/r" -c user.email=t@t -c user.name=t commit -qm plain >/dev/null 2>&1; then r=1; elif git -C "$t/r" -c user.email=t@t -c user.name=t commit -qm bypass --no-verify >/dev/null 2>&1; then r=0; else r=1; fi; rm -rf "$t"; exit $r
 
 The engine's `check-secrets` header states the same: "a pre-commit hook is bypassable with --no-verify, so the enforcement boundary is the server-side gate", and that the scan is "the committer-side half of the guardrail only". Of the committer-side scan and the server-side gate it says: "Both are required."
