@@ -53,7 +53,7 @@ The non-executable-script defect was found, fixed and written into a decision re
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.6) · [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@21758c6
 Verified: 2026-10-12 · by: agent · method: doc-review
-Recheck: s=$(cd ../../scripts && pwd) && t=$(mktemp -d) && r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; git init -q "$t/r"; mkdir "$t/r/tools"; printf '#!/bin/sh\necho hi\n' > "$t/r/tools/anything"; git -C "$t/r" add -A; git -C "$t/r" update-index --chmod=-x tools/anything; "$s/check-exec-bits" "$t/r" >/dev/null 2>&1; [ $? -eq 1 ] || r=1; git -C "$t/r" update-index --chmod=+x tools/anything; "$s/check-exec-bits" "$t/r" >/dev/null 2>&1 || r=1; rm -rf "$t"; exit $r
+Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; git init -q "$t/r"; mkdir "$t/r/tools"; printf '#!/bin/sh\necho hi\n' > "$t/r/tools/anything"; git -C "$t/r" add -A; git -C "$t/r" update-index --chmod=-x tools/anything; "$s/check-exec-bits" "$t/r" >/dev/null 2>&1; [ $? -eq 1 ] || r=1; git -C "$t/r" update-index --chmod=+x tools/anything; "$s/check-exec-bits" "$t/r" >/dev/null 2>&1 || r=1; rm -rf "$t"; exit $r
 
 ## A check nobody's CI executes guards nothing, even if it is correct on every developer's machine
 

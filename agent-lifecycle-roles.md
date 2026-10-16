@@ -140,7 +140,7 @@ built; see the Watcher above.)
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[script-kb-watch]]
 Verified: 2026-10-12 · by: agent · method: doc-review
-Recheck: f=../../scripts/kb-watch; [ -f "$f" ] && ! grep -qE '^ *(import|from) .*(urllib|http|socket|requests|ftplib|smtplib|ssl)' "$f"
+Recheck: f="$KB_ENGINE_ROOT/scripts/kb-watch"; [ -f "$f" ] && ! grep -qE '^ *(import|from) .*(urllib|http|socket|requests|ftplib|smtplib|ssl)' "$f"
 
 ## Mutation governance
 

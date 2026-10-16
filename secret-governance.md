@@ -32,7 +32,7 @@ The engine's `check-secrets` says the same in its closing advice after a scan of
 
 Source: [[script-check-secrets]]
 Verified: 2026-10-12 · by: agent · method: doc-review
-Recheck: s=$(cd ../../scripts && pwd) && t=$(mktemp -d) && r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; git init -q "$t/r"; p=Ab1#; printf 'password = %s%s%s\n' "$p" "$p" "$p" > "$t/r/f"; git -C "$t/r" add f; (cd "$t/r" && "$s/check-secrets" >"$t/staged.out" 2>&1); [ $? -eq 1 ] || r=1; "$s/check-secrets" --file "$t/r/f" >"$t/file.out" 2>&1; [ $? -eq 1 ] || r=1; grep -q 'rotation alone does not' "$t/staged.out" && grep -q 'history rewrite' "$t/staged.out" || r=1; grep -q 'rotate it at the source' "$t/file.out" && ! grep -q 'history rewrite' "$t/file.out" || r=1; rm -rf "$t"; exit $r
+Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; git init -q "$t/r"; p=Ab1#; printf 'password = %s%s%s\n' "$p" "$p" "$p" > "$t/r/f"; git -C "$t/r" add f; (cd "$t/r" && "$s/check-secrets" >"$t/staged.out" 2>&1); [ $? -eq 1 ] || r=1; "$s/check-secrets" --file "$t/r/f" >"$t/file.out" 2>&1; [ $? -eq 1 ] || r=1; grep -q 'rotation alone does not' "$t/staged.out" && grep -q 'history rewrite' "$t/staged.out" || r=1; grep -q 'rotate it at the source' "$t/file.out" && ! grep -q 'history rewrite' "$t/file.out" || r=1; rm -rf "$t"; exit $r
 
 ## A pre-commit hook is not the enforcement boundary
 
@@ -86,7 +86,7 @@ The behaviour was also run once against synthetic input in a scratch directory: 
 
 Source: [[script-check-secrets]]
 Verified: 2026-10-12 · by: agent · method: manual
-Recheck: s=$(cd ../../scripts && pwd) && t=$(mktemp -d) && r=0; p=Ab1#; printf 'k = AKIA%s\n' ABCDEFGHIJKLMNOP > "$t/a"; printf 'password = %s%s%s\n' "$p" "$p" "$p" > "$t/b"; printf 'mail a.person@%s\n' corp.invalid > "$t/c"; for f in a b c; do "$s/check-secrets" --file "$t/$f" >"$t/$f.out" 2>&1; [ $? -eq 1 ] || r=1; sed 's/$/ lint-allow: demo/' "$t/$f" > "$t/$f.ok"; "$s/check-secrets" --file "$t/$f.ok" >/dev/null 2>&1 || r=1; done; grep -q 'SECRET?' "$t/a.out" && grep -q 'SECRET?' "$t/b.out" && grep -q 'PII?' "$t/c.out" || r=1; rm -rf "$t"; exit $r
+Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; p=Ab1#; printf 'k = AKIA%s\n' ABCDEFGHIJKLMNOP > "$t/a"; printf 'password = %s%s%s\n' "$p" "$p" "$p" > "$t/b"; printf 'mail a.person@%s\n' corp.invalid > "$t/c"; for f in a b c; do "$s/check-secrets" --file "$t/$f" >"$t/$f.out" 2>&1; [ $? -eq 1 ] || r=1; sed 's/$/ lint-allow: demo/' "$t/$f" > "$t/$f.ok"; "$s/check-secrets" --file "$t/$f.ok" >/dev/null 2>&1 || r=1; done; grep -q 'SECRET?' "$t/a.out" && grep -q 'SECRET?' "$t/b.out" && grep -q 'PII?' "$t/c.out" || r=1; rm -rf "$t"; exit $r
 
 ## Raw artifacts archived in a library
 
@@ -132,7 +132,7 @@ The refusal was also run once against synthetic input in a scratch tree: a note 
 
 Source: [[script-kb-capture]]
 Verified: 2026-10-12 · by: agent · method: manual
-Recheck: s=$(cd ../../scripts && pwd) && t=$(mktemp -d) && r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; mkdir -p "$t/tree" "$t/tmp"; printf -- '---\nname: x\ndomain: d\nscope: general\n---\n# x\n' > "$t/tree/INDEX.md"; p=Ab1#; printf '## What happened\n\npassword = %s%s%s\n' "$p" "$p" "$p" > "$t/note"; before=$(cd "$t/tree" && find . -type f | sort | xargs cat | cksum); (cd "$t" && TMPDIR="$t/tmp" "$s/kb-capture" --into "$t/tree" --title demo --from "$t/note" >/dev/null 2>&1); [ $? -eq 1 ] || r=1; (cd "$t" && TMPDIR="$t/tmp" "$s/kb-capture" --into "$t/tree" --title demo2 --from - < "$t/note" >/dev/null 2>&1); [ $? -eq 1 ] || r=1; after=$(cd "$t/tree" && find . -type f | sort | xargs cat | cksum); [ "$before" = "$after" ] || r=1; [ ! -d "$t/tree/episodic" ] || r=1; d=$(ls "$t"/tmp/kb-capture-draft.* 2>/dev/null | head -1); [ -n "$d" ] && [ "$(stat -c %a "$d")" = 600 ] || r=1; rm -rf "$t"; exit $r
+Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; mkdir -p "$t/tree" "$t/tmp"; printf -- '---\nname: x\ndomain: d\nscope: general\n---\n# x\n' > "$t/tree/INDEX.md"; p=Ab1#; printf '## What happened\n\npassword = %s%s%s\n' "$p" "$p" "$p" > "$t/note"; before=$(cd "$t/tree" && find . -type f | sort | xargs cat | cksum); (cd "$t" && TMPDIR="$t/tmp" "$s/kb-capture" --into "$t/tree" --title demo --from "$t/note" >/dev/null 2>&1); [ $? -eq 1 ] || r=1; (cd "$t" && TMPDIR="$t/tmp" "$s/kb-capture" --into "$t/tree" --title demo2 --from - < "$t/note" >/dev/null 2>&1); [ $? -eq 1 ] || r=1; after=$(cd "$t/tree" && find . -type f | sort | xargs cat | cksum); [ "$before" = "$after" ] || r=1; [ ! -d "$t/tree/episodic" ] || r=1; d=$(ls "$t"/tmp/kb-capture-draft.* 2>/dev/null | head -1); [ -n "$d" ] && [ "$(stat -c %a "$d")" = 600 ] || r=1; rm -rf "$t"; exit $r
 
 ## Evidence a gate works: one blind trap test
 
