@@ -22,6 +22,8 @@ keywords: [sources, citations, stubs, provenance]
 - [adr-0011-no-orchestrator-until-routing-fails](adr-0011-no-orchestrator-until-routing-fails.md) — engine decision: no orchestrator built; revisit triggers
 - [adr-0012-phase-4-safety-scoped-to-one-maintainer](adr-0012-phase-4-safety-scoped-to-one-maintainer.md) — engine decision: safety controls as built, declared versus enforced, dormant
 - [adr-0013-steady-state-surfaced-not-scheduled](adr-0013-steady-state-surfaced-not-scheduled.md) — engine decision: cadence is surfaced when due, not run unattended
+- [adr-0005-currency-cadence](adr-0005-currency-cadence.md) — engine decision: cadence; amended 2026-10-16 so a domain may declare agent_ttl
+- [adr-0014-library-registry](adr-0014-library-registry.md) — engine decision: libraries are registered per machine and can live anywhere; the engine owns the library hook
 - [state-change-gates](state-change-gates.md) — engine document: every state-changing entry point against the three automation bands
 - [script-kb-verify](script-kb-verify.md) — header of the Verifier script
 - [script-kb-watch](script-kb-watch.md) — header of the Watcher script
@@ -32,10 +34,17 @@ keywords: [sources, citations, stubs, provenance]
 - [script-secret-entropy](script-secret-entropy.md) — header of the heuristic pass for shapeless credentials
 - [script-pii-scan](script-pii-scan.md) — header of the personal-identifier pass, with its allowlist file
 - [script-kb-capture](script-kb-capture.md) — header of the capture command and its refusal of secret-bearing notes
+- [script-kb-sources](script-kb-sources.md) — header of the external Source URL liveness check
+- [script-grade-routing](script-grade-routing.md) — header of the routing check's agent tier, graded from tool calls
+- [script-grade-eval](script-grade-eval.md) — header of the answer-grounding grader, with --transcripts
+- [agent-kb-retrieve](agent-kb-retrieve.md) — the retrieval agent's definition: the listed libraries are the complete set; quote what an answer rests on
+- [pr-54-kb-retrieve-quotes](pr-54-kb-retrieve-quotes.md) — engine pull request: verbatim quotes and transcript grading, with a live sample
 - [pr-6-secret-entropy-pass](pr-6-secret-entropy-pass.md) — engine pull request: the heuristic pass for shapeless credentials, and its unstated base64 limit
 - [pr-8-distill-secrets-rule](pr-8-distill-secrets-rule.md) — engine pull request: reference-not-value at the distill gate, with the blind trap test
+- [pr-59-archived-artifacts](pr-59-archived-artifacts.md) — engine pull request: archived raw artifacts skip only the bare-entropy rule; UTF-16 is blocked as unscanned
 - [issue-5-distill-secrets-gate](issue-5-distill-secrets-gate.md) — engine issue: why consolidating a security finding is where a literal gets pasted
 - [issue-9-kb-capture-scan](issue-9-kb-capture-scan.md) — engine issue and decision: capture refuses, because retrieval reads the working tree
 - [eval-2026-09-26-intelligence-analysis-skill](eval-2026-09-26-intelligence-analysis-skill.md) — engine evidence: the behavioural eval of a thin review skill, and the post hoc gold-key amendment
 - [eval-2026-09-28-intelligence-analysis-bakeoff](eval-2026-09-28-intelligence-analysis-bakeoff.md) — engine evidence: the blind head-to-head against the legacy skill
 - [eval-2026-09-28-routing-sample](eval-2026-09-28-routing-sample.md) — engine evidence: the 12-question routing sample behind ADR-0011
+- [eval-2026-10-12-routing-run](eval-2026-10-12-routing-run.md) — engine evidence: the second routing sample, graded from tool calls

@@ -18,5 +18,6 @@ keywords: [engine, library, separation, repository kinds, cross-repository citat
 - **Date:** 2026-09-19
 - **Date ingested:** 2026-10-02
 - **Artifact location:** `ai-kb:documents/decisions/0007-engine-content-separation.md`, read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** at engine commit `720fcff` on 2026-10-16, for its amendment by ADR-0014, which supersedes its no-registry point.
 
 The engine's decision record on splitting behaviour from content. Folded from it: the reason for the split, what a library is, why there is no router chain or registry, and the cost of an unguarded library cloned alone. Its cross-repository citation rule is already stated in the contract (`ai-kb:CONVENTIONS.md` §6) and was linked, not restated.

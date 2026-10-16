@@ -65,9 +65,11 @@ guide.
 
 The checks live in the engine; this repository does not carry its own copies.
 
-- **Pre-commit hook** (`.githooks/pre-commit`). Runs the structure, scope, golden-set, secret and
-  executable-bit checks. It also checks cross-library links when sibling libraries are installed
-  beside it. If no engine is found, it warns and skips rather than failing.
+- **Pre-commit hook** (owned by the engine, `ai-kb:library-hooks/pre-commit`). This repository
+  carries no hook of its own. Registering a clone with the engine's `kb-library add` points that
+  clone's local `core.hooksPath` at the engine's hook, which runs the structure, scope, golden-set,
+  secret and executable-bit checks, and checks cross-library links when this clone is the copy
+  registered on the machine. An unregistered clone has no hook.
 - **CI** (`.github/workflows/guardrails.yml`). Clones the public engine anonymously, with no
   credentials, and runs the same checks, plus a full-history secret scan and a high-blast-radius
   scan.

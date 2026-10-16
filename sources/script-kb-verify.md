@@ -18,5 +18,6 @@ keywords: [kb-verify, Verifier, Recheck, queue, assertion]
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-10-02
 - **Artifact location:** `ai-kb:scripts/kb-verify` (docstring), read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** at engine commit `720fcff` on 2026-10-16, for `agent_ttl` and the report of assertions that cannot fail.
 
 Corroboration for the Verifier as built: reports and applies only when told, a failure is never applied, commands are approved per run, and a failure is written to the owning library's queue. Used for built behaviour only.

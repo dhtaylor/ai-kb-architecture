@@ -1,6 +1,6 @@
 ---
 name: secret-governance
-description: Secret and personal-identifier governance — why rotation is not removal, why a pre-commit scan is not the enforcement boundary, what the engine's three-pass scan covers and cannot see, why capture refuses a note holding a credential, and the evidence a gate works.
+description: Secret and personal-identifier governance — why rotation is not removal, why a pre-commit scan is not the enforcement boundary, what the engine's three-pass scan covers and cannot see, why raw artifacts archived in a library skip the bare-entropy rule and UTF-16 text is blocked, why capture refuses a note holding a credential, and the evidence a gate works.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, secrets, governance]
-keywords: [secret scan, pre-commit, rotation, history rewrite, git filter-repo, push protection, server-side gate, check-secrets, entropy, PII, personal identifier, allowlist, lint-allow, kb-capture, working tree, reference not value, blind trap test]
+keywords: [secret scan, pre-commit, archived artifact, schema dump, bare rule, UTF-16, UNSCANNED, rotation, history rewrite, git filter-repo, push protection, server-side gate, check-secrets, entropy, PII, personal identifier, allowlist, lint-allow, kb-capture, working tree, reference not value, blind trap test]
 ---
 # Secret governance
 
@@ -75,16 +75,29 @@ It has four modes: staged files (the default); `--worktree`, "tracked files AND 
 
 The second pass has two rules. *Labelled*: a secret-ish label followed by `=` or `:` and a value of 8+ characters drawing on 3+ character classes. *Bare*: a single token of 16+ characters with a digit and 3+ classes including a symbol, or 20+ characters of mixed-case letters and digits, with Shannon entropy >= 3.5 bits/char (`-_.` count as glue, not symbols). It does not flag hex-only strings, URLs and paths, wiki-links and markdown links, ISO dates, hyphenated words and slugs, code, or placeholders.
 
-The third pass has three rules: an email address; an uppercase domain-qualified account (a domain of 2-15 chars, a backslash, a user name); and a home-directory path under `/home/`, `/Users/`, or the Windows equivalent. A placeholder is not a name — `<user>`, `$USER`, `%USERNAME%` and `~` never match, and the generic names user, username, you, me, name, runner, public, default and shared are exempt.
+The third pass has three rules: an email address; an uppercase domain-qualified account (a domain of 2-15 chars, a backslash, a user name); and a home-directory path under `/home/`, `/Users/`, or the Windows equivalent. A placeholder is not a name — `<user>`, `$USER`, `%USERNAME%` and `~` never match, and the generic names user, username, you, me, name, runner, public, default and shared are exempt. Given a directory rather than a file, `pii-scan` scans every file under it, skipping `.git`.
+
+A `SECRET?` finding "shows its first three lines and says how many more there are".
 
 Source: [[script-check-secrets]] · [[script-secret-entropy]] · [[script-pii-scan]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-10-16 · by: agent · method: doc-review
 
 The behaviour was also run once against synthetic input in a scratch directory: a labelled password, an email address, a home path and a domain-qualified account each blocked under `--file`; the same password line carrying `lint-allow: <reason>` passed; an untracked file holding the password was caught by `--worktree`.
 
 Source: [[script-check-secrets]]
 Verified: 2026-10-12 · by: agent · method: manual
 Recheck: s=$(cd ../../scripts && pwd) && t=$(mktemp -d) && r=0; p=Ab1#; printf 'k = AKIA%s\n' ABCDEFGHIJKLMNOP > "$t/a"; printf 'password = %s%s%s\n' "$p" "$p" "$p" > "$t/b"; printf 'mail a.person@%s\n' corp.invalid > "$t/c"; for f in a b c; do "$s/check-secrets" --file "$t/$f" >"$t/$f.out" 2>&1; [ $? -eq 1 ] || r=1; sed 's/$/ lint-allow: demo/' "$t/$f" > "$t/$f.ok"; "$s/check-secrets" --file "$t/$f.ok" >/dev/null 2>&1 || r=1; done; grep -q 'SECRET?' "$t/a.out" && grep -q 'SECRET?' "$t/b.out" && grep -q 'PII?' "$t/c.out" || r=1; rm -rf "$t"; exit $r
+
+## Raw artifacts archived in a library
+
+A library archives the evidence it was folded from under `documents/`, verbatim. The pilot that exposed the problem archived a schema dump of 1,383 SQL files plus diagram exports, and the bare rule flagged it about 1,900 times, nearly all on identifiers, while the pattern file found 0. The only escape was `lint-allow:` on every line, which would have meant editing thousands of lines of a verbatim artifact and blinding them to a future real secret.
+
+Two exceptions in `check-secrets` cover such artifacts. A non-`.md` file under `documents/` in a library repository (one whose root `INDEX.md` declares `domain:`) skips the bare rule, "which flags its long identifiers on nearly every line. The patterns, the labelled rule and PII still run on every line of it." The engine's own `documents/` is not a library's, and keeps every rule; in `--file` mode "no file is exempt". UTF-16 text "reads as binary to every pass and so would be skipped unseen. It is reported `UNSCANNED` and blocks until converted to UTF-8."
+
+What the exemption gives up, as the change states it: "a prefixless, unlabeled random literal inside an archived non-`.md` artifact is no longer caught." The contract's rule for archiving as UTF-8 is in `ai-kb:CONVENTIONS.md` §6 and is not restated here.
+
+Source: [[script-check-secrets]] · [[pr-59-archived-artifacts]]
+Verified: 2026-10-16 · by: agent · method: doc-review
 
 ## What check-secrets cannot see
 

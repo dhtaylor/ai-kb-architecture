@@ -1,6 +1,6 @@
 ---
 name: retrieval-eval-integrity
-description: Why a retrieval eval can pass or fail for reasons that have nothing to do with the knowledge — an oracle the agent can reach, a grader that tests markup or strings, an oracle that follows the agent, discovery that fails silently, a protocol that moved between runs, a clean control nobody checked, and one trial per case — and how each was found.
+description: Why a retrieval eval can pass or fail for reasons that have nothing to do with the knowledge — an oracle the agent can reach, a grader that tests markup or strings or demands a quote nobody asked for, an oracle that follows the agent, discovery or a wrong corpus that fails silently, a protocol that moved between runs, a clean control nobody checked, and one trial per case — and how each was found.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-02
 tags: [knowledge-architecture, retrieval, eval, golden-set]
-keywords: [retrieval eval, golden set, oracle, grader, grade-eval, contamination, alt_excerpt, alternative excerpt, negative case, clean control, gold key, post hoc amendment, protocol, trials, sample size, discovery, kb-retrieve, blind]
+keywords: [retrieval eval, golden set, oracle, grader, grade-eval, grade-routing, transcripts, SubagentHandback, verbatim quote, exclusion glob, wrong corpus, library list unknown, contamination, alt_excerpt, alternative excerpt, negative case, clean control, gold key, post hoc amendment, protocol, trials, sample size, discovery, kb-retrieve, blind]
 ---
 # Retrieval eval integrity
 
@@ -24,8 +24,14 @@ The same contamination returned in a new form on the second library. Eval eviden
 
 A pre-judging sweep for files changed outside the review folders, and a ban on listing folders at all, were the run-integrity measures of the head-to-head comparison of two skills. One reviewer there listed a scratchpad folder, which showed file names including the gold key and no file contents. It reported this itself, and the run was counted because a file name gives away no answer.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.8, §9.14, §9.15, §9.16) · [[eval-2026-09-28-intelligence-analysis-bakeoff]] · ai-kb@48467fd
-Verified: 2026-10-12 · by: agent · method: doc-review
+The check for contamination can itself fail a compliant agent. The first routing run graded from tool
+calls (2026-10-12) scored 6/12 at first grading, and all six failures were one grader bug: the agent is
+told to give its searches an exclusion glob naming the golden set, and the grader matched "golden" in
+the arguments, "so every compliant agent that followed the instruction failed." A call with a paired
+result is now judged by the paths in its result alone. After the fix the run scored 11/12.
+
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.8, §9.14, §9.15, §9.16) · [[eval-2026-09-28-intelligence-analysis-bakeoff]] · [[eval-2026-10-12-routing-run]] · [[script-grade-routing]] · ai-kb@48467fd
+Verified: 2026-10-16 · by: agent · method: doc-review
 
 ## A grader must test grounding, not formatting
 
@@ -43,9 +49,11 @@ The second library's eval went 9/16, 14/16, 11/16 and 15/16 across four runs, an
 - **The grader string-matched citations.** It compared `kb/<lib>/x.md` against `x.md`. It now resolves a cited path to a file and still rejects a same-named file in another library. Its first fix broke on a relative library path, and a one-point discrepancy between two gradings of the same answers is what exposed it. The grader had no regression cases until that wave.
 - **The contract and the grader disagreed about refusals.** The agent was to cite every file used, while a negative case was to cite none. A citation now means the answer rests on this file, so a refusal cites nothing and names what it checked in its text.
 - **The oracle demanded a phrase nothing required the agent to say.** On a contradiction the agent served nothing, stated both claims and cited the file, and still failed because the oracle expected the literal `status: CONFLICTED`. The refusal is now fixed as "disputed — not served", then both claims, citing the conflicted file, which makes it the one refusal that cites. `check-golden` now requires an unresolved case to name a file that really holds a `CONFLICTED` section. In the next run the case passed.
+- **The grader demanded a quote the agent was never asked for.** `grade-eval` passes a positive case only if the expected excerpt appears in the answer, and the agent "was told to cite but never to quote, so correct, grounded, cited answers failed whenever they paraphrased. One pilot scored 6/11." The agent now quotes, for each value an answer depends on, "the sentence from the file that states it, word for word, in quotation marks."
+- **The grader read the wrong message.** Grading a sub-agent from its transcript, "The obvious extractor reads the last text block, but a subagent's answer arrives in its `SubagentHandback` call, so that extractor grades the agent's preamble." `grade-eval --transcripts` reads the hand-back. In the change's live sample of 16 questions from one library, the first grading scored 13/16, and all three failures were notes the agent had added to its `Sources:` line; with the grader dropping those notes, it scored 16/16. That is one run, reported by the change's author.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14, §9.15) · ai-kb@510d09b · ai-kb@d978338 · ai-kb@43aee00
-Verified: 2026-10-12 · by: agent · method: doc-review
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14, §9.15) · [[pr-54-kb-retrieve-quotes]] · [[agent-kb-retrieve]] · [[script-grade-eval]] · ai-kb@510d09b · ai-kb@d978338 · ai-kb@43aee00
+Verified: 2026-10-16 · by: agent · method: doc-review
 
 ## A file may state a fact twice, and an oracle that follows the agent measures nothing
 
@@ -60,8 +68,12 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 An agent that has not been given the list of installed libraries must find them itself, and in the third run of one eval the first listing of `kb/*` was swamped by one library's `.git` objects. One agent concluded that library was the only one installed and refused four answerable questions with confidence. The contract now enumerates `kb/*/INDEX.md`, one router per library, which is exact (`ai-kb:CONVENTIONS.md` §3). The fourth run was checked from the agents' tool calls, not from what they said, and all four had used that glob.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · ai-kb@48467fd
-Verified: 2026-10-12 · by: agent · method: doc-review
+A wrong corpus fails the same way. An agent not told where the engine is could find some other knowledge tree instead: "a workspace can hold an older one, and an answer from it looks exactly like a correct one. That happened — 25 of 25 sub-agents answered from the wrong corpus, and nothing reported it." The agent now stops and answers `engine root unknown — not searched` when its context does not name the engine.
+
+Superseded 2026-10-16: the enumeration of `kb/*/INDEX.md` above was replaced when libraries became registered per machine. The agent treats the libraries its context lists as the complete set: "If your context names the engine but lists no libraries, stop and answer `library list unknown — not searched`." It never globs the engine's `kb/` for them, because "it would find only the libraries that happen to sit there, and a partial set looks exactly like a complete one."
+
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · [[agent-kb-retrieve]] · [[adr-0014-library-registry]] · ai-kb@48467fd
+Verified: 2026-10-16 · by: agent · method: doc-review
 
 ## A result is about the protocol that held still
 

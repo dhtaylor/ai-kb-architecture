@@ -18,5 +18,6 @@ keywords: [secret-entropy, heuristic, high entropy, labelled value, lint-allow]
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-10-02
 - **Artifact location:** `ai-kb:scripts/secret-entropy` (docstring), read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** at engine commit `720fcff` on 2026-10-16, for the `--no-bare` flag and the removal of its three-hit cap (engine issue #56).
 
 Source for the second check-secrets pass: its two rules, what it deliberately does not flag, and its stated limit. Folded: the two rules and the limit. Not folded: the numeric thresholds beyond those stated in the docstring, and the code itself.

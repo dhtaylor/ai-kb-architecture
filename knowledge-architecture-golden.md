@@ -27,7 +27,9 @@ of the revised plan (target layering and lifecycle roles as built) and by the se
 fold, c1 (retrieval-eval-integrity, the guardrail lessons on reading versus running, a recurring defect and a
 scanner that exited 0, the steady-state defaults, and the as-built Verifier note in design-thesis), and by
 the second general-lessons fold, c2 (the guardrail lessons on silent skipping, topology, the contract, defaults and
-tests that pass for the wrong reason). Cross-root case: included — the
+tests that pass for the wrong reason), and by the engine-sync fold of 2026-10-16 (the library registry and
+engine-owned hook, agent_ttl, kb-sources, archived artifacts and UTF-16 in the secret scan, and the
+quoting, transcript and wrong-corpus lessons in retrieval-eval-integrity). Cross-root case: included — the
 domain holds two cross-library references into claude-code-runtime, one from design-thesis
 (`[[claude-code-runtime:behaviour-loading]]`) and one from guardrail-verification
 (`[[claude-code-runtime:config-resolution]]`), and a `cross-root` record below tests each. Unresolved
@@ -314,4 +316,49 @@ contradiction lands.
   question: Is a CI job that fails after a push the enforcement boundary for secrets?
   expected_file: secret-governance.md
   expected_excerpt: "after a push has landed is detection behind that boundary"
+
+- case: positive
+  question: Why does the per-machine library registry live outside every repository?
+  expected_file: design-thesis.md
+  expected_excerpt: "describes the machine it is on, so it cannot lie about another one"
+
+- case: positive
+  question: Why were libraries no longer discovered by being present in the engine's kb folder?
+  expected_file: design-thesis.md
+  expected_excerpt: "which looks exactly like a correct refusal"
+
+- case: positive
+  question: Why does a domain library no longer carry its own pre-commit hook?
+  expected_file: design-thesis.md
+  expected_excerpt: "moving it or upgrading the engine can never require a commit to it"
+
+- case: positive
+  question: Why may a domain declare its own agent TTL instead of a tenth of its horizon?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "so every agent-verified section was stale at every sweep"
+
+- case: positive
+  question: Does kb-sources fetch a source URL without the operator's approval?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "NOTHING IS FETCHED WITHOUT --yes"
+
+- case: positive
+  question: Which secret checks still run on a raw artifact archived under a library's documents folder?
+  expected_file: secret-governance.md
+  expected_excerpt: "The patterns, the labelled rule and PII still run on every line of it."
+
+- case: positive
+  question: Why does check-secrets block a UTF-16 text file?
+  expected_file: secret-governance.md
+  expected_excerpt: "reads as binary to every pass and so would be skipped unseen"
+
+- case: positive
+  question: Why did correct, cited answers fail grade-eval before the agent was told to quote?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "correct, grounded, cited answers failed whenever they paraphrased"
+
+- case: positive
+  question: Why must a retrieval agent given no library list not search the engine's kb folder for libraries?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "a partial set looks exactly like a complete one"
 ```

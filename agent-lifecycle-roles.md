@@ -1,6 +1,6 @@
 ---
 name: agent-lifecycle-roles
-description: The three librarian roles that keep a governed KB operating (Curator, Research librarian, Fact-checker) and how the Verifier and Watcher were built, how mutation of the KB is governed (built, dormant and not-built controls), how the fact-checkers are tested, and why no orchestrator is built and how retrieval cost is bounded, and what the steady-state defaults taught (a nudge must be true when idle, a hook's cost, a routed queue).
+description: The three librarian roles that keep a governed KB operating (Curator, Research librarian, Fact-checker) and how the Verifier, Watcher and source-URL liveness check were built, why a domain may declare its own agent TTL, how mutation of the KB is governed (built, dormant and not-built controls), how the fact-checkers are tested, and why no orchestrator is built and how retrieval cost is bounded, and what the steady-state defaults taught (a nudge must be true when idle, a hook's cost, a routed queue).
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, lifecycle, roles, governance, orchestrator]
-keywords: [curator, research librarian, fact-checker, verifier, watcher, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note]
+keywords: [curator, research librarian, fact-checker, verifier, watcher, kb-sources, URL liveness, agent_ttl, agent TTL, UNCORROBORATED, routing run, grade-routing, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note]
 ---
 # Agent lifecycle roles
 
@@ -45,8 +45,9 @@ Three roles cover that lifecycle.
 
 Status: built. It is a script, `kb-verify`, not an agent, and it does not query live systems. A
 section may carry a `Recheck:` line beneath its stamp: an assertion, not a query, where exit 0 means
-the fact still holds. `kb-verify` selects sections whose stamps are past the domain horizon (a tenth
-of it for agent stamps), oldest first, capped by `verifier_budget`. Three rules are the whole design:
+the fact still holds. `kb-verify` selects sections whose stamps are past the domain horizon, or, for
+an agent stamp, past the domain's `agent_ttl` ("a TENTH of the horizon unless the domain declares
+one"), oldest first, capped by `verifier_budget`. Three rules are the whole design:
 
 - A pass restamps only with `--apply`. The default is report-only.
 - A failure is never applied, with or without `--apply`. The fact is not edited, not marked
@@ -59,6 +60,20 @@ of it for agent stamps), oldest first, capped by `verifier_budget`. Three rules 
 Most facts get no assertion, and the report names them. A failure run under `--yes` is also written
 to the owning library's `needs-attention.md` queue as detection output; a later pass does not
 resolve the entry, and nothing but a human does.
+
+Every run also reports assertions that cannot fail, statically and whether or not they are due: "a
+page grepped for a few words (its title or subject), or one (url, fragment) pair backing more than two
+sections or sections in several files." Each "passes while the page exists and tests nothing about its
+own claim". It is a warning, not a failure.
+
+Why a domain may declare `agent_ttl: <N>d` in its root `INDEX.md`: across the 90–180d vendor-product
+band the ratio gives agent stamps 9–18 days, "which is shorter than the 30d default `sweep_interval`,
+so every agent-verified section was stale at every sweep." The only lever had been the horizon, and
+moving it also lengthened human stamps. `check-kb` fails an `agent_ttl` that is not shorter than the
+horizon, "so the trust tier between agent and human stamps cannot be declared away".
+
+Superseded 2026-10-16: this section said agent stamps fall due at "a tenth of" the horizon. That ratio
+is now the default, and a domain may declare its own `agent_ttl`.
 
 Superseded 2026-10-02: the first text of this role said the Verifier "re-runs a fact against the
 live system, re-stamps `verified:`, flags mismatch", and the plan's testing criterion said a failed
@@ -87,8 +102,15 @@ imports the Watcher's queue primitives so the two writers cannot drift apart. Ne
 fact. Both add the queue's router line to the library's `INDEX.md`; an unrouted queue is an orphan
 that fails `check-kb`, which would have blocked every commit in that library.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[state-change-gates]] · [[script-kb-verify]] · [[script-kb-watch]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Status: built — a third writer, `kb-sources`, which asks whether the external URLs that source stubs
+cite still resolve. It reuses the Watcher's queue primitives as the Verifier does. Its three rules:
+"NOTHING IS FETCHED WITHOUT --yes"; "DETECTION ONLY. A dead URL never edits a fact, never edits a
+stub, and never marks a section `provenance: BROKEN`"; and "A HUMAN TRIAGES", so a URL that comes
+back alive does not resolve its entry. A 404 or 410 is `dead`; anything it cannot decide is
+`unreachable`, never conflated with dead.
+
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[script-kb-watch]] · [[script-kb-sources]]
+Verified: 2026-10-16 · by: agent · method: doc-review
 
 ## Watcher safety design
 
@@ -141,7 +163,8 @@ nothing to enforce it against), or not built.
   repo→general, unless a label writable **only by a domain owner** (not the agent identity) is
   set. Status: built as `check-blast`. In a library it flags a pull request that deletes or renames
   away a fact file, removes an inline `status: CONFLICTED` marker, or changes a fact's `scope:` to a
-  strictly wider tier (`repo:<project>` < `{product:<vendor>, org:<company>}` < `general`); in the
+  strictly wider tier (`repo:<project>` < `{product:<vendor>, org:<company>}` < `general`), or
+removes an inline `status: UNCORROBORATED` marker, which "serves a one-source claim as settled"; in the
   engine, one that touches the contract or the decision records. The label is `owner-approved`; with
   it a finding still prints but no longer fails the check. `check-blast` itself only detects; failing
   a required check is the CI workflow's job. On a direct push the check only warns, because the push
@@ -182,7 +205,9 @@ nothing to enforce it against), or not built.
   agent and a human decision, so they are not run unattended. The session-start hook calls
   `kb-due --nudge`, which reports only what is due, per library: a sweep; facts due for recheck,
   counted with `kb-verify`'s own staleness logic and never executing an assertion; open queue items;
-  and episodic notes awaiting distillation. It prints nothing when nothing is due, and never prompts
+  episodic notes awaiting distillation; and unstamped sections, those that cite a `Source:` and carry
+  no `Verified:` stamp, because "§7 ranks unknown ahead of stale, and until now only a sweep surfaced
+  them". It prints nothing when nothing is due, and never prompts
   or writes. "Scheduled" here means "surfaced when due". A cloud routine and a local cron job were
   both considered and declined, because each runs without the owner watching. Consequence stated by
   the decision: nothing happens unless a session starts, so a library nobody opens goes unswept and
@@ -190,7 +215,7 @@ nothing to enforce it against), or not built.
   thing to revisit if the libraries gain readers who are not maintainers.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phases 4 and 5, §9.18) · [[knowledge-agent-architecture-combination-plan]] (§5A, §2) · [[adr-0002-governance-without-enforcement]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[state-change-gates]] · [[script-check-blast]] · [[script-kb-owner]] · [[script-kb-due]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-10-16 · by: agent · method: doc-review
 
 ## Testing the fact-checkers
 
@@ -231,8 +256,8 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 Status: no orchestrator is built. The plan called for a thin orchestrator that routes with capped
 fan-out over per-domain workers. It assumed one worker per domain; the system built has one
-retrieval agent, `kb-retrieve`, serving every library. Libraries are found by globbing
-`kb/*/INDEX.md`, and each library's `INDEX.md` is its only router, so the routing an orchestrator
+retrieval agent, `kb-retrieve`, serving every library. Its libraries are the ones its context lists,
+those registered on the machine, and each library's `INDEX.md` is its only router, so the routing an orchestrator
 would do is already the first step of `kb-retrieve`'s contract: "Start at a router, never at a
 guess," and "One library unless the question genuinely spans two."
 
@@ -252,6 +277,18 @@ Limits stated by the decision: the evidence is a sample of 12 questions, not all
 each agent answered four questions, so its router reads were shared, and a question asked alone can pay
 for all six routers. That stays cheap at six libraries and is the first thing to watch as the number
 grows.
+
+A second sample on 2026-10-12 was graded from each agent's tool calls by `grade-routing`, not from
+what the agent reported: twelve questions, two per library, one fresh agent each. "Expected file
+Read: 12/12. Contamination: 0/12. Unneeded content reads: 1 case". In that case the agent searched
+every library before reading a router, and its search returned comment lines from five other
+libraries' CI files, though it never opened a fact file there. The owner ruled that it counts as a
+failure, "which is what the routing check exists to catch", so the run scored 11/12.
+
+Superseded 2026-10-16: this section said libraries "are found by globbing `kb/*/INDEX.md`", as the
+no-orchestrator decision records. The registry decision removed that glob: once libraries can live
+anywhere, "it would find only some of them, and a partial list that looks complete is worse than
+none."
 
 The cost bound the orchestrator was specified to provide, kept from the plan:
 
@@ -278,8 +315,8 @@ Reopen the no-orchestrator decision when any of these holds:
   tools, or workers operating on behalf of different people, which one read-only retrieval agent
   cannot serve.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded in part) · [[adr-0011-no-orchestrator-until-routing-fails]] (as amended 2026-10-12) · [[adr-0007-engine-content-separation]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded in part) · [[adr-0011-no-orchestrator-until-routing-fails]] (as amended 2026-10-12) · [[adr-0007-engine-content-separation]] · [[adr-0014-library-registry]] · [[agent-kb-retrieve]] · [[eval-2026-10-12-routing-run]]
+Verified: 2026-10-16 · by: agent · method: doc-review
 
 ## Cautions: human ownership and data handling
 
