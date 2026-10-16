@@ -10,7 +10,7 @@ metadata:
   node_type: open-questions
   created: 2026-10-02
 tags: [knowledge-architecture, open-questions]
-keywords: [open question, gap, not established, Recheck path, registered library, reopen trigger, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact]
+keywords: [open question, gap, not established, reopen trigger, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact]
 ---
 # Open questions
 
@@ -77,16 +77,6 @@ Narrowed 2026-10-16: the enumeration rule no longer applies. The contract (`ai-k
 rather than searching. What remains open is only where the runtime claim belongs.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · [[agent-kb-retrieve]]
-
-## Do this library's `Recheck:` assertions run when it is registered outside the engine's `kb/`?
-
-Five assertions here reach the engine's scripts through `../../scripts`, and `kb-verify` runs each from the
-fact file's directory, so they resolve only while the library sits at `<engine>/kb/<library>`. A library may
-now be registered anywhere. Elsewhere, those assertions would fail, and a failure reads as a stale fact. The
-fix is proposed in the engine (issue #60: give assertions the engine path) and is not built; until it is,
-these assertions hold only in the default layout.
-
-Source: [[adr-0014-library-registry]] · [[script-kb-verify]]
 
 ## Does an unneeded content read count against the routing-accuracy reopen trigger?
 
