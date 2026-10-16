@@ -10,7 +10,7 @@ metadata:
   node_type: open-questions
   created: 2026-10-02
 tags: [knowledge-architecture, open-questions]
-keywords: [open question, gap, not established, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact]
+keywords: [open question, gap, not established, Recheck path, registered library, reopen trigger, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact]
 ---
 # Open questions
 
@@ -72,4 +72,27 @@ not receive the session-start list of libraries, a sub-agent being the example, 
 It was left out of [[retrieval-eval-integrity]], which records only the general failure, and no slug exists in
 claude-code-runtime for it, so there is nothing to link.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14)
+Narrowed 2026-10-16: the enumeration rule no longer applies. The contract (`ai-kb:CONVENTIONS.md` section 3) now says the session-start hook
+"and the SubagentStart hook for kb-retrieve" list each registered library, and an agent given no list refuses
+rather than searching. What remains open is only where the runtime claim belongs.
+
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · [[agent-kb-retrieve]]
+
+## Do this library's `Recheck:` assertions run when it is registered outside the engine's `kb/`?
+
+Five assertions here reach the engine's scripts through `../../scripts`, and `kb-verify` runs each from the
+fact file's directory, so they resolve only while the library sits at `<engine>/kb/<library>`. A library may
+now be registered anywhere. Elsewhere, those assertions would fail, and a failure reads as a stale fact. The
+fix is proposed in the engine (issue #60: give assertions the engine path) and is not built; until it is,
+these assertions hold only in the default layout.
+
+Source: [[adr-0014-library-registry]] · [[script-kb-verify]]
+
+## Does an unneeded content read count against the routing-accuracy reopen trigger?
+
+[[agent-lifecycle-roles]] records the trigger to reopen the no-orchestrator decision as routing accuracy below
+95% on a golden-set sample. The 2026-10-12 run read the expected file in 12 of 12 cases and scored 11/12,
+because one case read content from libraries it did not need. Whether that case is a routing-accuracy miss
+for the trigger, which would put the run at 92%, is not stated by any source read.
+
+Source: [[eval-2026-10-12-routing-run]] · [[adr-0011-no-orchestrator-until-routing-fails]]

@@ -1,6 +1,6 @@
 ---
 name: design-thesis
-description: The core design thesis of a governed-KB-plus-thin-agent architecture — why knowledge and behavior are separated, the anti-pattern this rejects, and the target layering (three repository kinds: engine, domain library, project knowledge).
+description: The core design thesis of a governed-KB-plus-thin-agent architecture — why knowledge and behavior are separated, the anti-pattern this rejects, and the target layering (three repository kinds: engine, domain library, project knowledge), including how a library is installed (registered per machine) and why it carries no hook.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, design, thin-agent, governed-kb]
-keywords: [design thesis, knowledge as behavior, knowledge as document, anti-pattern, freshness engine, target architecture, thin agent layer, guardrails]
+keywords: [design thesis, knowledge as behavior, knowledge as document, anti-pattern, freshness engine, target architecture, thin agent layer, guardrails, registry, library registration, library hook, core.hooksPath]
 ---
 # Design thesis: separate knowledge from behavior
 
@@ -92,13 +92,34 @@ principle in its own contract and violate it in its own layout, in the one place
 separation most needs to be visible, because everything downstream follows its example. There was
 also a practical failure: with one shared tier there was one shared `sources/`, one shared golden
 set and one router chain, so a domain could not be moved, shared or cloned without dragging the rest
-of the tier with it. There is no registry; libraries are discovered by being present under the
-engine's `kb/`, because a registry would have to live in the engine, which does not track `kb/`.
+of the tier with it.
 
-The cost, stated by the decision that made the split: a library has no guardrails of its own. Its
-commit hook borrows the engine's checkers and skips when it cannot find them, so a library cloned
-alone is unguarded until an engine is in reach. That is the price of not making a portable library
-depend on an engine.
+**A library is installed on a machine by being registered there.** The decision that made it so:
+"A library is installed on a machine when it is registered there, and only then. `<engine>/kb/`
+stops being special: it is the default folder new libraries are cloned into, and nothing scans it."
+The registry is a per-machine file outside every repository, `~/.config/ai-kb/libraries`. "It
+describes the machine it is on, so it cannot lie about another one." A library's name is the
+`domain:` value in its root `INDEX.md`, so the folder holding it can be called anything. The reason
+discovery by presence was replaced: "A library that disappears fails silently. If a library folder
+is moved or deleted, it is simply no longer enumerated. Retrieval then answers `fact not found` for
+everything it held, which looks exactly like a correct refusal." Each registered library is now
+reported in one state, `ok`, `missing`, `not-a-library` or `name-mismatch`. "Only `ok` libraries are
+served. Every other state is reported at session start, by name and path, and never dropped
+silently."
+
+The cost, stated by the decision that made the split: a library has no guardrails of its own, so a
+library cloned alone is unguarded until an engine is in reach. That is the price of not making a
+portable library depend on an engine. A library now carries no hook logic either. "A library is
+shareable: one repository, cloned by any number of people who do not own it", so registering it,
+moving it or upgrading the engine can never require a commit to it. The pre-commit hook lives in the
+engine, and registering a clone sets its `core.hooksPath` to the engine's hook folder: "This is local
+git configuration. Git never commits or clones it, so every clone carries its own".
+
+Superseded 2026-10-16: this section said "There is no registry; libraries are discovered by being
+present under the engine's `kb/`, because a registry would have to live in the engine, which does not
+track `kb/`", and that a library's commit hook "borrows the engine's checkers and skips when it
+cannot find them". The registry decision of 2026-10-15 answered that objection by keeping the
+registry outside every repository, and moved the hook into the engine.
 
 Superseded 2026-10-02: the earlier text of this section described one `knowledge/` tree as the
 governed substrate, a thin behaviour layer of domain-worker agents with least-privilege tools routed
@@ -113,5 +134,5 @@ in Claude Code, plugin behaviour is loaded once at session start while facts are
 (`[[claude-code-runtime:behaviour-loading]]`). The separation holds; the two halves simply refresh on
 different clocks.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§1) · [[knowledge-agent-architecture-combination-plan]] (§1, superseded) · [[adr-0007-engine-content-separation]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§1) · [[knowledge-agent-architecture-combination-plan]] (§1, superseded) · [[adr-0007-engine-content-separation]] (amended) · [[adr-0014-library-registry]]
+Verified: 2026-10-16 · by: agent · method: doc-review

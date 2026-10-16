@@ -28,20 +28,24 @@ schema are the operative contract and are not duplicated here. The contract live
 assume the engine sits at any particular place beside it.
 
 - [design-thesis](design-thesis.md) — why knowledge and behavior are separated, the
-  knowledge-as-behavior anti-pattern, and the target layering (three repository kinds)
+  knowledge-as-behavior anti-pattern, and the target layering (three repository kinds), including
+  why a library is installed by registration and carries no hook of its own
 - [agent-lifecycle-roles](agent-lifecycle-roles.md) — the Curator/Research-librarian/Fact-checker
   roles with the Verifier and Watcher as built, governance for KB mutation (built, dormant and
-  not-built controls), how the fact-checkers are tested, the steady-state defaults (silent when idle,
+  not-built controls), the source-URL liveness check, why agent stamps may declare their own TTL,
+  how the fact-checkers are tested, the steady-state defaults (silent when idle,
   cheap, routed), and why no orchestrator is built and how retrieval cost is bounded
 - [secret-governance](secret-governance.md) — why rotating a leaked secret isn't removal, why a
   pre-commit scan isn't the enforcement boundary, what the three-pass secret and identifier scan
-  covers and cannot see, why capture refuses a note holding a credential, and the blind trap test
+  covers and cannot see, why raw artifacts archived in a library skip one rule and UTF-16 is
+  blocked, why capture refuses a note holding a credential, and the blind trap test
 - [guardrail-verification](guardrail-verification.md) — why a guardrail correct on the authoring
   machine can still fail everywhere else, or catch nothing at all: defects found only by running or by
   a fresh reader, a bug that recurs, a scanner that exits 0 after printing findings
 - [retrieval-eval-integrity](retrieval-eval-integrity.md) — why a retrieval eval's score can mean
-  nothing about the knowledge: a reachable oracle, a grader testing markup or strings, an oracle that
-  follows the agent, a moved protocol, a clean control nobody checked
+  nothing about the knowledge: a reachable oracle, a grader testing markup or strings, a grader
+  demanding a quote nobody asked for, an oracle that follows the agent, a wrong or partial corpus, a
+  moved protocol, a clean control nobody checked
 - [sources](sources/INDEX.md) — citation stubs for the artifacts these facts came from
 
 The library also holds `knowledge-architecture-golden.md` — the retrieval oracle — and `documents/`,

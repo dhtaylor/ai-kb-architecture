@@ -18,5 +18,6 @@ keywords: [check-secrets, secret scan, three passes, lint-allow, PII, worktree, 
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-10-02
 - **Artifact location:** `ai-kb:scripts/check-secrets` (docstring and closing output text), read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** at engine commit `720fcff` on 2026-10-16, for the exemption for raw artifacts archived in a library, the UTF-16 block and the hit count (engine issue #56).
 
 Source for what the scan covers, its modes, its stated limits, and the advice it prints. Folded from it: the three passes, that any pass blocks, the `lint-allow` escape, the shared allowlist, the four modes, the limits and the boundary statement. Not folded: the name of the hosting platform's server-side feature the header cites (product behaviour), and the scan's patterns file, which is not read here.
