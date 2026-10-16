@@ -40,16 +40,17 @@ how it was last checked.
 
 ## Installing it
 
-A library lives inside an engine, in a folder named after its **domain**, which here is not the
-repository's name:
+A library can live anywhere. It is installed on a machine by being registered with the engine
+there, under its **domain**, `knowledge-architecture`, which its root `INDEX.md` declares and which
+is not the repository's name:
 
 ```bash
-git clone https://github.com/dhtaylor/ai-kb-architecture.git <engine>/kb/knowledge-architecture
-<engine>/scripts/kb-bootstrap --apply
+<engine>/scripts/kb-library add https://github.com/dhtaylor/ai-kb-architecture.git
 ```
 
-`kb-bootstrap` registers the engine on the machine and activates this library's commit hook. Run
-it again after cloning any library, because git does not clone hook configuration. The engine's
+That clones it into the engine's library home and registers it. A clone you already have is
+registered with `kb-library add <path>`. Either way, registering points the clone at the engine's
+commit hook; git does not clone that setting, so every clone is registered on its own. The engine's
 [README](https://github.com/dhtaylor/ai-kb#getting-started) covers setting up the engine itself.
 
 To read from the library, ask a question through the engine's `kb-retrieve` agent. It descends
