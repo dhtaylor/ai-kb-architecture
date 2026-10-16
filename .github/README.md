@@ -85,3 +85,14 @@ The checks live in the engine; this repository does not carry its own copies.
 **This repository is public.** Never commit a credential or a personal identifier. A security
 finding records the secret's reference, its location and the action required, never the value
 (`CONVENTIONS.md` §6). The secret scan blocks what it can recognise; the rest is on the author.
+
+## Releases and license
+
+Releases are tagged; each release's notes name the [ai-kb](https://github.com/dhtaylor/ai-kb)
+engine release the library was last verified against. Between releases, `main` holds the current
+facts: a correction lands when it is merged, not at the next release.
+
+The content of this library is licensed under
+[Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+(see [`LICENSE`](../LICENSE)). Passages it quotes from the engine's own documents remain under the
+engine's MIT license.
