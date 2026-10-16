@@ -5,6 +5,7 @@ memory_type: reference
 domain: knowledge-architecture
 scope: general
 freshness_horizon: 90d
+agent_ttl: 30d
 verifier_budget: 5
 sweep_interval: 30d
 last_swept: 2026-10-16
