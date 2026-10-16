@@ -7,7 +7,7 @@ scope: general
 freshness_horizon: 90d
 verifier_budget: 5
 sweep_interval: 30d
-last_swept: 2026-10-02
+last_swept: 2026-10-16
 metadata:
   type: index
   node_type: router
