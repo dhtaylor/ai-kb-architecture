@@ -361,4 +361,21 @@ contradiction lands.
   question: Why must a retrieval agent given no library list not search the engine's kb folder for libraries?
   expected_file: retrieval-eval-integrity.md
   expected_excerpt: "a partial set looks exactly like a complete one"
+
+# Boundary cases: owner-approved 2026-10-26
+
+- case: positive
+  question: "A pre-commit hook for the knowledge base ran from a non-interactive shell and exited 0 without running any checks, because the engine path was exported in .bashrc. What fix did the architecture adopt?"
+  expected_file: "guardrail-verification.md"
+  expected_excerpt: "The decision's fix gives hooks a second channel, git's global configuration"
+
+- case: positive
+  question: "If plugin behaviour is loaded once at session start but facts are read live on each query, does the design principle of separating knowledge from behaviour still hold?"
+  expected_file: "design-thesis.md"
+  expected_excerpt: "The separation holds; the two halves simply refresh on different clocks."
+
+- case: positive
+  question: "Since a git pre-commit hook can be skipped with --no-verify, where does the architecture say secret enforcement actually has to live?"
+  expected_file: "secret-governance.md"
+  expected_excerpt: "a pre-commit hook is bypassable with --no-verify, so the enforcement boundary is the server-side gate"
 ```
