@@ -8,7 +8,7 @@ freshness_horizon: 90d
 agent_ttl: 30d
 verifier_budget: 5
 sweep_interval: 30d
-kb_contract: "2.2"
+kb_contract: "2.3"
 last_swept: 2026-10-16
 metadata:
   type: index
@@ -28,6 +28,8 @@ Scope tiers, provenance, currency, contradictions, the retrieval contract and th
 schema are the operative contract and are not duplicated here. The contract lives in the engine:
 `ai-kb:CONVENTIONS.md`. Repo-qualified, not a relative path — this domain is portable and must not
 assume the engine sits at any particular place beside it.
+
+Not covered here: Claude Code runtime behaviour (settings, hooks, plugin loading, tool semantics) — held by [[claude-code-runtime:behaviour-loading]]; the contract text itself — in ai-kb CONVENTIONS.md, not a library
 
 - [design-thesis](design-thesis.md) — why knowledge and behavior are separated, the
   knowledge-as-behavior anti-pattern, and the target layering (three repository kinds), including
