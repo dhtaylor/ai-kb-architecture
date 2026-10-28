@@ -17,6 +17,6 @@ keywords: [kb-retrieve, engine root unknown, library list unknown, quote, word f
 - **Author:** the engine's maintainer (named in the artifact; not recorded here — this library is public)
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-10-16
-- **Artifact location:** `ai-kb:plugins/knowledge-tools/agents/kb-retrieve.md`, read at engine commit `720fcff` on 2026-10-16. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Artifact location:** `ai-kb:plugins/knowledge-tools/agents/kb-retrieve.md`, read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
-Source for two as-built rules: the agent treats the libraries its context lists as the complete set and never searches a folder for others, and it quotes what an answer rests on word for word. The rest of the contract lives in `ai-kb:CONVENTIONS.md` and is not restated.
+Source for two as-built rules: the agent treats the libraries its context lists as the complete set and never searches a folder for others, and it quotes what an answer rests on word for word. The rest of the contract lives in `ai-kb:CONVENTIONS.md` and is not restated. Re-read 2026-10-28 for rule 1 (the scope line, section-targeted reads, searches scoped to the routed library) and rule 3 (what the knowledge base is, and that the engine repository is not part of it).
