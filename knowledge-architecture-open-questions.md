@@ -10,7 +10,7 @@ metadata:
   node_type: open-questions
   created: 2026-10-02
 tags: [knowledge-architecture, open-questions]
-keywords: [open question, gap, not established, reopen trigger, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact]
+keywords: [open question, gap, not established, reopen trigger, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact, conformance suite, contract split, triage, specialist retrieval, scope line, routing retest, redaction, telemetry]
 ---
 # Open questions
 
@@ -42,9 +42,11 @@ Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[ad
 ## Was fan-out token cost ever measured here?
 
 The 3–15× and ~20× figures are the plan's. The routing sample measured accuracy and which libraries
-were opened, not tokens, and the sources read state no measured cost.
+were opened, not tokens, and the sources read state no measured cost. `kb-telemetry` now measures the
+cost of single-agent retrieval from transcripts ([[retrieval-eval-integrity]]); no source read records a
+figure from it, and no fan-out is built to measure.
 
-Source: [[adr-0011-no-orchestrator-until-routing-fails]]
+Source: [[adr-0011-no-orchestrator-until-routing-fails]] · [[script-kb-telemetry]]
 
 ## Where does the runtime's tool-scoping behaviour belong?
 
@@ -86,3 +88,45 @@ because one case read content from libraries it did not need. Whether that case 
 for the trigger, which would put the run at 92%, is not stated by any source read.
 
 Source: [[eval-2026-10-12-routing-run]] · [[adr-0011-no-orchestrator-until-routing-fails]]
+
+## Are the contract's conformance suite and the split of its engine-facing text built?
+
+The decision that versioned the contract also planned a named, published conformance suite per contract
+version, and a split of the contract so it holds only the library-facing spec, with the engine-facing
+parts (how skills conform, the session-start hook, precedence over the design plan) moved to engine
+documents. No source read records either as built. The regression suite holds fixture libraries, and the
+contract text read still carries its skill-rename table and its hook resolution mechanism.
+
+Source: [[adr-0016-versioned-library-contract]] · [[conventions-contract-versions]]
+
+## Does the scope line separate neighboring libraries in practice?
+
+The `Not covered here:` line (contract 2.3) is read by the retrieval agent to rule out a library
+([[retrieval-agent-behavior]]). The sources read state the intent and the rule, and record no measurement
+of whether it separates neighbors. A routing retest run after the line was introduced is recorded only in
+[[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]], an episodic note that has not been
+distilled, so what it measured is not served here as a fact.
+
+Source: [[conventions-contract-versions]] · [[script-kb-library]]
+
+## Is retrieval below the reopen line of the no-orchestrator decision, and what replaces one agent doing triage and specialist work?
+
+The decision not to build an orchestrator reopens when routing accuracy falls below 95% on a golden-set
+sample, or a full run ([[agent-lifecycle-roles]], "Orchestrator cost bounds"). Whether that line has been
+crossed is not established by any distilled source; the retest above is not distilled. An engine issue
+proposes a direction, and it is not built and not decided: retrieval as triage plus specialists. A triage
+step would read a compact catalog (each library's name, scope and `Not covered here:` line) instead of every
+router and name the likeliest library, or two if the question spans them. Each specialist would be confined to
+one library and either answer under the full retrieval contract or reply that the question is not its own.
+A merge step would keep a single answer, flag an overlap without picking a side, and pass citations through
+unchanged. No decision record supersedes the no-orchestrator decision in the sources read.
+
+Source: [[issue-130-triage-and-specialist-retrieval]] · [[adr-0011-no-orchestrator-until-routing-fails]]
+
+## Does the redaction filter cover what the scan cannot see?
+
+The filter that cleans a review packet before it is saved runs the same three passes as the secret scan
+([[secret-governance]]). That file records what the scan cannot see, among it a personal name in prose.
+No source read says whether a packet is checked for such a name other than by the person who reads it.
+
+Source: [[script-check-secrets]] · [[adr-0017-unattended-preparation-attended-decisions]]

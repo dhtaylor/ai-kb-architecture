@@ -669,4 +669,9 @@ contradiction lands.
   question: "What ties a library to the engine's rules, if not a pin on the engine?"
   expected_file: "design-thesis.md"
   expected_excerpt: "What ties a library to the engine's rules is the contract version it declares, not a pin on the engine's code"
+
+- case: positive
+  question: "Is retrieval as triage plus specialists built?"
+  expected_file: "knowledge-architecture-open-questions.md"
+  expected_excerpt: "it is not built and not decided: retrieval as triage plus specialists"
 ```
