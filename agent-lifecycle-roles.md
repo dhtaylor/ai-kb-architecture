@@ -40,6 +40,9 @@ Three roles cover that lifecycle.
   The skills carry a `kb-` prefix. The plan this role comes from names them `organize-domain`,
   `update-domain`, `distill-episodic` and `meditate`, and the source it cites still uses those names.
 
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[state-change-gates]] · [[agent-kb-retrieve]]
+Verified: 2026-10-28 · by: agent · method: doc-review
+
 ### The Verifier as built
 
 Status: built. It is a script, `kb-verify`, not an agent, and it does not query live systems. A
@@ -82,6 +85,9 @@ horizon, "so the trust tier between agent and human stamps cannot be declared aw
 
 The plan's first text had the Verifier re-run a fact against the live system, re-stamp `verified:` and flag a mismatch, and had a failed check produce a `contradictions.md` flag. The decision recording the Verifier as built states the difference plainly: the plan says a failed check becomes a `contradictions.md` flag, and the Verifier as built reports the failure and leaves the fact untouched.
 
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[engine-changelog-unreleased]]
+Verified: 2026-10-28 · by: agent · method: doc-review
+
 ### The Watcher as built
 
 Status: built, offline. It is a script, `kb-watch`, not an agent. It compares a saved snapshot
@@ -107,6 +113,11 @@ imports the Watcher's queue primitives so the two writers cannot drift apart. Ne
 fact. Both add the queue's router line to the library's `INDEX.md`; an unrouted queue is an orphan
 that fails `check-kb`, which would have blocked every commit in that library.
 
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[script-kb-watch]] · [[script-kb-verify]]
+Verified: 2026-10-28 · by: agent · method: doc-review
+
+### The source-URL liveness check as built
+
 Status: built — a third writer, `kb-sources`, which asks whether the external URLs that source stubs
 cite still resolve. It reuses the Watcher's queue primitives as the Verifier does. Its three rules:
 "NOTHING IS FETCHED WITHOUT --yes"; "DETECTION ONLY. A dead URL never edits a fact, never edits a
@@ -121,7 +132,7 @@ sources were queued as unreachable on the first scheduled run. Nothing impersona
 server that refuses every client stays unreachable. Anything it cannot decide is `unreachable`,
 never conflated with dead.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[script-kb-watch]] · [[script-kb-sources]] · [[engine-changelog-unreleased]]
+Source: [[script-kb-sources]] · [[engine-changelog-unreleased]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## Watcher safety design
@@ -143,8 +154,10 @@ Therefore, with the status of each measure:
   steering a knowledge change.
 - **Emit only a schema'd drift signal** (`field · old · new · source_url`). Status: built; the
   values taken from the page are escaped, flattened to one line and truncated to 200 characters.
-- **Keep the monitored-URL allowlist outside the KB.** Status: built, in the engine and never inside
-  a library; the allowlist ships empty, as shipped.
+- **Keep the monitored-URL allowlist outside the KB.** Status: built, in the engine
+  (`watcher/allowlist.json`) and never inside a library. The decision recording the Watcher says the
+  allowlist ships empty; the engine's allowlist holds one entry, a Microsoft Learn page watched for
+  the azure-devops library.
 
 (The further distinction between "unreachable" and "unchanged" for a watched source follows the
 same rule the contract states for provenance liveness — see `ai-kb:CONVENTIONS.md` §6. Status:
@@ -153,6 +166,8 @@ built; see the Watcher above.)
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[script-kb-watch]]
 Verified: 2026-10-12 · by: agent · method: doc-review
 Recheck: f="$KB_ENGINE_ROOT/scripts/kb-watch"; [ -f "$f" ] && ! grep -qE '^ *(import|from) .*(urllib|http|socket|requests|ftplib|smtplib|ssl)' "$f"
+Source: [[engine-watcher-readme]] (the allowlist bullet)
+Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## Mutation governance
 
@@ -176,12 +191,12 @@ nothing to enforce it against), or not built.
   set. Status: built as `check-blast`. In a library it flags a pull request that deletes or renames
   away a fact file, removes an inline `status: CONFLICTED` marker, or changes a fact's `scope:` to a
   strictly wider tier (`repo:<project>` < `{product:<vendor>, org:<company>}` < `general`), or
-removes an inline `status: UNCORROBORATED` marker, which "serves a one-source claim as settled"; in the
+  removes an inline `status: UNCORROBORATED` marker, which "serves a one-source claim as settled"; in the
   engine, one that touches the contract or the decision records. The label is `owner-approved`; with
   it a finding still prints but no longer fails the check. `check-blast` itself only detects; failing
   a required check is the CI workflow's job. On a direct push the check only warns, because the push
   has already landed by the time CI runs, so failing the build would hide that it happened rather
-  than stop it. The pull-request path was confirmed running in CI on 2026-10-01. "Writable only by a
+  than stop it. The pull-request path runs in CI. "Writable only by a
   domain owner" holds only while there is exactly one collaborator; it is a property of that
   circumstance, not of any permission the script or workflow enforces.
 - **Rollback is an invariant, not an aside.** Both KBs are git repos; recovery from a bad fold or a
@@ -198,7 +213,7 @@ removes an inline `status: UNCORROBORATED` marker, which "serves a one-source cl
   that is declared but not enforced is worse than an absent one, because it reads as protection in
   an audit and provides none. Its response: write the full governance structure, enforce what is
   enforceable, and record the gap explicitly. Status by item: `CODEOWNERS` is written and advisory —
-  owner review becomes a requirement only when branch protection requires it, and today it answers
+  owner review becomes a requirement only when branch protection requires it, and it answers
   who a finding belongs to (resolved by `kb-owner`); dormant. A second named owner per domain, and
   signed commits for merges: not built.
 - **Least privilege.** Every agent, command and skill declares a tier and a tool scope, and a lint
@@ -231,11 +246,11 @@ Surfacing is the baseline. The session-start hook calls `kb-due --nudge`, which 
 - a library behind or ahead of the contract, or on one the engine cannot serve;
 - the latest weekly report, while it is under eight days old and lists decisions.
 
-The category of stale facts with no assertion exists because of a measurement: on 2026-10-16 the nudge printed nothing while 49 agent-stamped facts were past their TTL, since the recheck count covers only facts carrying a `Recheck:`, which most do not.
+The category of stale facts with no assertion exists because of a measurement: the nudge printed nothing while 49 agent-stamped facts were past their TTL, since the recheck count covers only facts carrying a `Recheck:`, which most do not.
 
-**Surfacing works only if the person sees it.** The hook first put the nudge in `additionalContext`, which reaches the model and is not shown to the person, so the owner never saw one. `kb-due --nudge --summary` now also prints the nudge condensed to one line beginning `KB due — `, which the hook shows as its `systemMessage`; the full nudge still goes to the model. One run gives both, so they cannot disagree. An error message, such as a library that is not served, comes first. A subagent gets no nudge, and a `kb-due` that fails gives neither the line nor a partial nudge.
+**Surfacing works only if the person sees it.** The hook first put the nudge in `additionalContext`, which reaches the model and is not shown to the person, so the owner never saw one. `kb-due --nudge --summary` also prints the nudge condensed to one line beginning `KB due — `, which the hook shows as its `systemMessage`; the full nudge still goes to the model. One run gives both, so they cannot disagree. An error message, such as a library that is not served, comes first. A subagent gets no nudge, and a `kb-due` that fails gives neither the line nor a partial nudge.
 
-**Where the schedule comes in.** The first decision on cadence declined every unattended run: a cloud routine and a local cron job were both declined because each runs without the owner watching, and the cloud routine would need credentials for private library repositories. Its stated consequence was that nothing happens unless a session starts, so a library nobody opens goes unswept and nobody is told, which it accepted for one person who works in these repositories daily. That consequence is what the opt-in schedule answers: it prepares the legwork and reports the decisions, and never edits a fact (see [[unattended-preparation]]). The cloud routine stays declined. The nudge, the queue routing and the offline Watcher stand.
+**Where the schedule comes in.** The opt-in schedule answers the consequence the first cadence decision stated, that nothing happens unless a session starts; see [[unattended-preparation]].
 
 Source: [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-due]] · [[script-kb-session-start]]
 Verified: 2026-10-28 · by: agent · method: doc-review
@@ -266,7 +281,7 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## Steady-state defaults are judged by what they say when nothing is wrong
 
-The session-start surfacing described under "Cadence is surfaced, not scheduled" (above) was reviewed before it landed, and the review found three defects whose common cause is that each was invisible in a test and obvious in daily use.
+The session-start surfacing described under "Cadence is surfaced at session start, and may be prepared on a schedule" (above) was reviewed before it landed, and the review found three defects whose common cause is that each was invisible in a test and obvious in daily use.
 
 - **A nudge that is wrong when idle gets ignored.** The first draft counted every episodic note as awaiting distillation. All four real notes had already been distilled, so it would have asked about them at every session start, forever, "which is how a nudge becomes noise nobody reads". A note now counts as distilled when it carries a heading beginning `## Distill`, and the nudge is silent on the real libraries, which is true.
 - **A session-start hook's cost is paid by every session.** The draft took the hook from 0.06s to 3s, because the file walk descended into `.git` and the evidence archives before filtering them out, and each directory visit is slow on a Windows drive under WSL. Pruning those directories during the walk brought it to 0.34s. The figures are this build's measurement on that machine, not a bound; the lesson is that the cost is invisible in a test and felt in every session.

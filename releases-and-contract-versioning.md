@@ -38,11 +38,11 @@ Verified: 2026-10-28 · by: agent · method: doc-review
 
 A library is content, so a correction propagates when it lands, not at the next release. A library tag marks a known-good point, nothing more. A library's release notes name the contract version it conforms to, not an engine version.
 
-Whether a library's CI pins the engine, to what, and when it moves is the library owner's decision. The engine neither requires nor tracks it, and an engine release moves no library's pin. The engine's CI template stays as an example, and pinning a release tag is still a sensible default for unattended use, which the example says is the owner's choice.
+Whether a library's CI pins the engine, to what, and when it moves is the library owner's decision. The engine neither requires nor tracks it, and an engine release moves no library's pin. The engine's CI template (`documents/library-guardrails.yml`) stays as an example and clones a release tag. ADR-0016 calls pinning a release tag a sensible default for unattended use, and whether to pin the library owner's choice.
 
 This replaced an earlier rule that every library's CI pin the engine to a release tag, with each release moving the pins. That rule assumed the engine's maintainer knows every library. The engine is meant for wide adoption, so the expected case is libraries owned by people the maintainer will never hear of, and the earlier decision's own review trigger, a library maintained by someone else, is the normal state.
 
-Source: [[adr-0015-releases-and-pinning]] · [[adr-0016-versioned-library-contract]]
+Source: [[adr-0015-releases-and-pinning]] · [[adr-0016-versioned-library-contract]] · [[engine-changelog-unreleased]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## The contract has its own version, so the engine can tighten a rule without breaking a library
@@ -73,13 +73,13 @@ What a library is told depends on where its version sits:
 - **Ahead** by a minor: checked by the newest rules the engine knows, with a note that the engine should be upgraded to check the rest.
 - **On a major the engine does not support, or with a version that cannot be read:** not served. The registry reports it in the state `unsupported-contract`, and `check-kb` fails it with the versions the engine does support.
 
-An engine supports every minor of the current major and of the one before it, so the window spans years, not releases. When a new major is published the engine drops the major two behind it, and a library on the previous major is warned ahead of time that its major leaves support when the next is published.
+An engine supports every minor of the current major and of the one before it, so the window spans years, not releases. When a new major is published the engine drops the major two behind it. ADR-0016 specifies that a library on the previous major is warned ahead of time that its major leaves support when the next is published. No source read records that warning as built; see [[knowledge-architecture-open-questions]].
 
 A library on an unsupported or newer major is refused rather than served with a warning because its markers may mean something this engine does not read. Serving it "could serve a disputed fact as settled, which the retrieval contract exists to prevent."
 
 Source: [[adr-0016-versioned-library-contract]] · [[script-check-kb]] · [[script-kb-libraries]] · [[conventions-contract-versions]]
 Verified: 2026-10-28 · by: agent · method: doc-review
-Recheck: f="$KB_ENGINE_ROOT/CONVENTIONS.md"; [ -f "$f" ] && grep -q '^### 2\.3$' "$f" && grep -q 'Absent, it is read as \*\*2\.0\*\*' "$f"
+Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d/sources"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%s\nlast_swept: never\n---\n# x\n' "$1" "$2" > "$d/INDEX.md"; [ -z "$3" ] || printf 'CREATE TABLE t (id int);\n' > "$d/sources/t.sql"; }; mk absent "agent_ttl: 30d" raw; mk v20 'kb_contract: "2.0"' raw; mk v21 'kb_contract: "2.1"' raw; mk v29 'kb_contract: "2.9"'; mk bare "kb_contract: 2.1"; mk v30 'kb_contract: "3.0"'; "$s/check-kb" "$t/absent" > "$t/a" 2>&1 && grep -qF 'built to contract 2.0' "$t/a" && grep -qF 'fails from contract 2.1' "$t/a" || r=1; "$s/check-kb" "$t/v20" > /dev/null 2>&1 || r=1; "$s/check-kb" "$t/v21" > "$t/b" 2>&1; [ $? -eq 1 ] && grep -qF 'raw artifact' "$t/b" || r=1; "$s/check-kb" "$t/v29" > "$t/c" 2>&1 && grep -qF 'upgrade the engine' "$t/c" || r=1; "$s/check-kb" "$t/bare" > "$t/d" 2>&1; [ $? -eq 1 ] && grep -qF 'must be quoted' "$t/d" || r=1; "$s/check-kb" "$t/v30" > "$t/e" 2>&1; [ $? -eq 1 ] && grep -qF 'not supported by this engine' "$t/e" || r=1; rm -rf "$t"; exit $r
 
 ## What each contract version adds
 
@@ -87,12 +87,12 @@ The versions an engine knows are the `### X.Y` headings of the contract's sectio
 
 - **2.0** is the baseline: the rules a library met under the engine's first release. Every library that predates `kb_contract:` was built to it.
 - **2.1** makes `sources/` hold only `.md` citation stubs. `check-kb` fails a raw artifact there, which belongs under `documents/` with a stub that cites it. Before the rule, `check-kb` read only `.md` files, so a raw file under `sources/` passed silently and its owner never learned it was in the wrong place. Migrating from 2.0 means moving any non-`.md` file under `sources/` to `documents/`.
-- **2.2** adds `Recheck (attended):` for an assertion that needs a login, a credential or a live system. A scheduled `kb-verify --yes --unattended` skips it and counts it, and runs every other assertion with an empty `HOME` and only `PATH`, `KB_ENGINE_ROOT` and proxy settings. An unmarked assertion that needs a credential therefore fails rather than reaching one. Migrating from 2.1 means marking any assertion that needs a person and raising the declaration. The reason is in [[unattended-preparation]].
+- **2.2** adds `Recheck (attended):` for an assertion that needs a login, a credential or a live system. How a scheduled `kb-verify --yes --unattended` treats it is in [[agent-lifecycle-roles]]. Migrating from 2.1 means marking any assertion that needs a person and raising the declaration. The reason is in [[unattended-preparation]].
 - **2.3** lets a root `INDEX.md` carry a `Not covered here:` line naming the neighboring topics the library does not hold and, where known, the library that does. `check-kb` fails a line with nothing after the colon, from this version, and warns below it. Nothing is required to migrate. How retrieval uses the line is in [[retrieval-agent-behavior]].
 
 Source: [[conventions-contract-versions]] · [[script-check-kb]] · [[tests-run-checks]]
 Verified: 2026-10-28 · by: agent · method: doc-review
-Recheck: f="$KB_ENGINE_ROOT/CONVENTIONS.md"; [ -f "$f" ] && grep -q '^### 2\.1$' "$f" && grep -q '^### 2\.2$' "$f" && grep -q 'fails a line with nothing after the$' "$f"
+Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%s\nlast_swept: never\n---\n# x\n\n%s\n' "$1" "$2" "$3" > "$d/INDEX.md"; }; mk old "agent_ttl: 30d" ""; mk e23 'kb_contract: "2.3"' "Not covered here:"; mk e22 'kb_contract: "2.2"' "Not covered here:"; mk att 'kb_contract: "2.3"' ""; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: att\nscope: general\nverified: 2020-01-01\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2020-01-01\ntags: [x]\nkeywords: [x]\n---\n# F\n\n## A\n\nfact\n\nSource: manual\nVerified: 2020-01-01 · by: agent · method: manual\nRecheck (attended): false\n' > "$t/att/f.md"; "$s/check-kb" "$t/old" > "$t/o" 2>&1 && grep -qF '2.1: `sources/` holds only `.md` citation stubs' "$t/o" && grep -qF '2.2: `Recheck (attended):` marks an assertion' "$t/o" && grep -qF '2.3: A root `INDEX.md` may carry a `Not covered here:`' "$t/o" || r=1; "$s/check-kb" "$t/e23" > "$t/a" 2>&1; [ $? -eq 1 ] && grep -qF 'names nothing' "$t/a" || r=1; "$s/check-kb" "$t/e22" > "$t/b" 2>&1 && grep -qF 'fails from contract 2.3' "$t/b" || r=1; "$s/kb-verify" "$t/att" --yes --unattended > "$t/v" 2>&1 && grep -qF '1 attended assertion(s) skipped' "$t/v" && ! grep -qF 'FAIL' "$t/v" || r=1; "$s/kb-verify" "$t/att" --yes > "$t/w" 2>&1; grep -qF 'FAIL f.md' "$t/w" || r=1; rm -rf "$t"; exit $r
 
 ## What the design costs
 

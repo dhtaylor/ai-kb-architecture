@@ -29,11 +29,8 @@ The core design rule for combining a governed knowledge base with an agent layer
   system and re-stamp them. The KB gains currency; the behavior layer gains a single source of
   truth.
 
-As built, the third bullet's loop is narrower than the plan imagined: it had agents querying live
-systems to re-verify facts. The environment had none, and the Verifier was built as a script that re-runs an assertion the fact
-carries beside it (`Recheck:`), with most facts carrying none; see [[agent-lifecycle-roles]], "The
-Verifier as built". The separation principle itself is unchanged: section 0 reads identically in the
-revised plan and the original.
+The loop as built is in [[agent-lifecycle-roles]], "The Verifier as built". The separation principle
+itself is unchanged: section 0 reads identically in the revised plan and the original.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§0, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§0, identical text)
 Verified: 2026-10-12 · by: agent · method: doc-review
@@ -106,16 +103,14 @@ everything it held, which looks exactly like a correct refusal." Each registered
 reported in one state: `ok`, `missing`, `not-a-library`, `name-mismatch` or `unsupported-contract`.
 "Only `ok` libraries are served. Every other state is reported at session start, by name and path,
 and never dropped silently." The fifth state is a library whose declared contract version names a
-major the engine does not support, or cannot be read: its markers may mean something the engine
-cannot read, and serving it could present a disputed fact as settled (see
-[[releases-and-contract-versioning]]).
+major the engine does not support, or cannot be read; see
+[[releases-and-contract-versioning]].
 
 The cost, stated by the decision that made the split: a library has no guardrails of its own, so a
 library cloned alone is unguarded until an engine is in reach. That is the price of not making a
-portable library depend on an engine. What ties a library to the engine's rules is the contract
-version it declares, not a pin on the engine's code, so the engine can tighten a rule without a
-library built correctly to the earlier rules becoming unusable ([[releases-and-contract-versioning]]).
-A library now carries no hook logic either. "A library is
+portable library depend on an engine. What ties a library to the engine's rules, if not a pin, is in
+[[releases-and-contract-versioning]].
+A library carries no hook logic either. "A library is
 shareable: one repository, cloned by any number of people who do not own it", so registering it,
 moving it or upgrading the engine can never require a commit to it. The pre-commit hook lives in the
 engine, and registering a clone sets its `core.hooksPath` to the engine's hook folder: "This is local

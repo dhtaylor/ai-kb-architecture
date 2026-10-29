@@ -10,7 +10,7 @@ metadata:
   node_type: open-questions
   created: 2026-10-02
 tags: [knowledge-architecture, open-questions]
-keywords: [open question, gap, not established, reopen trigger, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact, conformance suite, contract split, triage, specialist retrieval, scope line, routing retest, redaction, telemetry]
+keywords: [open question, gap, kb-apply, kb-report, weekly report, not established, reopen trigger, rollback, corrections-log, digest, cold-start, token cost, runtime enforcement, push rejection, server-side gate, ADR-0002, sub-agent, library discovery, Recheck, stale hook fact, conformance suite, contract split, triage, specialist retrieval, scope line, routing retest, redaction, telemetry]
 ---
 # Open questions
 
@@ -68,22 +68,13 @@ Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]
 
 ## Where does the runtime's behaviour on library discovery by a sub-agent belong?
 
-The plan (§9.14) and the contract (section 3 of `ai-kb:CONVENTIONS.md`) both state that an agent which did
-not receive the session-start list of libraries, a sub-agent being the example, must enumerate
-`kb/*/INDEX.md`. Whether sub-agents receive session-start context is a claim about the Claude Code runtime.
-It was left out of [[retrieval-eval-integrity]], which records only the general failure, and no slug exists in
-claude-code-runtime for it, so there is nothing to link.
-
-Narrowed 2026-10-16: the enumeration rule no longer applies. The contract (`ai-kb:CONVENTIONS.md` section 3) now says the session-start hook
-"and the SubagentStart hook for kb-retrieve" list each registered library, and an agent given no list refuses
-rather than searching. What remains open is only where the runtime claim belongs.
+The contract (section 3 of `ai-kb:CONVENTIONS.md`) says the session-start hook "and the SubagentStart hook for kb-retrieve" list each registered library, and an agent given no list refuses rather than searching. Whether sub-agents receive session-start context is a claim about the Claude Code runtime. It was left out of [[retrieval-eval-integrity]], which records only the general failure, and no slug exists in claude-code-runtime for it, so there is nothing to link.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · [[agent-kb-retrieve]]
 
 ## Does an unneeded content read count against the routing-accuracy reopen trigger?
 
-[[agent-lifecycle-roles]] records the trigger to reopen the no-orchestrator decision as routing accuracy below
-95% on a golden-set sample. The 2026-10-12 run read the expected file in 12 of 12 cases and scored 11/12,
+[[agent-lifecycle-roles]] records the routing-accuracy trigger to reopen the no-orchestrator decision. The 2026-10-12 run read the expected file in 12 of 12 cases and scored 11/12,
 because one case read content from libraries it did not need. Whether that case is a routing-accuracy miss
 for the trigger, which would put the run at 92%, is not stated by any source read.
 
@@ -96,6 +87,8 @@ version, and a split of the contract so it holds only the library-facing spec, w
 parts (how skills conform, the session-start hook, precedence over the design plan) moved to engine
 documents. No source read records either as built. The regression suite holds fixture libraries, and the
 contract text read still carries its skill-rename table and its hook resolution mechanism.
+The same decision specifies that a library on the previous major is warned ahead of time that its major
+leaves support when the next is published; no source read records a script that gives that warning.
 
 Source: [[adr-0016-versioned-library-contract]] · [[conventions-contract-versions]]
 
@@ -111,10 +104,9 @@ Source: [[conventions-contract-versions]] · [[script-kb-library]]
 
 ## Is retrieval below the reopen line of the no-orchestrator decision, and what replaces one agent doing triage and specialist work?
 
-The decision not to build an orchestrator reopens when routing accuracy falls below 95% on a golden-set
-sample, or a full run ([[agent-lifecycle-roles]], "Orchestrator cost bounds"). Whether that line has been
-crossed is not established by any distilled source; the retest above is not distilled. An engine issue
-proposes a direction, and it is not built and not decided: retrieval as triage plus specialists. A triage
+The reopen line of the no-orchestrator decision is in [[agent-lifecycle-roles]], "Orchestrator cost bounds".
+Whether that line has been crossed is not established by any distilled source; the retest above is not
+distilled. One direction is proposed, and it is not built and not decided: retrieval as triage plus specialists. A triage
 step would read a compact catalog (each library's name, scope and `Not covered here:` line) instead of every
 router and name the likeliest library, or two if the question spans them. Each specialist would be confined to
 one library and either answer under the full retrieval contract or reply that the question is not its own.
@@ -130,3 +122,16 @@ The filter that cleans a review packet before it is saved runs the same three pa
 No source read says whether a packet is checked for such a name other than by the person who reads it.
 
 Source: [[script-check-secrets]] · [[adr-0017-unattended-preparation-attended-decisions]]
+
+## Does `kb-apply` change a fact file, and which list does the weekly report hold?
+
+ADR-0017 says that after a person decides, `kb-apply` changes a fact file, runs the checks and commits. The
+script's own header says it never writes to a library: it lists packets, shows one and closes one, and the
+skill does the writing once a person has decided each item. The two also list different things for the weekly
+report. The decision names packets waiting, failed rechecks, drifted or dead sources, queue items older than
+the last report, and a library behind the contract. The script lists a packet waiting, each open queue item,
+attended rechecks that are due, a sweep or notes awaiting distillation that no packet covers yet, and a library
+behind the contract or on one the engine cannot serve. This library follows the script
+([[unattended-preparation]]). The difference is flagged and not resolved: no source read says which is intended.
+
+Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-apply]] · [[script-kb-report]]
