@@ -1,6 +1,6 @@
 ---
 name: needs-attention
-description: Open findings from automated checks (kb-watch, kb-verify) and hygiene sweeps (kb-audit), by severity.
+description: Findings from automated checks (kb-watch, kb-verify) and hygiene sweeps (kb-audit), by severity: the open items, and the resolved ones kept as history.
 memory_type: reference
 domain: knowledge-architecture
 scope: general
@@ -15,8 +15,10 @@ keywords: [needs attention, queue, findings, drift, watcher, unreachable]
 
 Findings from automated drift checks and hygiene sweeps. Detection only — nothing here was fixed automatically. See CONVENTIONS.md §3 and plugins/knowledge-tools/skills/kb-audit/SKILL.md for the queue's conventions.
 
-kb-audit sweep 2026-10-28, run as the acceptance gate for the fold of the engine's changes since the
-sweep of 2026-10-16: no new item raised, and no item is open. The mechanical checks (`check-kb`,
+## Resolved history
+
+The kb-audit sweep of 2026-10-28, run as the acceptance gate for the fold of the engine's changes since the
+sweep of 2026-10-16, raised no item of its own. The mechanical checks (`check-kb`,
 `check-scope`, `check-golden`, `check-xlinks --installed`) passed on the folded tree. The sweep found no
 section with a `Source:` and no stamp, and no stale section: the oldest stamp is 2026-10-12, and an agent
 stamp falls due after 30 days, on 2026-11-11. It found no orphan, no file listed by two routers, no routed
@@ -198,4 +200,21 @@ history. Re-stamping without re-verifying is not a fix.
   finding: "Not restamped. The paragraph records a one-off synthetic run of kb-capture (refusal leaves the tree byte-identical, --from file untouched, piped draft saved mode 0600 outside the tree, clean note filed). No cited source records that run, so it cannot be confirmed from sources. Re-run on 2026-10-12 against engine c668ccd, the refusal, exit 1, untouched tree, 0600 draft and clean filing were observed again; the owner decides whether to restamp with method manual."
   resolved: "2026-10-12 — owner-approved: the one-off synthetic-run paragraph was re-run against engine 7541729 in temp dirs (refusal exit 1, tree byte-identical, --from file untouched, piped draft saved mode -rw------- outside the tree, clean note filed), the commands and observed values are in the PR body, and it is re-stamped method manual; a Recheck assertion now defends it"
 
+```
+
+## Open items
+
+```yaml
+- id: 8846dbfc
+  category: stale fact
+  status: open
+  file: sources/engine-changelog-unreleased.md
+  section: "Source: ai-kb CHANGELOG, section Unreleased"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-28 · by: agent · method: doc-review"
+  age: 0d
+  escalate: false
+  date: 2026-10-28
+  finding: "The stub pins the changelog's Unreleased section at engine commit d16b78c. When v0.3.0 is released that section becomes the v0.3.0 release section, and the heading the stub and the facts that cite it name no longer exists. After the release: re-pin the stub to tag v0.3.0, re-read the section it cites, re-stamp the facts that cite it, and rename the stub if its title no longer fits. Not done before the release: the section is still Unreleased, and the engine is frozen from 2026-10-29."
 ```
