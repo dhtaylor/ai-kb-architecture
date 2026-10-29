@@ -91,7 +91,12 @@ also a practical failure: with one shared tier there was one shared `sources/`, 
 set and one router chain, so a domain could not be moved, shared or cloned without dragging the rest
 of the tier with it.
 
-**A library is installed on a machine by being registered there.** The decision that made it so:
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§1) · [[knowledge-agent-architecture-combination-plan]] (§1, superseded) · [[adr-0007-engine-content-separation]] (amended)
+Verified: 2026-10-28 · by: agent · method: doc-review
+
+## A library is installed on a machine by being registered there
+
+The decision that made it so:
 "A library is installed on a machine when it is registered there, and only then. `<engine>/kb/`
 stops being special: it is the default folder new libraries are cloned into, and nothing scans it."
 The registry is a per-machine file outside every repository, `~/.config/ai-kb/libraries`. "It
@@ -122,7 +127,12 @@ both trees. It was rewritten to the three repository kinds above, and no orchest
 [[agent-lifecycle-roles]], "Orchestrator cost bounds"). Least-privilege enforcement remains in the
 guardrails list; its as-built strength is recorded under "Mutation governance" in the same file.
 
-**How this holds in practice depends on the runtime.** The claim that behaviour "retrieves at
+Source: [[adr-0014-library-registry]] · [[script-kb-libraries]] · [[adr-0016-versioned-library-contract]] · [[adr-0007-engine-content-separation]] (amended)
+Verified: 2026-10-28 · by: agent · method: doc-review
+
+## How the separation holds depends on the runtime
+
+The claim that behaviour "retrieves at
 runtime" is about where facts live, not about when the behaviour itself is loaded — and those differ:
 in Claude Code, plugin behaviour is loaded once at session start while facts are read live per query
 (`[[claude-code-runtime:behaviour-loading]]`). The separation holds; the two halves simply refresh on

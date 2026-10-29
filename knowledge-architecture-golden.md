@@ -287,7 +287,7 @@ contradiction lands.
 
 # Amended 2026-10-28, after the retrieval run and the audit: the record used the older cross-root form, which names a file in this library and checks only where the hop starts, and the 2026-10-26 retest found agents going straight to the other library as the question invites. It now names the answering file in the other library, as contract section 10 specifies, and asks for what that file states.
 - case: cross-root
-  question: A pre-commit hook fired from a non-interactive shell skipped its checks because the engine path was exported in .bashrc. Why does that shell not see the variable?
+  question: "The engine's pre-commit hook found no engine and skipped its checks when fired outside an interactive terminal. What second channel did the fix give hooks, and why did the engine path exported from the shell startup file not reach that hook?"
   expected_file: claude-code-runtime:config-resolution.md
   expected_excerpt: "returns early for non-interactive shells"
 
@@ -596,7 +596,7 @@ contradiction lands.
 # Amended 2026-10-28, after the retrieval run and the audit: the file no longer says the agent was right about the record, because the eval record does not say so. The record asks why the two graders disagreed, which the eval record does state.
 - case: positive
   question: "An agent answered a question the library cannot answer by reading an engine decision record. Why did grade-eval fail the case while the routing grader passed it?"
-  expected_file: "retrieval-agent-behavior.md"
+  expected_file: "retrieval-eval-integrity.md"
   expected_excerpt: "because that grader did not count a read outside every registered library"
 
 - case: positive
@@ -683,7 +683,7 @@ contradiction lands.
 - case: positive
   question: "A registered library can be ok, missing, not a library or a name mismatch. What is the fifth state?"
   expected_file: "design-thesis.md"
-  expected_excerpt: "The fifth state is a library whose declared contract version names a major the engine does not support, or cannot be read"
+  expected_excerpt: "a library whose declared contract version names a major the engine does not support, or cannot be read"
 
 - case: positive
   question: "What ties a library to the engine's rules, if not a pin on the engine?"

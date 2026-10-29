@@ -39,6 +39,8 @@ A routing grader that decides contamination by pattern fails a compliant agent a
 
 Two more defects came from the grader reading the tool's output format as if it carried more than it does. When a Grep's path is a single file, ripgrep omits the file name from content lines, so no result line named a file and the grader could not tell which library the content came from. Such a result is now attributed to that file, and counts as content from that library and not as a Read of the file. And content-mode lines were split at the first digits between separators, so a `-<digits>-` segment inside a path, such as a session UUID in a checkout path, truncated the path: they are now split at the first extension followed by a line number.
 
+The grader also fails a case with an off-KB read: a Read, or a content-mode Grep result, of a file in no registered library, with the contract itself exempt because the session context tells the agent to load it. A read in an unregistered library is off-KB too. The check was added after an agent answered a question the library cannot answer from an engine decision record: `grade-eval` failed the case while the routing grader passed it, because that grader did not count a read outside every registered library.
+
 Source: [[script-grade-routing]] · [[engine-changelog-unreleased]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 Recheck: grep -qF 'documents/eval-[^/]*' "$KB_ENGINE_ROOT/scripts/grade-routing"
