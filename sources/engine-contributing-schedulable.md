@@ -18,5 +18,6 @@ keywords: [schedulable, cron, systemd timer, exit codes, stripped environment, c
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-10-28
 - **Artifact location:** `ai-kb:CONTRIBUTING.md`, section *Commands you can schedule*, read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** at engine commit `d16b78c` on 2026-10-28, with the engine's `main` at that commit: the section gained one paragraph, saying `kb-eval-sample` is not scheduled because it needs a person to start each agent run. The five-part property and what was folded from it are unchanged.
 
 Defines the property a command must have to run unattended, and lists the schedulable form of each command with its exit codes. Folded from it: the property's five parts and how it is tested. Not folded: the table of exit codes per command, which is the engine's reference.

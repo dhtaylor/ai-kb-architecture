@@ -88,9 +88,10 @@ finding records the secret's reference, its location and the action required, ne
 
 ## Releases and license
 
-Releases are tagged; each release's notes name the [ai-kb](https://github.com/dhtaylor/ai-kb)
-engine release the library was last verified against. Between releases, `main` holds the current
-facts: a correction lands when it is merged, not at the next release.
+Releases are tagged; each release's notes name the library contract version it conforms to, the
+`kb_contract:` its root `INDEX.md` declares. The [ai-kb](https://github.com/dhtaylor/ai-kb) engine
+defines the versions. Between releases, `main` holds the current facts: a correction lands when it is
+merged, not at the next release.
 
 The content of this library is licensed under
 [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/)

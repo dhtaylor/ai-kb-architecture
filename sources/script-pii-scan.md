@@ -19,5 +19,6 @@ keywords: [pii-scan, pii-allowlist, personal identifier, email, account, home di
 - **Date ingested:** 2026-10-02
 - **Artifact location:** `ai-kb:scripts/pii-scan` (docstring) and `ai-kb:scripts/pii-allowlist.txt` (header comment), read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 - **Re-read:** at engine commit `720fcff` on 2026-10-16, for its directory mode (engine issue #35).
+- **Re-read:** at engine commit `d16b78c` on 2026-10-28, with the engine's `main` at that commit: it gained a `--redact` mode for the redaction filter, which prints only line numbers and lets `lint-allow` exempt nothing. The three rules, the exemptions and the stated limits folded from it are unchanged; the filter is folded from the `check-secrets` stub.
 
 Source for the third check-secrets pass: its three rules, its exemptions, the allowlist's purpose, and its stated limits. Folded: the three kinds of identifier, that names are not detectable, and the two stated misses. The allowlist's own entries are not folded.
