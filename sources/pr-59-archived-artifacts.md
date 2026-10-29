@@ -17,6 +17,6 @@ keywords: [issue 56, archived artifact, schema dump, bare rule, UTF-16, unscanne
 - **Author:** the engine's maintainer (named in the artifact; not recorded here — this library is public)
 - **Date:** 2026-10-16
 - **Date ingested:** 2026-10-16
-- **Artifact location:** `https://github.com/dhtaylor/ai-kb/pull/59`, read on 2026-10-16. Not archived in this library: it lives with the engine repository on its hosting service.
+- **Artifact location:** https://github.com/dhtaylor/ai-kb/pull/59, read on 2026-10-16. Not archived in this library: it lives with the engine repository on its hosting service.
 
 The change's description. Folded from it: the pilot that raised it (hit counts on a schema dump), and what the exemption gives up, which the description states and a regression case pins. The behaviour itself is folded from the script headers.

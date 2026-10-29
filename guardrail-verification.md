@@ -145,7 +145,7 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A default is part of the guardrail
 
-`kb-bootstrap`, the one script that writes machine-level configuration (user settings, global git configuration and a shell startup file), applied its changes by default, with `--check` as the opt-out. It now reports and changes nothing unless given `--apply`, the same idiom the Verifier uses. "Nobody had noticed, because it had only ever been run on purpose." The same commit's regression cases for both script gates were each shown to fail when the gate was removed (nine new cases, ai-kb@cabe940).
+`kb-bootstrap`, the one script that writes machine-level configuration (user settings, global git configuration and a shell startup file), reports and changes nothing unless given `--apply`, the same idiom the Verifier uses. It had applied its changes by default, with `--check` as the opt-out. "Nobody had noticed, because it had only ever been run on purpose." The same commit's regression cases for both script gates were each shown to fail when the gate was removed (nine new cases, ai-kb@cabe940).
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.18) · [[state-change-gates]] · ai-kb@cabe940
 Verified: 2026-10-12 · by: agent · method: doc-review

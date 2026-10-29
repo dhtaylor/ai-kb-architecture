@@ -19,5 +19,6 @@ keywords: [check-blast, high blast radius, gate, owner-approved, never automated
 - **Date ingested:** 2026-10-02
 - **Artifact location:** `ai-kb:scripts/check-blast` (docstring), read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 - **Re-read:** at engine commit `720fcff` on 2026-10-16, for the removal of an `UNCORROBORATED` marker, counted like a `CONFLICTED` one.
+- **Re-read:** at engine commit `d16b78c` on 2026-10-28, with the engine's `main` at that commit: unchanged. Nothing folded from it changed.
 
 Corroboration for the gate as built: detection only, what counts as a high-blast change in a library and in the engine, the owner-approved label, and the dormant 2-reviewer half. Platform label-permission details in the header were not folded (product behaviour).

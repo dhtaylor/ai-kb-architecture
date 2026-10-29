@@ -17,6 +17,6 @@ keywords: [issue 32, verbatim quote, paraphrase, live sample, SubagentHandback, 
 - **Author:** the engine's maintainer (named in the artifact; not recorded here — this library is public)
 - **Date:** 2026-10-16
 - **Date ingested:** 2026-10-16
-- **Artifact location:** `https://github.com/dhtaylor/ai-kb/pull/54`, read at engine commit `720fcff` on 2026-10-16. Not archived in this library: it lives with the engine repository on its hosting service.
+- **Artifact location:** https://github.com/dhtaylor/ai-kb/pull/54, read at engine commit `720fcff` on 2026-10-16. Not archived in this library: it lives with the engine repository on its hosting service.
 
 The change's description, with its live sample. Folded from it: the pilot score that raised it, why a last-text-block extractor grades the preamble, and the sample's before and after scores. It is the author's report of one run; the transcripts are not archived.

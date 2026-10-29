@@ -30,6 +30,7 @@ keywords: [sources, citations, stubs, provenance]
 - [conventions-contract-versions](conventions-contract-versions.md) — engine contract text: what each contract version adds, the scope line, attended rechecks
 - [engine-changelog-unreleased](engine-changelog-unreleased.md) — engine change notes after the first release, with issue numbers
 - [engine-contributing-schedulable](engine-contributing-schedulable.md) — engine document: the property that makes a command safe to run unattended
+- [engine-watcher-readme](engine-watcher-readme.md) — engine document: what the Watcher watches, and the allowlist as shipped
 - [state-change-gates](state-change-gates.md) — engine document: every state-changing entry point against the three automation bands
 - [script-kb-verify](script-kb-verify.md) — header of the Verifier script
 - [script-kb-watch](script-kb-watch.md) — header of the Watcher script

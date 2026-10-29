@@ -14,7 +14,7 @@ keywords: [combination plan, thin agent, governed KB, reference design, proposal
 # Source: Combining the Governed Knowledge Base with a Thin-Agent Fleet — Implementation Plan
 
 - **Title:** Combining the Governed Knowledge Base with a Thin-Agent Fleet — Implementation Plan
-- **Author:** Dandy Taylor (with Q)
+- **Author:** the engine's maintainer (named in the artifact; not recorded here — this library is public), with Q
 - **Date:** 2026-09-18
 - **Date ingested:** 2026-09-19
 - **Artifact location:** `documents/knowledge-agent-architecture-combination-plan.md` (archived in this repository — evidence travels with the domain it was folded from)

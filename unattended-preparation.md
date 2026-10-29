@@ -63,11 +63,11 @@ Recheck: grep -qF 'TOOLS = "Read,Grep,Glob"' "$KB_ENGINE_ROOT/scripts/kb-prepare
 
 - a review packet waiting, and how to act on it;
 - each open queue item, by category and location;
-- rechecks that are due but marked `Recheck (attended):`, which only a person can run;
+- rechecks that are due but marked `Recheck (attended):`, which a scheduled run skips (see [[agent-lifecycle-roles]]);
 - a sweep that is due, or notes awaiting distillation, that no packet covers yet;
 - a library behind the contract or on one the engine cannot serve.
 
-A library with nothing to decide gets no section, and a week with nothing to decide gets one line. The file is written either way, so a quiet week can be told from a week the job did not run. It never holds a fact's, a source's or a packet's text: paths, counts, headings and ids only. `kb-due --nudge` names the latest report while it is under eight days old and lists decisions, so the person who opens a session is pointed at it.
+A library with nothing to decide gets no section, and a week with nothing to decide gets one line. The file is written either way, so a quiet week can be told from a week the job did not run. It never holds a fact's, a source's or a packet's text: paths, counts, headings and ids only. The session-start nudge points the person at the latest report; see [[agent-lifecycle-roles]].
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]]
 Verified: 2026-10-28 · by: agent · method: doc-review
@@ -76,7 +76,7 @@ Verified: 2026-10-28 · by: agent · method: doc-review
 
 Nothing runs unless the user installs it with `kb-schedule install`, and `kb-schedule remove` leaves no trace. The job is a systemd user timer on Monday at 07:00 that catches up a missed week at the next start, or a crontab line where there is no systemd. For every registered library it runs, in order:
 
-1. `kb-verify --yes --unattended` and `kb-sources --yes`, which only ever queue. Installing the schedule is the consent `--yes` asks for.
+1. `kb-verify --yes --unattended` (see [[agent-lifecycle-roles]]) and `kb-sources --yes`, which only ever queue. Installing the schedule is the consent `--yes` asks for.
 2. With `--prepare`, chosen at install, `kb-prepare distill` and `kb-prepare audit` under the dollar cap. It is a second opt-in because it is a model run that costs money.
 
 Then, once, it runs `check-xlinks --installed`, `kb-watch` on the allowlist chosen at install, and `kb-report`. It holds a lock, so runs never overlap, and its log records each step's exit code and nothing a step printed. A consumer who installs nothing sees no change.
@@ -98,9 +98,9 @@ A command is schedulable when it is safe to run from cron, a systemd timer or `k
 
 Each schedulable command is a regression case run from `/` with a stripped environment, against fixtures that carry a canary in the text a careless command would echo. The reason the property exists: one consumer's cron wrapper reported FAIL for every backup for a week because cron started it in `$HOME`. The failures came from the wrappers, which is why the engine owns the property.
 
-Meeting it changed some commands. `kb-watch` now exits 1 when a source drifted or was unreachable, where it exited 0 before, so a wrapper that read 0 as "ran" must accept 1. `kb-verify` shows a failed assertion's output, and `kb-watch` shows old and new values, only at a terminal or with `--dry-run`. `kb-due` always exits 0, because it is a reminder and the session hook reads any other exit as a failure.
+`kb-watch`'s exit codes, and the old and new values it shows only at a terminal or with `--dry-run`, are in [[agent-lifecycle-roles]]. `kb-verify` shows a failed assertion's output only at a terminal. `kb-due` always exits 0, because it is a reminder and the session hook reads any other exit as a failure.
 
-Source: [[engine-contributing-schedulable]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-watch]] · [[engine-changelog-unreleased]]
+Source: [[engine-contributing-schedulable]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-watch]] · [[script-kb-verify]] · [[engine-changelog-unreleased]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## A backup is verified by restoring it

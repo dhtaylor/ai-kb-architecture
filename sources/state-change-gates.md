@@ -18,5 +18,6 @@ keywords: [state change, gate, automation band, mutation, check-blast, curation 
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-10-02
 - **Artifact location:** `ai-kb:documents/state-change-gates.md`, read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** at engine commit `d16b78c` on 2026-10-28, with the engine's `main` at that commit: the inventory table gained rows for the library registry, scheduling, preparation, reporting, backup, telemetry and sampling scripts, `kb-verify` gained its unattended form, and the `check-blast` row names `UNCORROBORATED` markers. Nothing folded from it changed, and the per-entry-point table is still not folded.
 
 The engine's classification of each script, command and skill by what it changes and what gates it. Folded from it: that a skill's stop-for-approval is a request a model honours rather than a wall, that flag-gated scripts are checked by the interpreter, how the high-blast gate behaves on a pull request versus a direct push, and that the 2-reviewer rule is dormant. Not folded: the per-entry-point table, which describes this deployment's inventory and will go stale as scripts change.

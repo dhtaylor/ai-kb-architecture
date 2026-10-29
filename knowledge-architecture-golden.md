@@ -33,11 +33,14 @@ quoting, transcript and wrong-corpus lessons in retrieval-eval-integrity), and b
 2026-10-28 (releases-and-contract-versioning, unattended-preparation and retrieval-agent-behavior, the
 unattended Verifier, the Watcher exit codes and kb-sources request sequence, the redaction filter, the
 regression suite's git environment, the grader's contamination and attribution rules, and the retrieval
-cost and sample tooling). Cross-root case: included — the
-domain holds two cross-library references into claude-code-runtime, one from design-thesis
-(`[[claude-code-runtime:behaviour-loading]]`) and one from guardrail-verification
-(`[[claude-code-runtime:config-resolution]]`), and a `cross-root` record below tests each. Unresolved
-case: **not applicable** — nothing in the domain today carries `status: CONFLICTED`, so a genuine
+cost and sample tooling).
+
+Cross-root case: included — the domain holds three cross-library references into claude-code-runtime:
+the scope line of the root router (`[[claude-code-runtime:behaviour-loading]]`), design-thesis
+(`[[claude-code-runtime:behaviour-loading]]`) and guardrail-verification
+(`[[claude-code-runtime:config-resolution]]`). Two `cross-root` records below test the hops from
+design-thesis and from guardrail-verification; the scope line is routing signal and has no record of
+its own. Unresolved case: **not applicable** — nothing in the domain today carries `status: CONFLICTED`, so a genuine
 UNRESOLVED case cannot yet be written without fabricating a conflict. Add one the day a real
 contradiction lands.
 
@@ -47,10 +50,11 @@ contradiction lands.
   expected_file: design-thesis.md
   expected_excerpt: "separate knowledge from behavior, and let the behavior layer keep the knowledge layer honest"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the excerpt was a two-word label, which an answer can match without having read the file. It is now the sentence that says which role splits.
 - case: positive
   question: What are the three librarian roles that keep this kind of KB current, and which one splits into two?
   expected_file: agent-lifecycle-roles.md
-  expected_excerpt: "Curator (cataloguer)"
+  expected_excerpt: "more than one job, split by source of truth"
 
 - case: positive
   question: Is there an orchestrator that routes questions across libraries, and if not, what does the routing?
@@ -144,21 +148,23 @@ contradiction lands.
   expected_file: retrieval-eval-integrity.md
   expected_excerpt: "It now resolves a cited path to a file and still rejects a same-named file in another library"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the question asked about a rule the retrieval agent's own instructions state, so the agent could answer it without the library, and a Haiku run in the 2026-10-26 retest cited the contract instead of a library file. It now asks for a measured result only this library holds.
 - case: positive
-  question: What does an agent cite when it refuses to answer, and where does it say what it checked?
+  question: How did the second library's retrieval eval score across its four runs?
   expected_file: retrieval-eval-integrity.md
-  expected_excerpt: "so a refusal cites nothing and names what it checked in its text"
+  expected_excerpt: "went 9/16, 14/16, 11/16 and 15/16 across four runs"
 
 - case: positive
   question: Why did an agent that handled a disputed fact correctly still fail the eval?
   expected_file: retrieval-eval-integrity.md
   expected_excerpt: "still failed because the oracle expected the literal"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the alternative excerpt stated the amendment rule, a neighboring fact, and not the reason an oracle must not follow the agent. It now states that reason.
 - case: positive
   question: Why not add alternative excerpts to the oracle after each run's misses?
   expected_file: retrieval-eval-integrity.md
   expected_excerpt: "adding alternatives after each run would make the oracle follow the agent"
-  alt_excerpt: "An alternative added after results were seen is an amendment and is recorded as one"
+  alt_excerpt: "an oracle that follows the agent measures nothing"
 
 - case: positive
   question: Why did one agent refuse four answerable questions with confidence?
@@ -200,11 +206,12 @@ contradiction lands.
   expected_file: guardrail-verification.md
   expected_excerpt: "The fix that held was not another fix but a check"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the alternative excerpt said why such a scanner is worse than none, a neighboring fact, and not why it exited 0. It now states the cause in the scanner header's own words.
 - case: positive
   question: Why did a secret scanner print its findings and still exit 0?
   expected_file: guardrail-verification.md
   expected_excerpt: "so the counter it incremented lived in a subshell and was discarded"
-  alt_excerpt: "worse than no guardrail because it reads as protection"
+  alt_excerpt: "a pipeline component runs in a subshell, so a counter incremented there is discarded and the script would print findings while exiting 0"
 
 - case: positive
   question: Why would the first draft of the session-start nudge have been ignored?
@@ -216,10 +223,12 @@ contradiction lands.
   expected_file: agent-lifecycle-roles.md
   expected_excerpt: "took the hook from 0.06s to 3s"
 
+# Amended 2026-10-28, after the retrieval run and the audit: design-thesis held a second statement of the Verifier as built, and the 2026-10-26 routing retest failed this record because the agent answered from the home file and never read design-thesis. The owner decided to cut the copy to a pointer, so the record points at the home file and quotes its wording.
 - case: positive
   question: As built, does the Verifier query live systems to re-verify a fact?
-  expected_file: design-thesis.md
-  expected_excerpt: "re-runs an assertion the fact carries beside it"
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "and it does not query live systems"
+  alt_excerpt: "an assertion, not a query, where exit 0 means the fact still holds"
 
 - case: positive
   question: Which passes does check-secrets run, and does a hit in any one of them block?
@@ -276,10 +285,11 @@ contradiction lands.
   expected_file: guardrail-verification.md
   expected_excerpt: "found no engine and skipped its checks while exiting 0"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the record used the older cross-root form, which names a file in this library and checks only where the hop starts, and the 2026-10-26 retest found agents going straight to the other library as the question invites. It now names the answering file in the other library, as contract section 10 specifies, and asks for what that file states.
 - case: cross-root
-  question: Where is the shell-startup behaviour that made that hook skip its checks recorded?
-  expected_file: guardrail-verification.md
-  expected_excerpt: "The shell-startup behaviour itself is recorded in"
+  question: "The engine's pre-commit hook found no engine and skipped its checks when fired outside an interactive terminal. What second channel did the fix give hooks, and why did the engine path exported from the shell startup file not reach that hook?"
+  expected_file: claude-code-runtime:config-resolution.md
+  expected_excerpt: "returns early for non-interactive shells"
 
 - case: positive
   question: Has a GUI git client or IDE been tested against the engine hook?
@@ -301,10 +311,11 @@ contradiction lands.
   expected_file: guardrail-verification.md
   expected_excerpt: "the precedence rule has nothing to say"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the file no longer says "now" about the default, so the excerpt drops that word.
 - case: positive
   question: Does kb-bootstrap change a machine's configuration when run without an apply flag?
   expected_file: guardrail-verification.md
-  expected_excerpt: "It now reports and changes nothing unless given"
+  expected_excerpt: "reports and changes nothing unless given"
 
 - case: positive
   question: Why would a regression case that typed a literal date have failed by itself?
@@ -361,10 +372,11 @@ contradiction lands.
   expected_file: retrieval-eval-integrity.md
   expected_excerpt: "correct, grounded, cited answers failed whenever they paraphrased"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the question asked about a rule the retrieval agent's own instructions state, and a Haiku run in the 2026-10-26 retest cited the contract instead of a library file. It now asks for a measured result only this library holds.
 - case: positive
-  question: Why must a retrieval agent given no library list not search the engine's kb folder for libraries?
+  question: On its first grading, how did the first routing run graded from tool calls score, and what caused its failures?
   expected_file: retrieval-eval-integrity.md
-  expected_excerpt: "a partial set looks exactly like a complete one"
+  expected_excerpt: "scored 6/12 at first grading, and all six failures were one grader bug"
 
 # Boundary cases: owner-approved 2026-10-26
 
@@ -450,10 +462,11 @@ contradiction lands.
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the record duplicated the record above it, same file and same excerpt. It now tests when the opt-in schedule runs.
 - case: positive
-  question: "Does anything keep the libraries current unattended by default?"
+  question: "When does the opt-in schedule run, and what happens if the machine was off at that time?"
   expected_file: "unattended-preparation.md"
-  expected_excerpt: "Nothing runs unless the user installs it"
+  expected_excerpt: "a systemd user timer on Monday at 07:00 that catches up a missed week at the next start"
 
 - case: positive
   question: "Why can the headless preparation run not change a library?"
@@ -530,30 +543,35 @@ contradiction lands.
   expected_file: "retrieval-agent-behavior.md"
   expected_excerpt: "three trials of one question show the rule is followed for the question that failed"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the question asked about a procedure the retrieval agent's own instructions state, so the agent answered it without the library. It now asks for a threshold only this library holds.
 - case: positive
-  question: "How does the retrieval agent read a file once the routers have picked it?"
+  question: "How much must two libraries' keywords and tags overlap before registering the second one warns?"
   expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "read from that heading's line to the next heading at the same level or higher"
+  expected_excerpt: "warns when two libraries share at least 3 terms and those terms are at least a quarter of the smaller library's terms"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the question asked about a rule the retrieval agent's own instructions state. It now asks for what the sample taken after section reads began found about the disputed case.
 - case: positive
-  question: "When does the retrieval agent read a whole file instead of one section?"
+  question: "What did the sample taken after section reads began find about the disputed case?"
   expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "when two fit and it cannot tell which, or when the answer needs more than one section"
+  expected_excerpt: "a disputed section still refused, because the section read held its CONFLICTED marker"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the question asked about a rule the retrieval agent's own instructions state. It now asks for a measured result only this library holds.
 - case: positive
-  question: "Why is every search scoped to the library the routers chose?"
+  question: "In the section-read sample, two agents searched across the libraries' parent folder before reading a router. What did those searches match?"
   expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "because a search across every library reads text from libraries the question does not need"
+  expected_excerpt: "matched only the one library each needed, so neither case failed on it"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the question asked about a rule the retrieval agent's own instructions state. It now asks why the overlap test at registration needs a minimum count, a design reason only this library holds.
 - case: positive
-  question: "What does the retrieval agent do with a library whose scope line excludes the question?"
+  question: "Why does the overlap test at registration require at least 3 shared terms?"
   expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "It does not descend into a library whose line excludes the question's topic"
+  expected_excerpt: "the count of 3 stops two short lists matching on one word"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the record had already been reworded once after the retrieval run, and it still asked about a rule the retrieval agent's own instructions state. It now asks why a retrieval subagent's session context leaves out the due-nudge, a design reason only this library holds.
 - case: positive
-  question: "Does the scope-line rule cause the retrieval agent to fan out across libraries?"
+  question: "Why does the session context given to a retrieval subagent leave out the librarian's due-nudge?"
   expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "there is no fan-out across libraries"
+  expected_excerpt: "The librarian's due-nudge is left out, because it is for the person's session and not for a retrieval."
 
 - case: positive
   question: "Does the overlap warning when a library is added ever refuse the registration?"
@@ -575,10 +593,11 @@ contradiction lands.
   expected_file: "retrieval-agent-behavior.md"
   expected_excerpt: "A library on an unsupported contract major is one such case"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the file no longer says the agent was right about the record, because the eval record does not say so. The record asks why the two graders disagreed, which the eval record does state.
 - case: positive
-  question: "An agent answered a question the library cannot answer by reading an engine decision record. Which of its beliefs was wrong?"
-  expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "The answering agent was right about the record and wrong about the knowledge base"
+  question: "An agent answered a question the library cannot answer by reading an engine decision record. Why did grade-eval fail the case while the routing grader passed it?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "because that grader did not count a read outside every registered library"
 
 - case: positive
   question: "Could the first sample taken after section reads began measure the token saving?"
@@ -660,10 +679,11 @@ contradiction lands.
   expected_file: "retrieval-eval-integrity.md"
   expected_excerpt: "A random sample can miss what a reshape changed"
 
+# Amended 2026-10-28, after the retrieval run and the audit: the excerpt carried backticks, which contract section 10 forbids in an excerpt, and the not-served rationale beside it was a second copy of the one in releases-and-contract-versioning, now cut to a pointer. The record asks for the fifth state, which design-thesis defines in plain text.
 - case: positive
-  question: "What states can a registered library be in, beyond missing, not a library and name mismatch?"
+  question: "A registered library can be ok, missing, not a library or a name mismatch. What is the fifth state?"
   expected_file: "design-thesis.md"
-  expected_excerpt: "`ok`, `missing`, `not-a-library`, `name-mismatch` or `unsupported-contract`"
+  expected_excerpt: "a library whose declared contract version names a major the engine does not support, or cannot be read"
 
 - case: positive
   question: "What ties a library to the engine's rules, if not a pin on the engine?"

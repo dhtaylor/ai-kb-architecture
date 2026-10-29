@@ -39,6 +39,8 @@ A routing grader that decides contamination by pattern fails a compliant agent a
 
 Two more defects came from the grader reading the tool's output format as if it carried more than it does. When a Grep's path is a single file, ripgrep omits the file name from content lines, so no result line named a file and the grader could not tell which library the content came from. Such a result is now attributed to that file, and counts as content from that library and not as a Read of the file. And content-mode lines were split at the first digits between separators, so a `-<digits>-` segment inside a path, such as a session UUID in a checkout path, truncated the path: they are now split at the first extension followed by a line number.
 
+The grader also fails a case with an off-KB read: a Read, or a content-mode Grep result, of a file in no registered library, with the contract itself exempt because the session context tells the agent to load it. A read in an unregistered library is off-KB too. The check was added after an agent answered a question the library cannot answer from an engine decision record: `grade-eval` failed the case while the routing grader passed it, because that grader did not count a read outside every registered library.
+
 Source: [[script-grade-routing]] · [[engine-changelog-unreleased]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 Recheck: grep -qF 'documents/eval-[^/]*' "$KB_ENGINE_ROOT/scripts/grade-routing"
@@ -105,12 +107,12 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 A behavioural eval of a skill over a library used six cases from a graded corpus, three of them clean controls with a gold key. Flawed products passed 3/3 and clean controls failed 0/3 in rounds 3 and 4: every control drew two or three findings. Editing the rule text did not converge, because each wording change moved the false positives rather than removing them. A structural change (load library files only when a surviving finding needs one) was tested and also scored 3/6.
 
-The tell was that independent reviewers under three versions of the skill converged on the same specific issues in each control, which is not a checklist effect. Either the reviewers' bar sat below the corpus author's, or the controls were less clean than their keys said. The owner read the seven recurring findings against the quoted passages and judged all seven real weaknesses. The gold key was amended post hoc, with the original kept and the amendment recorded, and against the amended key rounds 3 and 4 each score 6/6. The recorded grades stay against the original key. The amendment had one adjudicator reading findings framed by the agent that ran the eval, so a second reader would make it sturdier.
+The tell was that independent reviewers under three versions of the skill converged on the same specific issues in each control, which is not a checklist effect. Either the reviewers' bar sat below the corpus author's, or the controls were less clean than their keys said. The owner read the seven recurring findings against the quoted passages and judged all seven real weaknesses. The gold key was amended post hoc, with the original kept and the amendment recorded, and against the amended key rounds 3 and 4 each score 6/6. A fifth round, on the library rebuilt from primary sources, scored the same: 3/6 against the original key and 6/6 against the amended one. The recorded grades stay against the original key. The amendment had one adjudicator reading findings framed by the agent that ran the eval, so a second reader would make it sturdier.
 
 What generalises: a clean control is a claim, and it needs the same scrutiny as a planted flaw. When independent reviewers converge on the same "false positive", check the key before the reviewer.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.17) · [[eval-2026-09-26-intelligence-analysis-skill]] · ai-kb@889ab0b
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## One trial per case shows direction, not frequency
 
@@ -123,7 +125,7 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## A golden set that never asks across the boundary does not test where routing fails
 
-The engine's issue proposing boundary cases records that the routing failures that mattered were questions near the line between two libraries, and that the evals barely tested that line, since only a handful of cases were `cross-root`. A boundary case is a question whose wording fits a neighboring library but whose answer lives in the library being tested. The stated rule is two to four per library, written by someone who has not seen the routers' wording, and the stated acceptance is at least two per library with `check-golden` passing.
+The routing failures that mattered were questions near the line between two libraries, and a golden set with only a handful of `cross-root` cases barely tests that line. A boundary case is a question whose wording fits a neighboring library but whose answer lives in the library being tested. The rule is two to four per library, written by someone who has not seen the routers' wording, and at least two per library with `check-golden` passing.
 
 Source: [[issue-126-boundary-golden-cases]]
 Verified: 2026-10-28 · by: agent · method: doc-review
