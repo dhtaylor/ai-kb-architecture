@@ -15,14 +15,18 @@ keywords: [needs attention, queue, findings, drift, watcher, unreachable]
 
 Findings from automated drift checks and hygiene sweeps. Detection only — nothing here was fixed automatically. See CONVENTIONS.md §3 and plugins/knowledge-tools/skills/kb-audit/SKILL.md for the queue's conventions.
 
-kb-audit sweep 2026-10-02: 15 stale facts found, 10 raised (cap 10 per owner), 5 held back — the
-four `guardrail-verification.md` sections other than "Environment differences…" and both
-`secret-governance.md` sections, all stamped 2026-09-22 (10 days). The `secret-governance.md` fold
-has since re-verified both of its two held-back sections (2026-10-02: sources re-read, Recheck
-lines run), and fold c1 has re-verified all four `guardrail-verification.md` sections (2026-10-02:
-sources re-read, the one Recheck line run), so none remain held back. Every section in the library is
-`by: agent`; the domain horizon is 90d, so an agent stamp is stale after 9 days. No item has passed
-the 14-day escalation mark. Re-stamping without re-verifying is not a fix.
+kb-audit sweep 2026-10-28, run as the acceptance gate for the fold of the engine's changes since the
+sweep of 2026-10-16: no new item raised, and no item is open. The mechanical checks (`check-kb`,
+`check-scope`, `check-golden`, `check-xlinks --installed`) passed on the folded tree. The sweep found no
+section with a `Source:` and no stamp, and no stale section: the oldest stamp is 2026-10-12, and an agent
+stamp falls due after 30 days, on 2026-11-11. It found no orphan, no file listed by two routers, no routed
+golden set, no empty routed leaf, no `CONFLICTED` or `UNCORROBORATED` section (so the golden set needs no
+unresolved or uncorroborated case), and 8 topic files, below the flat threshold. The golden set has
+well-formed records with at least two negative cases and a cross-root case, and each excerpt was found in
+its expected file. Two episodic notes await distillation by the owner's decision; they are not a finding.
+Not covered by any check: whether each folded fact matches its source (a human diff), and the liveness of
+external `Source:` URLs. The items below are the earlier sweeps' records, all resolved, kept as the queue's
+history. Re-stamping without re-verifying is not a fix.
 
 ```yaml
 - id: 0ff2e48a

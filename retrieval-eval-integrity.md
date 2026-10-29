@@ -1,6 +1,6 @@
 ---
 name: retrieval-eval-integrity
-description: Why a retrieval eval can pass or fail for reasons that have nothing to do with the knowledge — an oracle the agent can reach, a grader that tests markup or strings or demands a quote nobody asked for, an oracle that follows the agent, discovery or a wrong corpus that fails silently, a protocol that moved between runs, a clean control nobody checked, and one trial per case — and how each was found.
+description: Why a retrieval eval can pass or fail for reasons that have nothing to do with the knowledge — an oracle the agent can reach, a grader that tests markup or strings or demands a quote nobody asked for, an oracle that follows the agent, discovery or a wrong corpus that fails silently, a protocol that moved between runs, a clean control nobody checked, one trial per case, a contamination rule broader or narrower than the contract, two readers of one record, and a golden set that never tests the boundary between neighboring libraries — and how each was found, and how retrieval cost and a sampled eval are measured from transcripts.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-02
 tags: [knowledge-architecture, retrieval, eval, golden-set]
-keywords: [retrieval eval, golden set, oracle, grader, grade-eval, grade-routing, transcripts, SubagentHandback, verbatim quote, exclusion glob, wrong corpus, library list unknown, contamination, alt_excerpt, alternative excerpt, negative case, clean control, gold key, post hoc amendment, protocol, trials, sample size, discovery, kb-retrieve, blind]
+keywords: [retrieval eval, golden set, oracle, grader, grade-eval, grade-routing, transcripts, SubagentHandback, verbatim quote, exclusion glob, wrong corpus, library list unknown, contamination, alt_excerpt, alternative excerpt, negative case, clean control, gold key, post hoc amendment, protocol, trials, sample size, discovery, kb-retrieve, blind, contamination definition, documents/eval, single-file Grep, ripgrep, YAML scalar, unquote, boundary case, neighboring library, kb-telemetry, kb-eval-sample, tokens, transcripts]
 ---
 # Retrieval eval integrity
 
@@ -33,6 +33,16 @@ result is now judged by the paths in its result alone. After the fix the run sco
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.8, §9.14, §9.15, §9.16) · [[eval-2026-09-28-intelligence-analysis-bakeoff]] · [[eval-2026-10-12-routing-run]] · [[script-grade-routing]] · ai-kb@48467fd
 Verified: 2026-10-16 · by: agent · method: doc-review
 
+## Contamination is what the contract forbids, no more and no less
+
+A routing grader that decides contamination by pattern fails a compliant agent as easily as it misses a violation. Contamination is what the retrieval contract forbids: reading or searching a golden set, or a path under a library's `documents/eval-*` folder. A first definition was broader: it matched a path component named `eval` or `evals`, or one starting with `eval` and a separator, so a routed citation stub under `sources/` named `eval-...` failed a case. The stub is a citation and not evidence. The grader now matches `-golden.md` files and `documents/eval-*` paths only.
+
+Two more defects came from the grader reading the tool's output format as if it carried more than it does. When a Grep's path is a single file, ripgrep omits the file name from content lines, so no result line named a file and the grader could not tell which library the content came from. Such a result is now attributed to that file, and counts as content from that library and not as a Read of the file. And content-mode lines were split at the first digits between separators, so a `-<digits>-` segment inside a path, such as a session UUID in a checkout path, truncated the path: they are now split at the first extension followed by a line number.
+
+Source: [[script-grade-routing]] · [[engine-changelog-unreleased]]
+Verified: 2026-10-28 · by: agent · method: doc-review
+Recheck: grep -qF 'documents/eval-[^/]*' "$KB_ENGINE_ROOT/scripts/grade-routing"
+
 ## A grader must test grounding, not formatting
 
 The first run scored 5/6 and both discrepancies were defects in the eval. An expected excerpt carried markdown emphasis, text that exists in a file and never in a spoken answer, so a correct, grounded answer failed on a pair of asterisks. Excerpts are now markup-free prose, matched with whitespace normalised.
@@ -41,6 +51,13 @@ The grader still confused punctuation with grounding afterwards. It failed escap
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.8, §9.15)
 Verified: 2026-10-12 · by: agent · method: doc-review
+
+## An oracle must have one reader
+
+Golden-set values are read as YAML scalars. A single-quoted excerpt, the natural way to write one holding `"` or `: `, was searched for with its quotes still on and could never match. Now `'…'` loses its quotes and reads `''` as `'`, `"…"` reads its escapes, and a plain value keeps a closing quote of its own. `grade-eval` imports `check-golden`'s reader instead of keeping a copy, so the two cannot drift apart again. No existing golden set read differently afterward.
+
+Source: [[engine-changelog-unreleased]] · [[script-grade-eval]]
+Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## A grader must resolve identity, and demand only what the contract requires
 
@@ -66,11 +83,11 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 ## Library discovery must be exact, and checked from tool calls
 
-An agent that has not been given the list of installed libraries must find them itself, and in the third run of one eval the first listing of `kb/*` was swamped by one library's `.git` objects. One agent concluded that library was the only one installed and refused four answerable questions with confidence. The contract now enumerates `kb/*/INDEX.md`, one router per library, which is exact (`ai-kb:CONVENTIONS.md` §3). The fourth run was checked from the agents' tool calls, not from what they said, and all four had used that glob.
+An agent that has not been given the list of installed libraries must find them itself, and in the third run of one eval the first listing of `kb/*` was swamped by one library's `.git` objects. One agent concluded that library was the only one installed and refused four answerable questions with confidence. Enumerating `kb/*/INDEX.md`, one router per library, was exact, and the fourth run was checked from the agents' tool calls, not from what they said: all four agents had used that glob.
 
 A wrong corpus fails the same way. An agent not told where the engine is could find some other knowledge tree instead: "a workspace can hold an older one, and an answer from it looks exactly like a correct one. That happened — 25 of 25 sub-agents answered from the wrong corpus, and nothing reported it." The agent now stops and answers `engine root unknown — not searched` when its context does not name the engine.
 
-Superseded 2026-10-16: the enumeration of `kb/*/INDEX.md` above was replaced when libraries became registered per machine. The agent treats the libraries its context lists as the complete set: "If your context names the engine but lists no libraries, stop and answer `library list unknown — not searched`." It never globs the engine's `kb/` for them, because "it would find only the libraries that happen to sit there, and a partial set looks exactly like a complete one."
+The enumeration was replaced when libraries became registered per machine (`ai-kb:CONVENTIONS.md` §3). The agent treats the libraries its context lists as the complete set: "If your context names the engine but lists no libraries, stop and answer `library list unknown — not searched`." It never globs the engine's `kb/` for them, because "it would find only the libraries that happen to sit there, and a partial set looks exactly like a complete one."
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · [[agent-kb-retrieve]] · [[adr-0014-library-registry]] · ai-kb@48467fd
 Verified: 2026-10-16 · by: agent · method: doc-review
@@ -103,3 +120,27 @@ The routing sample behind the decision not to build an orchestrator had the same
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.17) · [[eval-2026-09-28-intelligence-analysis-bakeoff]] · [[eval-2026-09-28-routing-sample]]
 Verified: 2026-10-12 · by: agent · method: doc-review
+
+## A golden set that never asks across the boundary does not test where routing fails
+
+The engine's issue proposing boundary cases records that the routing failures that mattered were questions near the line between two libraries, and that the evals barely tested that line, since only a handful of cases were `cross-root`. A boundary case is a question whose wording fits a neighboring library but whose answer lives in the library being tested. The stated rule is two to four per library, written by someone who has not seen the routers' wording, and the stated acceptance is at least two per library with `check-golden` passing.
+
+Source: [[issue-126-boundary-golden-cases]]
+Verified: 2026-10-28 · by: agent · method: doc-review
+
+## Cost is measured from transcripts already on disk, and a sample is graded from the same transcripts
+
+Claude Code records each subagent run as a transcript with a metadata file naming its agent type and description. `kb-telemetry` reads the `kb-retrieve` runs from those and reports, per library and window, the median of five measures:
+
+- **tokens:** new tokens, meaning input, cache-creation and output. One API message is logged in several records, so each message id is counted once. Cache reads are left out: they are the cheap re-reading of what is already cached, not new work;
+- **seconds:** from the run's first API response to the first read of a file the answer cites. The spawn is not the start, because its queue time would dominate;
+- **steps:** tool calls up to and including that read;
+- **wasted:** content files read that the answer does not cite;
+- **protocol:** reads of routers, contradictions, open-questions and queue files, counted apart from waste because the contract asks for them.
+
+A window with no runs still gets a row, because absence is a result, and windows are contiguous so a reshape of a library can be compared before and after. Eval runs are left out by their description. It is read-only and prints paths, counts and medians, never a question, an answer or a file's text.
+
+Normal use does not say whether answers were right, so `kb-eval-sample` draws a seeded sample of a library's positive and cross-root golden cases, has a person put each to a fresh agent, and grades the runs with `grade-routing` and `grade-eval --transcripts`, joining each case with its cost measured the same way. The agents must be spawned in a session started after the change being measured, so they run the current definition. A random sample can miss what a reshape changed, so `--cases` draws exactly the cases named, for a before-and-after comparison.
+
+Source: [[script-kb-telemetry]] · [[script-kb-eval-sample]]
+Verified: 2026-10-28 · by: agent · method: doc-review

@@ -1,6 +1,6 @@
 ---
 name: guardrail-verification
-description: Why a guardrail that is correct on the machine that wrote it can still fail on every other machine or catch nothing at all — defects found only by running or by a fresh reader, a bug that recurs, CI coverage, filename-pattern guards, regression-suite blind spots, a scanner that exits 0 after printing findings, a check skipped by ordering or by an unreadable setting, verification that does not survive a restructure, a contract that contradicts itself, backwards defaults, tests that pass for the wrong reason, and the difference between a clean sweep and a true fact.
+description: Why a guardrail that is correct on the machine that wrote it can still fail on every other machine or catch nothing at all — defects found only by running or by a fresh reader, a bug that recurs, CI coverage, filename-pattern guards, regression-suite blind spots, a scanner that exits 0 after printing findings, a check skipped by ordering or by an unreadable setting, verification that does not survive a restructure, a contract that contradicts itself, backwards defaults, tests that pass for the wrong reason, a regression suite that inherits the environment of the hook that runs it, and the difference between a clean sweep and a true fact.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-22
 tags: [knowledge-architecture, guardrails, ci, testing]
-keywords: [check-exec-bits, check-kb, regression suite, core.fileMode, PyYAML, kb-audit, kb-verify, blind spot, negative control, CI coverage, inspection, fresh reader, recurring defect, subshell counter, exit status, check-secrets, chained check, kb-init, kb-bootstrap, topology, restructure, obsolete, contract, precedence, default, --apply, literal date, test fixture]
+keywords: [check-exec-bits, check-kb, regression suite, core.fileMode, PyYAML, kb-audit, kb-verify, blind spot, negative control, CI coverage, inspection, fresh reader, recurring defect, subshell counter, exit status, check-secrets, chained check, kb-init, kb-bootstrap, topology, restructure, obsolete, contract, precedence, default, --apply, literal date, test fixture, GIT_DIR, GIT_INDEX_FILE, linked worktree, local-env-vars, core.bare, core.hooksPath, fixture isolation, XDG]
 ---
 # Guardrail verification
 
@@ -149,6 +149,25 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.18) · [[state-change-gates]] · ai-kb@cabe940
 Verified: 2026-10-12 · by: agent · method: doc-review
+
+## A regression suite run from a hook inherits the hook's repository environment
+
+Git sets `GIT_DIR`, `GIT_INDEX_FILE` and their kin for a hook, and does so for every commit made from a linked worktree. The engine's pre-commit hook runs the regression suite when a commit touches the scripts, so a suite started that way inherits those variables. Its fixture commands (`git init`, `git config`, registering a library, bootstrapping a machine) then act on the repository being committed to and not on their throwaway fixtures.
+
+The damage, observed on 2026-10-26 from a commit in a linked worktree that touched `scripts/`:
+
+- `core.bare = true` was written into the engine's shared git configuration, and the main checkout then failed with `fatal: this operation must be run in a work tree`.
+- `core.hooksPath` was rewritten to the library hook instead of the engine's, so every later commit in every worktree was rejected for "no INDEX.md".
+- Deletions of every file were staged in the committing worktree's index.
+- Two cases failed inside the hook that pass when the suite is run standalone.
+
+The configuration was restored by hand. Nothing showed on the machine that wrote the suite, because run standalone or in CI the suite has no such variables to inherit: only a commit from a linked worktree, through the hook, carried them in.
+
+The repair is at the top of the suite: unset every variable `git rev-parse --local-env-vars` lists, so each fixture runs against its own repository, plus a case that fails if any such variable survives into the suite. The same preamble clears the variables that move a per-user location away from `HOME` (`XDG_CONFIG_HOME` and its kin), because on a CI runner that sets one, a scheduler test's install landed in the runner's own configuration.
+
+Source: [[issue-127-run-checks-git-env]] · [[tests-run-checks]] · [[engine-changelog-unreleased]]
+Verified: 2026-10-28 · by: agent · method: doc-review
+Recheck: grep -qF 'unset $(git rev-parse --local-env-vars)' "$KB_ENGINE_ROOT/tests/run-checks"
 
 ## A test can pass for the wrong reason
 

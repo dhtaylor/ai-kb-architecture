@@ -17,7 +17,7 @@ keywords: [kb-due, nudge, cadence, sweep, session start]
 - **Author:** the engine's maintainer (named in the artifact; not recorded here — this library is public)
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-10-02
-- **Artifact location:** `ai-kb:scripts/kb-due` (docstring), read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Artifact location:** `ai-kb:scripts/kb-due` (docstring), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 - **Re-read:** at engine commit `720fcff` on 2026-10-16, for the fifth nudge category, unstamped sections, and its library list from the registry.
 
-Corroboration for cadence as built: a reminder reported where an agent is already standing, silent when nothing is due, never running an assertion.
+Corroboration for cadence as built: a reminder reported where an agent is already standing, silent when nothing is due, never running an assertion. Re-read 2026-10-28 for the packets and weekly report it names, the stale-fact and unstamped-source categories, the contract line, and the one-line summary for the person.

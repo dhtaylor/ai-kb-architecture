@@ -1,6 +1,6 @@
 ---
 name: agent-lifecycle-roles
-description: The three librarian roles that keep a governed KB operating (Curator, Research librarian, Fact-checker) and how the Verifier, Watcher and source-URL liveness check were built, why a domain may declare its own agent TTL, how mutation of the KB is governed (built, dormant and not-built controls), how the fact-checkers are tested, and why no orchestrator is built and how retrieval cost is bounded, and what the steady-state defaults taught (a nudge must be true when idle, a hook's cost, a routed queue).
+description: The three librarian roles that keep a governed KB operating (Curator, Research librarian, Fact-checker) and how the Verifier, Watcher and source-URL liveness check were built, why a domain may declare its own agent TTL, how mutation of the KB is governed (built, dormant and not-built controls), how the fact-checkers are tested, and why no orchestrator is built and how retrieval cost is bounded, what the steady-state defaults taught (a nudge must be true when idle, a hook's cost, a routed queue), and how cadence is surfaced to the person and may be prepared on an opt-in schedule.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, lifecycle, roles, governance, orchestrator]
-keywords: [curator, research librarian, fact-checker, verifier, watcher, kb-sources, URL liveness, agent_ttl, agent TTL, UNCORROBORATED, routing run, grade-routing, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note]
+keywords: [curator, research librarian, fact-checker, verifier, watcher, kb-sources, URL liveness, agent_ttl, agent TTL, UNCORROBORATED, routing run, grade-routing, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note, unattended, kb-schedule, review packet, systemMessage, summary line, Recheck (attended), --unattended, User-Agent, GET fallback, exit code]
 ---
 # Agent lifecycle roles
 
@@ -30,16 +30,15 @@ Three roles cover that lifecycle.
   (`--apply`, `--yes`) is the stronger form.
 - **Research librarian (fast access)** — the thin retrieval agents: load INDEX, descend, cite,
   answer. Read-only, on demand. The reference desk. As built it is one agent, `kb-retrieve`, which
-  serves every library rather than one worker per domain, and it declares `tools: Read, Grep, Glob`.
+  serves every library rather than one worker per domain, and it declares `tools: Read, Grep, Glob`. How it decides where to look is in [[retrieval-agent-behavior]].
 - **Fact-checker (currency)** — more than one job, split by source of truth:
   - **Internal / deployment truth** — updated by the **live systems themselves**. Kept current by
     the **Verifier**: re-runs a fact's own assertion, and reports a mismatch.
   - **External / general truth** (vendor behavior, regulation, platform features) — the world
     updates these. Kept current by the **Watcher**: monitors sources for change and flags drift.
 
-  *Superseded 2026-09-21:* the skills named here were renamed with a `kb-` prefix — they were
-  `organize-domain`, `update-domain`, `distill-episodic` and `meditate` when this was folded, and the
-  source it cites still uses those names.
+  The skills carry a `kb-` prefix. The plan this role comes from names them `organize-domain`,
+  `update-domain`, `distill-episodic` and `meditate`, and the source it cites still uses those names.
 
 ### The Verifier as built
 
@@ -64,7 +63,16 @@ resolve the entry, and nothing but a human does.
 Every run also reports assertions that cannot fail, statically and whether or not they are due: "a
 page grepped for a few words (its title or subject), or one (url, fragment) pair backing more than two
 sections or sections in several files." Each "passes while the page exists and tests nothing about its
-own claim". It is a warning, not a failure.
+own claim". It is a warning, not a failure. A short fragment that binds two runs of text, split by
+markup or, outside fixed-string matching, by regex syntax, tests a relation and not a title, so it is
+not reported, and an alternation counts as its weakest branch.
+
+The same script has an unattended form for a scheduled run: `--yes --unattended`. It skips every
+assertion marked `Recheck (attended):`, one that needs a login, a credential or a live system, and
+counts what it skipped. It runs every other assertion with an empty `HOME` and only `PATH`,
+`KB_ENGINE_ROOT` and proxy settings, so no cached login or exported credential is reachable, and an
+unmarked assertion that needs one fails rather than reaching it. It refuses `--apply`, so an
+unattended run can never restamp. Why a schedule exists at all is in [[unattended-preparation]].
 
 Why a domain may declare `agent_ttl: <N>d` in its root `INDEX.md`: across the 90–180d vendor-product
 band the ratio gives agent stamps 9–18 days, "which is shorter than the 30d default `sweep_interval`,
@@ -72,14 +80,7 @@ so every agent-verified section was stale at every sweep." The only lever had be
 moving it also lengthened human stamps. `check-kb` fails an `agent_ttl` that is not shorter than the
 horizon, "so the trust tier between agent and human stamps cannot be declared away".
 
-Superseded 2026-10-16: this section said agent stamps fall due at "a tenth of" the horizon. That ratio
-is now the default, and a domain may declare its own `agent_ttl`.
-
-Superseded 2026-10-02: the first text of this role said the Verifier "re-runs a fact against the
-live system, re-stamps `verified:`, flags mismatch", and the plan's testing criterion said a failed
-check must produce a `contradictions.md` flag. The decision recording the Verifier as built states
-the second plainly: the plan says a failed check becomes a `contradictions.md` flag, and the
-Verifier as built reports the failure and leaves the fact untouched.
+The plan's first text had the Verifier re-run a fact against the live system, re-stamp `verified:` and flag a mismatch, and had a failed check produce a `contradictions.md` flag. The decision recording the Verifier as built states the difference plainly: the plan says a failed check becomes a `contradictions.md` flag, and the Verifier as built reports the failure and leaves the fact untouched.
 
 ### The Watcher as built
 
@@ -89,7 +90,11 @@ network module, and a regression case enforces that. Because no model is in the 
 never reaches one: the snapshot is read as bytes, stripped to plain text with the standard library
 only, matched against an operator-authored regex, and the matched value is written to a queue entry
 as escaped, truncated data — never as an instruction. A missing, empty or unreadable snapshot is an
-`unreachable` finding, never folded into "unchanged".
+`unreachable` finding, never folded into "unchanged". It exits 0 when no source drifted or was
+unreachable, 1 when any did, and 2 on a configuration error, so a scheduled wrapper can tell a clean
+run from findings. Old and new values are printed only at a terminal or under `--dry-run`, so an
+unattended run's log holds no source text, and the queue and router are written by replacing the file
+in one rename, so a session reading the library at the same moment never sees a half-written file.
 
 Status: not built — live fetching. It remains the later, isolated step the plan describes, and an
 isolated fetcher was declined for now; adding one is a separate decision with its own security
@@ -106,11 +111,18 @@ Status: built — a third writer, `kb-sources`, which asks whether the external 
 cite still resolve. It reuses the Watcher's queue primitives as the Verifier does. Its three rules:
 "NOTHING IS FETCHED WITHOUT --yes"; "DETECTION ONLY. A dead URL never edits a fact, never edits a
 stub, and never marks a section `provenance: BROKEN`"; and "A HUMAN TRIAGES", so a URL that comes
-back alive does not resolve its entry. A 404 or 410 is `dead`; anything it cannot decide is
-`unreachable`, never conflated with dead.
+back alive does not resolve its entry. It sends one HEAD request per URL. On any HTTP error except
+429 it sends a GET, and the GET's answer decides, because some servers mishandle HEAD: a server that
+answers HEAD with 400, 404 or 500 and serves GET is not queued as unreachable. A source is `dead`
+only when the GET answers 404 or 410. A 403 to the tool's own User-Agent is retried once with
+Python's default User-Agent, whose answer decides, because some servers refuse a client that names
+itself: a government site served two published standards to every client but that one, and two live
+sources were queued as unreachable on the first scheduled run. Nothing impersonates a browser, and a
+server that refuses every client stays unreachable. Anything it cannot decide is `unreachable`,
+never conflated with dead.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[script-kb-watch]] · [[script-kb-sources]]
-Verified: 2026-10-16 · by: agent · method: doc-review
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[script-kb-watch]] · [[script-kb-sources]] · [[engine-changelog-unreleased]]
+Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## Watcher safety design
 
@@ -201,21 +213,32 @@ removes an inline `status: UNCORROBORATED` marker, which "serves a one-source cl
   as written means either claiming controls that do not exist or blocking on conditions that cannot
   be met; the recorded response is to say what each control enforces beside the control, and to name
   what adding a collaborator reopens.
-- **Cadence is surfaced, not scheduled.** Status: built. `kb-audit` and `kb-distill` both need an
-  agent and a human decision, so they are not run unattended. The session-start hook calls
-  `kb-due --nudge`, which reports only what is due, per library: a sweep; facts due for recheck,
-  counted with `kb-verify`'s own staleness logic and never executing an assertion; open queue items;
-  episodic notes awaiting distillation; and unstamped sections, those that cite a `Source:` and carry
-  no `Verified:` stamp, because "§7 ranks unknown ahead of stale, and until now only a sweep surfaced
-  them". It prints nothing when nothing is due, and never prompts
-  or writes. "Scheduled" here means "surfaced when due". A cloud routine and a local cron job were
-  both considered and declined, because each runs without the owner watching. Consequence stated by
-  the decision: nothing happens unless a session starts, so a library nobody opens goes unswept and
-  nobody is told — acceptable for one person who works in these repositories daily, and the first
-  thing to revisit if the libraries gain readers who are not maintainers.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phases 4 and 5, §9.18) · [[knowledge-agent-architecture-combination-plan]] (§5A, §2) · [[adr-0002-governance-without-enforcement]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[state-change-gates]] · [[script-check-blast]] · [[script-kb-owner]] · [[script-kb-due]]
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phases 4 and 5, §9.18) · [[knowledge-agent-architecture-combination-plan]] (§5A, §2) · [[adr-0002-governance-without-enforcement]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[state-change-gates]] · [[script-check-blast]] · [[script-kb-owner]]
 Verified: 2026-10-16 · by: agent · method: doc-review
+
+## Cadence is surfaced at session start, and may be prepared on a schedule
+
+Surfacing is the baseline. The session-start hook calls `kb-due --nudge`, which reports only what is due, per library, and prints nothing when nothing is due. It never prompts or writes. It counts:
+
+- review packets awaiting a decision;
+- a sweep that is due;
+- facts due for recheck, counted with `kb-verify`'s own staleness logic and never executing an assertion;
+- open queue items;
+- episodic notes awaiting distillation;
+- unstamped sources, meaning `Source:` lines with no `Verified:` stamp of their own, because "§7 ranks unknown ahead of stale, and until now only a sweep surfaced them";
+- stale facts with no assertion, told apart from rechecks because `kb-verify --yes` cannot settle them, and not capped by `verifier_budget`, because the budget limits what runs and nothing runs these;
+- a library behind or ahead of the contract, or on one the engine cannot serve;
+- the latest weekly report, while it is under eight days old and lists decisions.
+
+The category of stale facts with no assertion exists because of a measurement: on 2026-10-16 the nudge printed nothing while 49 agent-stamped facts were past their TTL, since the recheck count covers only facts carrying a `Recheck:`, which most do not.
+
+**Surfacing works only if the person sees it.** The hook first put the nudge in `additionalContext`, which reaches the model and is not shown to the person, so the owner never saw one. `kb-due --nudge --summary` now also prints the nudge condensed to one line beginning `KB due — `, which the hook shows as its `systemMessage`; the full nudge still goes to the model. One run gives both, so they cannot disagree. An error message, such as a library that is not served, comes first. A subagent gets no nudge, and a `kb-due` that fails gives neither the line nor a partial nudge.
+
+**Where the schedule comes in.** The first decision on cadence declined every unattended run: a cloud routine and a local cron job were both declined because each runs without the owner watching, and the cloud routine would need credentials for private library repositories. Its stated consequence was that nothing happens unless a session starts, so a library nobody opens goes unswept and nobody is told, which it accepted for one person who works in these repositories daily. That consequence is what the opt-in schedule answers: it prepares the legwork and reports the decisions, and never edits a fact (see [[unattended-preparation]]). The cloud routine stays declined. The nudge, the queue routing and the offline Watcher stand.
+
+Source: [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-due]] · [[script-kb-session-start]]
+Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## Testing the fact-checkers
 
@@ -234,9 +257,9 @@ Neither fact-checker has a test story by default, yet each *decides truth*:
   decision recording this found it on contact — drafting the first assertions produced one that could
   not fail, because the shell it compared never read the file in question.
 
-Superseded 2026-10-02: the Verifier criterion first read "must produce a `contradictions.md` flag
-(not a false-fresh stamp)". The decision recording the Verifier as built replaced the flag with
-"reported, fact untouched"; the false-fresh-stamp half stands.
+The plan's Verifier criterion read "must produce a `contradictions.md` flag (not a false-fresh stamp)".
+The decision recording the Verifier as built replaced the flag with "reported, fact untouched"; the
+false-fresh-stamp half stands.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.18) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]]
 Verified: 2026-10-12 · by: agent · method: doc-review
@@ -285,10 +308,9 @@ every library before reading a router, and its search returned comment lines fro
 libraries' CI files, though it never opened a fact file there. The owner ruled that it counts as a
 failure, "which is what the routing check exists to catch", so the run scored 11/12.
 
-Superseded 2026-10-16: this section said libraries "are found by globbing `kb/*/INDEX.md`", as the
-no-orchestrator decision records. The registry decision removed that glob: once libraries can live
-anywhere, "it would find only some of them, and a partial list that looks complete is worse than
-none."
+The no-orchestrator decision records libraries as "found by globbing `kb/*/INDEX.md`". The registry
+decision removed that glob: once libraries can live anywhere, "it would find only some of them, and a
+partial list that looks complete is worse than none."
 
 The cost bound the orchestrator was specified to provide, kept from the plan:
 

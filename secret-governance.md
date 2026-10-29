@@ -1,6 +1,6 @@
 ---
 name: secret-governance
-description: Secret and personal-identifier governance — why rotation is not removal, why a pre-commit scan is not the enforcement boundary, what the engine's three-pass scan covers and cannot see, why raw artifacts archived in a library skip the bare-entropy rule and UTF-16 text is blocked, why capture refuses a note holding a credential, and the evidence a gate works.
+description: Secret and personal-identifier governance — why rotation is not removal, why a pre-commit scan is not the enforcement boundary, what the engine's three-pass scan covers and cannot see, why raw artifacts archived in a library skip the bare-entropy rule and UTF-16 text is blocked, why capture refuses a note holding a credential, how the redaction filter keeps a secret out of an unattended model's output, and the evidence a gate works.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, secrets, governance]
-keywords: [secret scan, pre-commit, archived artifact, schema dump, bare rule, UTF-16, UNSCANNED, rotation, history rewrite, git filter-repo, push protection, server-side gate, check-secrets, entropy, PII, personal identifier, allowlist, lint-allow, kb-capture, working tree, reference not value, blind trap test]
+keywords: [secret scan, pre-commit, archived artifact, schema dump, bare rule, UTF-16, UNSCANNED, rotation, history rewrite, git filter-repo, push protection, server-side gate, check-secrets, entropy, PII, personal identifier, allowlist, lint-allow, kb-capture, working tree, reference not value, blind trap test, redact, redaction filter, review packet, UNSCANNED, exit 2]
 ---
 # Secret governance
 
@@ -71,7 +71,7 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 "Put `lint-allow: <reason>` on a line to clear a legitimate match from all three." Standing identifiers — "role aliases, service accounts, team lists" — go in `pii-allowlist.txt` instead, "shared by every repo that runs this script". A credential hit is labelled `SECRET?` and a personal-identifier hit `PII?`; a `PII?` hit, the header says, needs no rotation: the fix is to remove the identifier.
 
-It has four modes: staged files (the default); `--worktree`, "tracked files AND untracked, non-ignored ones (retrieval reads the tree, tracked or not)"; `--file PATH`, one file through the same three passes; and `--all`, every blob in full git history and the worktree.
+It has four gate modes: staged files (the default); `--worktree`, "tracked files AND untracked, non-ignored ones (retrieval reads the tree, tracked or not)"; `--file PATH`, one file through the same three passes; and `--all`, every blob in full git history and the worktree. A fifth mode, `--redact`, is a filter and not a gate (below).
 
 The second pass has two rules. *Labelled*: a secret-ish label followed by `=` or `:` and a value of 8+ characters drawing on 3+ character classes. *Bare*: a single token of 16+ characters with a digit and 3+ classes including a symbol, or 20+ characters of mixed-case letters and digits, with Shannon entropy >= 3.5 bits/char (`-_.` count as glue, not symbols). It does not flag hex-only strings, URLs and paths, wiki-links and markdown links, ISO dates, hyphenated words and slugs, code, or placeholders.
 
@@ -80,13 +80,23 @@ The third pass has three rules: an email address; an uppercase domain-qualified 
 A `SECRET?` finding "shows its first three lines and says how many more there are".
 
 Source: [[script-check-secrets]] · [[script-secret-entropy]] · [[script-pii-scan]]
-Verified: 2026-10-16 · by: agent · method: doc-review
+Verified: 2026-10-28 · by: agent · method: doc-review
 
 The behaviour was also run once against synthetic input in a scratch directory: a labelled password, an email address, a home path and a domain-qualified account each blocked under `--file`; the same password line carrying `lint-allow: <reason>` passed; an untracked file holding the password was caught by `--worktree`.
 
 Source: [[script-check-secrets]]
 Verified: 2026-10-12 · by: agent · method: manual
 Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; p=Ab1#; printf 'k = AKIA%s\n' ABCDEFGHIJKLMNOP > "$t/a"; printf 'password = %s%s%s\n' "$p" "$p" "$p" > "$t/b"; printf 'mail a.person@%s\n' corp.invalid > "$t/c"; for f in a b c; do "$s/check-secrets" --file "$t/$f" >"$t/$f.out" 2>&1; [ $? -eq 1 ] || r=1; sed 's/$/ lint-allow: demo/' "$t/$f" > "$t/$f.ok"; "$s/check-secrets" --file "$t/$f.ok" >/dev/null 2>&1 || r=1; done; grep -q 'SECRET?' "$t/a.out" && grep -q 'SECRET?' "$t/b.out" && grep -q 'PII?' "$t/c.out" || r=1; rm -rf "$t"; exit $r
+
+## A redaction filter keeps a secret out of an unattended model's output
+
+`check-secrets --redact` is a filter and not a gate: standard input to standard output. Every line any of the three passes flags is replaced by `[redacted: secret]` or `[redacted: personal identifier]`, a count goes to standard error, and the matched text appears nowhere. It exists because unattended preparation produces review packets that quote notes and sources, and an episodic note can hold a credential: the packet body is filtered before it is saved (see [[unattended-preparation]]).
+
+Two choices make it safe to put in front of a model's output. `lint-allow` exempts nothing in filtered text, because in text being filtered it is just more input, so a line that announces its own exemption is still redacted. And a failure to scan never passes text through: the filter exits 2 with no output when the input cannot be scanned (UTF-16, binary, or a pass that failed), so a caller holds the input rather than passing it on unscanned. Exit 0 means nothing was redacted and exit 1 means something was, with the output still safe to keep. The gate modes are unchanged.
+
+Source: [[script-check-secrets]] · [[engine-changelog-unreleased]] · [[adr-0017-unattended-preparation-attended-decisions]]
+Verified: 2026-10-28 · by: agent · method: doc-review
+Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; p=Ab1#; printf 'ok line\npassword = %s%s%s lint-allow: demo\n' "$p" "$p" "$p" > "$t/in"; "$s/check-secrets" --redact < "$t/in" > "$t/out" 2>/dev/null; [ $? -eq 1 ] || r=1; grep -qxF '[redacted: secret]' "$t/out" && ! grep -q 'Ab1#' "$t/out" || r=1; printf '\377\376a\000b\000\n' | "$s/check-secrets" --redact > "$t/u" 2>/dev/null; [ $? -eq 2 ] && [ ! -s "$t/u" ] || r=1; rm -rf "$t"; exit $r
 
 ## Raw artifacts archived in a library
 
