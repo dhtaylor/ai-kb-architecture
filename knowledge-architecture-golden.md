@@ -606,6 +606,21 @@ contradiction lands.
   expected_excerpt: "the matched text appears nowhere"
 
 - case: positive
+  question: "Why did the regression suite change a shared repository's configuration when run from a commit in a linked worktree?"
+  expected_file: "guardrail-verification.md"
+  expected_excerpt: "then act on the repository being committed to and not on their throwaway fixtures"
+
+- case: positive
+  question: "How was the regression suite's inherited git environment repaired?"
+  expected_file: "guardrail-verification.md"
+  expected_excerpt: "so each fixture runs against its own repository"
+
+- case: positive
+  question: "Why did nothing show on the machine that wrote the suite when its fixtures aimed at the wrong repository?"
+  expected_file: "guardrail-verification.md"
+  expected_excerpt: "only a commit from a linked worktree, through the hook, carried them in"
+
+- case: positive
   question: "What states can a registered library be in, beyond missing, not a library and name mismatch?"
   expected_file: "design-thesis.md"
   expected_excerpt: "The fifth state is a library whose declared contract version names a major the engine does not support, or cannot be read"

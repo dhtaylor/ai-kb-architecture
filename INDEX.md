@@ -60,7 +60,8 @@ Not covered here: Claude Code runtime behaviour (settings, hooks, plugin loading
   unattended model's output, and the blind trap test
 - [guardrail-verification](guardrail-verification.md) — why a guardrail correct on the authoring
   machine can still fail everywhere else, or catch nothing at all: defects found only by running or by
-  a fresh reader, a bug that recurs, a scanner that exits 0 after printing findings
+  a fresh reader, a bug that recurs, a scanner that exits 0 after printing findings, a regression suite
+  that inherits the git environment of the hook that runs it
 - [retrieval-eval-integrity](retrieval-eval-integrity.md) — why a retrieval eval's score can mean
   nothing about the knowledge: a reachable oracle, a grader testing markup or strings, a grader
   demanding a quote nobody asked for, an oracle that follows the agent, a wrong or partial corpus, a
