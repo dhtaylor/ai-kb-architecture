@@ -65,7 +65,8 @@ Not covered here: Claude Code runtime behaviour (settings, hooks, plugin loading
 - [retrieval-eval-integrity](retrieval-eval-integrity.md) — why a retrieval eval's score can mean
   nothing about the knowledge: a reachable oracle, a grader testing markup or strings, a grader
   demanding a quote nobody asked for, an oracle that follows the agent, a wrong or partial corpus, a
-  moved protocol, a clean control nobody checked
+  moved protocol, a clean control nobody checked, a contamination rule that differs from the contract,
+  a golden set with no boundary cases, and how retrieval cost and a sampled eval are measured
 - [sources](sources/INDEX.md) — citation stubs for the artifacts these facts came from
 
 The library also holds `knowledge-architecture-golden.md` — the retrieval oracle — and `documents/`,

@@ -621,6 +621,46 @@ contradiction lands.
   expected_excerpt: "only a commit from a linked worktree, through the hook, carried them in"
 
 - case: positive
+  question: "What counts as contamination for the routing grader?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "Contamination is what the retrieval contract forbids"
+
+- case: positive
+  question: "Why could the routing grader not tell which library content came from when a Grep targeted a single file?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "ripgrep omits the file name from content lines"
+
+- case: positive
+  question: "Why could a golden excerpt written in single quotes never match?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "was searched for with its quotes still on and could never match"
+
+- case: positive
+  question: "Who should write boundary cases for a golden set?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "written by someone who has not seen the routers' wording"
+
+- case: positive
+  question: "Why does kb-telemetry count each message id once?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "One API message is logged in several records, so each message id is counted once."
+
+- case: positive
+  question: "Why does kb-telemetry leave cache reads out of new tokens?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "they are the cheap re-reading of what is already cached, not new work"
+
+- case: positive
+  question: "Why does kb-telemetry start its clock at the first API response and not at the spawn?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "because its queue time would dominate"
+
+- case: positive
+  question: "Why does kb-eval-sample accept an explicit list of cases?"
+  expected_file: "retrieval-eval-integrity.md"
+  expected_excerpt: "A random sample can miss what a reshape changed"
+
+- case: positive
   question: "What states can a registered library be in, beyond missing, not a library and name mismatch?"
   expected_file: "design-thesis.md"
   expected_excerpt: "The fifth state is a library whose declared contract version names a major the engine does not support, or cannot be read"
