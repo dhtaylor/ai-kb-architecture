@@ -103,7 +103,7 @@ unattended run's log holds no source text, and the queue and router are written 
 in one rename, so a session reading the library at the same moment never sees a half-written file.
 
 Status: not built — live fetching. It remains the later, isolated step the plan describes, and an
-isolated fetcher was declined for now; adding one is a separate decision with its own security
+isolated fetcher was declined; adding one is a separate decision with its own security
 review. The consequence stated for the built design: a watched source is only as fresh as its last
 saved snapshot, so the Watcher detects drift between two copies and does not notice that a copy has
 gone stale.
