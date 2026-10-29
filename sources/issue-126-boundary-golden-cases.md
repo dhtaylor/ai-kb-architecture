@@ -9,7 +9,7 @@ metadata:
   node_type: citation
   created: 2026-10-28
 tags: [knowledge-architecture, source]
-keywords: [golden set, boundary case, cross-library, neighbouring library, routing failure]
+keywords: [golden set, boundary case, cross-library, neighboring library, routing failure]
 ---
 # Source: ai-kb issue 126: golden sets: add cross-library boundary cases
 
@@ -19,4 +19,4 @@ keywords: [golden set, boundary case, cross-library, neighbouring library, routi
 - **Date ingested:** 2026-10-28
 - **Artifact location:** `ai-kb#126` (the issue description), read via the hosting platform's command-line client on 2026-10-28. The text is editable, not archived here: it is a public record in the engine's tracker.
 
-The engine's record of why boundary cases were added and what they are: questions whose wording fits a neighbouring library but whose answer is in the one being tested. Folded from it: that purpose and the stated authoring rule. The case counts it quotes are point-in-time and are not folded.
+The engine's record of why boundary cases were added and what they are: questions whose wording fits a neighboring library but whose answer is in the one being tested. Folded from it: that purpose and the stated authoring rule. The case counts it quotes are point-in-time and are not folded.

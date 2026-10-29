@@ -1,6 +1,6 @@
 ---
 name: knowledge-architecture-golden
-description: Golden retrieval set for the knowledge-architecture domain — routing and answer-grounding cases for design-thesis, agent-lifecycle-roles, secret-governance, guardrail-verification and retrieval-eval-integrity.
+description: Golden retrieval set for the knowledge-architecture domain — routing and answer-grounding cases for design-thesis, releases-and-contract-versioning, agent-lifecycle-roles, unattended-preparation, retrieval-agent-behavior, secret-governance, guardrail-verification, retrieval-eval-integrity and the open questions.
 memory_type: reference
 domain: knowledge-architecture
 scope: general
@@ -29,7 +29,11 @@ scanner that exited 0, the steady-state defaults, and the as-built Verifier note
 the second general-lessons fold, c2 (the guardrail lessons on silent skipping, topology, the contract, defaults and
 tests that pass for the wrong reason), and by the engine-sync fold of 2026-10-16 (the library registry and
 engine-owned hook, agent_ttl, kb-sources, archived artifacts and UTF-16 in the secret scan, and the
-quoting, transcript and wrong-corpus lessons in retrieval-eval-integrity). Cross-root case: included — the
+quoting, transcript and wrong-corpus lessons in retrieval-eval-integrity), and by the engine-sync fold of
+2026-10-28 (releases-and-contract-versioning, unattended-preparation and retrieval-agent-behavior, the
+unattended Verifier, the Watcher exit codes and kb-sources request sequence, the redaction filter, the
+regression suite's git environment, the grader's contamination and attribution rules, and the retrieval
+cost and sample tooling). Cross-root case: included — the
 domain holds two cross-library references into claude-code-runtime, one from design-thesis
 (`[[claude-code-runtime:behaviour-loading]]`) and one from guardrail-verification
 (`[[claude-code-runtime:config-resolution]]`), and a `cross-root` record below tests each. Unresolved
@@ -112,8 +116,8 @@ contradiction lands.
 
 - case: positive
   question: Are the knowledge-base sweeps and distillations run on a schedule unattended?
-  expected_file: agent-lifecycle-roles.md
-  expected_excerpt: "nothing happens unless a session starts"
+  expected_file: unattended-preparation.md
+  expected_excerpt: "Nothing runs unless the user installs it"
 
 - case: positive
   question: Is the two-reviewer, 24-hour rule for high-blast-radius facts enforced?
@@ -378,4 +382,191 @@ contradiction lands.
   question: "Since a git pre-commit hook can be skipped with --no-verify, where does the architecture say secret enforcement actually has to live?"
   expected_file: "secret-governance.md"
   expected_excerpt: "a pre-commit hook is bypassable with --no-verify, so the enforcement boundary is the server-side gate"
+
+# Engine-sync fold: owner-approved scope 2026-10-28
+
+- case: positive
+  question: "Why was the engine's first release numbered 0.2.0 and not 0.1.0?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "Tagging a release with that number would have given two different things one name."
+
+- case: positive
+  question: "What may be merged to main during the two days before a release?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "No code, check or contract change merges in that window."
+
+- case: positive
+  question: "If the release work finds a defect during the freeze, who decides what happens?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "A defect the release work finds in the window is the owner's call"
+
+- case: positive
+  question: "Does an engine release move the version a library's CI pins?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "an engine release moves no library's pin"
+
+- case: positive
+  question: "Does a library valid under an earlier minor of the contract stay valid when a new minor ships?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "A library valid under an earlier minor of the same major stays valid and stays served."
+
+- case: positive
+  question: "What contract version is a library read as when its root index declares none?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "A library that declares nothing is read as 2.0"
+
+- case: positive
+  question: "A library declares contract 2.0 and the engine adds a new rejection in 2.1. Does that library's check fail?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "gets a warning that names the rule and the version that brings it in, and its check still passes"
+
+- case: positive
+  question: "Why does the engine refuse to serve a library on an unsupported contract major instead of serving it with a warning?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "its markers may mean something this engine does not read"
+
+- case: positive
+  question: "How many contract majors does an engine support?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "An engine supports every minor of the current major and of the one before it"
+
+- case: positive
+  question: "Is migrating a library to contract 2.3 required?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "Nothing is required to migrate."
+
+- case: negative
+  question: "When is the engine's next release?"
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: negative
+  question: "Which contract version will the engine publish next?"
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: positive
+  question: "Does anything keep the libraries current unattended by default?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "Nothing runs unless the user installs it"
+
+- case: positive
+  question: "Why can the headless preparation run not change a library?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "It has no write, shell or network tool, so it cannot change a library or send what it reads anywhere."
+
+- case: positive
+  question: "Do kb-update-domain and kb-organize-domain have an unattended preparation step?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "and both stay fully attended"
+
+- case: positive
+  question: "Can an unattended preparation run produce a wrong review packet even though it cannot write?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "bounds what the model can do, not what it concludes"
+
+- case: positive
+  question: "Does the weekly report hold the text of any fact, source or packet?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "It never holds a fact's, a source's or a packet's text"
+
+- case: positive
+  question: "Why does the weekly report write a file even when nothing needs a decision?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "so a quiet week can be told from a week the job did not run"
+
+- case: positive
+  question: "What motivated the rule that a scheduled command must work from any directory?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "reported FAIL for every backup for a week"
+
+- case: positive
+  question: "Which actions stay attended whatever the schedule does?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "any fact edit without a person's approval are never automated"
+
+- case: positive
+  question: "Why is a backup bundle verified by restoring it and not by git's own bundle check?"
+  expected_file: "unattended-preparation.md"
+  expected_excerpt: "so a truncated bundle passes it"
+
+- case: negative
+  question: "What does the scheduled weekly preparation cost per month across all libraries?"
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: positive
+  question: "Is the engine's decision record part of the knowledge base the retrieval agent may answer from?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "The engine repository is not part of it."
+
+- case: positive
+  question: "How does the retrieval agent read a file once the routers have picked it?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "read from that heading's line to the next heading at the same level or higher"
+
+- case: positive
+  question: "When does the retrieval agent read a whole file instead of one section?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "when two fit and it cannot tell which, or when the answer needs more than one section"
+
+- case: positive
+  question: "Why is every search scoped to the library the routers chose?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "because a search across every library reads text from libraries the question does not need"
+
+- case: positive
+  question: "What does the retrieval agent do with a library whose scope line excludes the question?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "It does not descend into a library whose line excludes the question's topic"
+
+- case: positive
+  question: "Does a scope line make the retrieval agent search every library it names?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "It does not widen the search to every library it names"
+
+- case: positive
+  question: "Does the overlap warning when a library is added ever refuse the registration?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "It never changes the exit status and writes nothing."
+
+- case: positive
+  question: "Why does the overlap test measure against the smaller library's terms and not use Jaccard?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "because Jaccard hides a small library sitting inside a big neighbor's vocabulary"
+
+- case: positive
+  question: "Why does a retrieval subagent need a hook to be given the engine path?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "A subagent never sees the session-start context"
+
+- case: positive
+  question: "A registered library is not served and a question needs it. What does the agent say?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "the gap is a broken install and not missing knowledge"
+
+- case: positive
+  question: "An agent answered a question the library cannot answer by reading an engine decision record. Which of its beliefs was wrong?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "The answering agent was right about the record and wrong about the knowledge base"
+
+- case: positive
+  question: "Could the first sample taken after section reads began measure the token saving?"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "That sample could not measure the token saving"
+
+- case: negative
+  question: "How many tokens does reading a section instead of a whole file save per question?"
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: positive
+  question: "What states can a registered library be in, beyond missing, not a library and name mismatch?"
+  expected_file: "design-thesis.md"
+  expected_excerpt: "The fifth state is a library whose declared contract version names a major the engine does not support, or cannot be read"
+
+- case: positive
+  question: "What ties a library to the engine's rules, if not a pin on the engine?"
+  expected_file: "design-thesis.md"
+  expected_excerpt: "What ties a library to the engine's rules is the contract version it declares, not a pin on the engine's code"
 ```

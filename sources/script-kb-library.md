@@ -9,7 +9,7 @@ metadata:
   node_type: citation
   created: 2026-10-28
 tags: [knowledge-architecture, source]
-keywords: [kb-library, add, overlap, keywords, tags, neighbour, Not covered here]
+keywords: [kb-library, add, overlap, keywords, tags, neighbor, Not covered here]
 ---
 # Source: kb-library (script header and overlap comment)
 

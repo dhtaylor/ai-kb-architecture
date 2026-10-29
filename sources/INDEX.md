@@ -62,10 +62,11 @@ keywords: [sources, citations, stubs, provenance]
 - [pr-59-archived-artifacts](pr-59-archived-artifacts.md) — engine pull request: archived raw artifacts skip only the bare-entropy rule; UTF-16 is blocked as unscanned
 - [issue-5-distill-secrets-gate](issue-5-distill-secrets-gate.md) — engine issue: why consolidating a security finding is where a literal gets pasted
 - [issue-9-kb-capture-scan](issue-9-kb-capture-scan.md) — engine issue and decision: capture refuses, because retrieval reads the working tree
-- [issue-126-boundary-golden-cases](issue-126-boundary-golden-cases.md) — engine issue: golden cases at the boundary between neighbouring libraries
+- [issue-126-boundary-golden-cases](issue-126-boundary-golden-cases.md) — engine issue: golden cases at the boundary between neighboring libraries
 - [issue-127-run-checks-git-env](issue-127-run-checks-git-env.md) — engine issue: the regression suite aimed its fixtures at the repository being committed to
 - [issue-130-triage-and-specialist-retrieval](issue-130-triage-and-specialist-retrieval.md) — engine issue: a proposed design for retrieval as triage plus specialists; not built
 - [eval-2026-09-26-intelligence-analysis-skill](eval-2026-09-26-intelligence-analysis-skill.md) — engine evidence: the behavioural eval of a thin review skill, and the post hoc gold-key amendment
 - [eval-2026-09-28-intelligence-analysis-bakeoff](eval-2026-09-28-intelligence-analysis-bakeoff.md) — engine evidence: the blind head-to-head against the legacy skill
 - [eval-2026-09-28-routing-sample](eval-2026-09-28-routing-sample.md) — engine evidence: the 12-question routing sample behind ADR-0011
 - [eval-2026-10-12-routing-run](eval-2026-10-12-routing-run.md) — engine evidence: the second routing sample, graded from tool calls
+- [eval-2026-10-23-section-reads](eval-2026-10-23-section-reads.md) — engine evidence: the third routing sample, after section-targeted reads, and the off-KB answer it found

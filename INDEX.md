@@ -15,7 +15,7 @@ metadata:
   node_type: router
   created: 2026-09-19
 tags: [knowledge-architecture]
-keywords: [knowledge base, architecture, thin agent, retrieval contract, scoping, provenance, currency, lifecycle, guardrails, librarian, retrieval eval, golden set, oracle]
+keywords: [knowledge base, architecture, thin agent, retrieval contract, scoping, provenance, currency, lifecycle, guardrails, librarian, retrieval eval, golden set, oracle, release, contract version, kb_contract, unattended, review packet, schedule, section read, scope line, redact]
 ---
 # Knowledge architecture
 
@@ -33,12 +33,25 @@ Not covered here: Claude Code runtime behaviour (settings, hooks, plugin loading
 
 - [design-thesis](design-thesis.md) — why knowledge and behavior are separated, the
   knowledge-as-behavior anti-pattern, and the target layering (three repository kinds), including
-  why a library is installed by registration and carries no hook of its own
+  why a library is installed by registration and carries no hook of its own, and the states a
+  registered library can be in
+- [releases-and-contract-versioning](releases-and-contract-versioning.md) — how the engine is versioned
+  and released (semantic versioning, the two-day freeze), why the library contract has its own
+  MAJOR.MINOR version that a library declares, how rules apply by it, what a library behind, ahead or on
+  an unsupported major is told, what contract versions 2.0 to 2.3 each add, and why pinning is the
+  library owner's business
 - [agent-lifecycle-roles](agent-lifecycle-roles.md) — the Curator/Research-librarian/Fact-checker
   roles with the Verifier and Watcher as built, governance for KB mutation (built, dormant and
   not-built controls), the source-URL liveness check, why agent stamps may declare their own TTL,
   how the fact-checkers are tested, the steady-state defaults (silent when idle,
   cheap, routed), and why no orchestrator is built and how retrieval cost is bounded
+- [unattended-preparation](unattended-preparation.md) — why preparing knowledge work may run unattended
+  while deciding stays attended: review packets, why a headless run cannot write, the weekly report, the
+  opt-in schedule, what makes a command safe to schedule, the verified backup, and what is never automated
+- [retrieval-agent-behavior](retrieval-agent-behavior.md) — how the retrieval agent decides where to look:
+  what counts as the knowledge base and why the engine repository does not, section-targeted reads, why a
+  search is scoped to the routed library, how the scope line and the registration overlap warning separate
+  neighboring libraries, and how a subagent is given the library list
 - [secret-governance](secret-governance.md) — why rotating a leaked secret isn't removal, why a
   pre-commit scan isn't the enforcement boundary, what the three-pass secret and identifier scan
   covers and cannot see, why raw artifacts archived in a library skip one rule and UTF-16 is
