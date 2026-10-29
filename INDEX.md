@@ -56,7 +56,8 @@ Not covered here: Claude Code runtime behaviour (settings, hooks, plugin loading
 - [secret-governance](secret-governance.md) — why rotating a leaked secret isn't removal, why a
   pre-commit scan isn't the enforcement boundary, what the three-pass secret and identifier scan
   covers and cannot see, why raw artifacts archived in a library skip one rule and UTF-16 is
-  blocked, why capture refuses a note holding a credential, and the blind trap test
+  blocked, why capture refuses a note holding a credential, how the redaction filter keeps a secret out of an
+  unattended model's output, and the blind trap test
 - [guardrail-verification](guardrail-verification.md) — why a guardrail correct on the authoring
   machine can still fail everywhere else, or catch nothing at all: defects found only by running or by
   a fresh reader, a bug that recurs, a scanner that exits 0 after printing findings

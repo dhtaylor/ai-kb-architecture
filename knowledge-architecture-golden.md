@@ -591,6 +591,21 @@ contradiction lands.
   expected_excerpt: "fact not found — check KB"
 
 - case: positive
+  question: "Does lint-allow exempt a line from the redaction filter?"
+  expected_file: "secret-governance.md"
+  expected_excerpt: "because in text being filtered it is just more input"
+
+- case: positive
+  question: "What does the redaction filter do when it cannot scan its input?"
+  expected_file: "secret-governance.md"
+  expected_excerpt: "so a caller holds the input rather than passing it on unscanned"
+
+- case: positive
+  question: "Does the redaction filter print the text that matched?"
+  expected_file: "secret-governance.md"
+  expected_excerpt: "the matched text appears nowhere"
+
+- case: positive
   question: "What states can a registered library be in, beyond missing, not a library and name mismatch?"
   expected_file: "design-thesis.md"
   expected_excerpt: "The fifth state is a library whose declared contract version names a major the engine does not support, or cannot be read"
