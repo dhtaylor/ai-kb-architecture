@@ -383,7 +383,7 @@ contradiction lands.
   expected_file: "secret-governance.md"
   expected_excerpt: "a pre-commit hook is bypassable with --no-verify, so the enforcement boundary is the server-side gate"
 
-# Engine-sync fold: owner-approved scope 2026-10-28
+# Engine-sync fold 2026-10-28
 
 - case: positive
   question: "Why was the engine's first release numbered 0.2.0 and not 0.1.0?"
@@ -473,7 +473,7 @@ contradiction lands.
 - case: positive
   question: "Does the weekly report hold the text of any fact, source or packet?"
   expected_file: "unattended-preparation.md"
-  expected_excerpt: "It never holds a fact's, a source's or a packet's text"
+  expected_excerpt: "a fact's, a source's or a packet's text: paths, counts, headings and ids only"
 
 - case: positive
   question: "Why does the weekly report write a file even when nothing needs a decision?"
@@ -526,9 +526,9 @@ contradiction lands.
   expected_excerpt: "the nudge printed nothing while 49 agent-stamped facts were past their TTL"
 
 - case: positive
-  question: "Is the engine's decision record part of the knowledge base the retrieval agent may answer from?"
+  question: "After the rule on what the knowledge base is changed, how was it re-tested, and what does that re-test show?"
   expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "The engine repository is not part of it."
+  expected_excerpt: "three trials of one question show the rule is followed for the question that failed"
 
 - case: positive
   question: "How does the retrieval agent read a file once the routers have picked it?"
@@ -551,9 +551,9 @@ contradiction lands.
   expected_excerpt: "It does not descend into a library whose line excludes the question's topic"
 
 - case: positive
-  question: "Does a scope line make the retrieval agent search every library it names?"
+  question: "Does the scope-line rule cause the retrieval agent to fan out across libraries?"
   expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "It does not widen the search to every library it names"
+  expected_excerpt: "there is no fan-out across libraries"
 
 - case: positive
   question: "Does the overlap warning when a library is added ever refuse the registration?"
@@ -571,9 +571,9 @@ contradiction lands.
   expected_excerpt: "A subagent never sees the session-start context"
 
 - case: positive
-  question: "A registered library is not served and a question needs it. What does the agent say?"
+  question: "Which kind of registered library does the subagent hook give as an example of one that is not served?"
   expected_file: "retrieval-agent-behavior.md"
-  expected_excerpt: "the gap is a broken install and not missing knowledge"
+  expected_excerpt: "A library on an unsupported contract major is one such case"
 
 - case: positive
   question: "An agent answered a question the library cannot answer by reading an engine decision record. Which of its beliefs was wrong?"
@@ -663,12 +663,12 @@ contradiction lands.
 - case: positive
   question: "What states can a registered library be in, beyond missing, not a library and name mismatch?"
   expected_file: "design-thesis.md"
-  expected_excerpt: "The fifth state is a library whose declared contract version names a major the engine does not support, or cannot be read"
+  expected_excerpt: "`ok`, `missing`, `not-a-library`, `name-mismatch` or `unsupported-contract`"
 
 - case: positive
   question: "What ties a library to the engine's rules, if not a pin on the engine?"
-  expected_file: "design-thesis.md"
-  expected_excerpt: "What ties a library to the engine's rules is the contract version it declares, not a pin on the engine's code"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "Rules apply by the declared version."
 
 - case: positive
   question: "Is retrieval as triage plus specialists built?"
