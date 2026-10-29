@@ -41,10 +41,11 @@ Not covered here: Claude Code runtime behaviour (settings, hooks, plugin loading
   an unsupported major is told, what contract versions 2.0 to 2.3 each add, and why pinning is the
   library owner's business
 - [agent-lifecycle-roles](agent-lifecycle-roles.md) — the Curator/Research-librarian/Fact-checker
-  roles with the Verifier and Watcher as built, governance for KB mutation (built, dormant and
-  not-built controls), the source-URL liveness check, why agent stamps may declare their own TTL,
-  how the fact-checkers are tested, the steady-state defaults (silent when idle,
-  cheap, routed), and why no orchestrator is built and how retrieval cost is bounded
+  roles with the Verifier (and its unattended form) and Watcher as built, governance for KB mutation
+  (built, dormant and not-built controls), the source-URL liveness check and its request sequence, why
+  agent stamps may declare their own TTL, how the session-start nudge is built and reaches the person,
+  how the fact-checkers are tested, the steady-state defaults (silent when idle, cheap, routed), and why
+  no orchestrator is built and how retrieval cost is bounded
 - [unattended-preparation](unattended-preparation.md) — why preparing knowledge work may run unattended
   while deciding stays attended: review packets, why a headless run cannot write, the weekly report, the
   opt-in schedule, what makes a command safe to schedule, the verified backup, and what is never automated

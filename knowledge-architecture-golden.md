@@ -435,6 +435,11 @@ contradiction lands.
   expected_file: "releases-and-contract-versioning.md"
   expected_excerpt: "Nothing is required to migrate."
 
+- case: positive
+  question: "In a scheduled, unattended recheck, what happens to an unmarked assertion that needs a credential?"
+  expected_file: "agent-lifecycle-roles.md"
+  expected_excerpt: "unmarked assertion that needs one fails rather than reaching it"
+
 - case: negative
   question: "When is the engine's next release?"
   expected_file: ""
@@ -494,6 +499,31 @@ contradiction lands.
   question: "What does the scheduled weekly preparation cost per month across all libraries?"
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
+
+- case: positive
+  question: "What does kb-watch exit with when a source drifted or was unreachable?"
+  expected_file: "agent-lifecycle-roles.md"
+  expected_excerpt: "It exits 0 when no source drifted or was unreachable, 1 when any did, and 2 on a configuration error"
+
+- case: positive
+  question: "What does kb-sources do when a server answers 403 to its own User-Agent?"
+  expected_file: "agent-lifecycle-roles.md"
+  expected_excerpt: "A 403 to the tool's own User-Agent is retried once with Python's default User-Agent"
+
+- case: positive
+  question: "When does kb-sources class a source as dead?"
+  expected_file: "agent-lifecycle-roles.md"
+  expected_excerpt: "only when the GET answers 404 or 410"
+
+- case: positive
+  question: "Why did the session-start nudge not reach the person at first?"
+  expected_file: "agent-lifecycle-roles.md"
+  expected_excerpt: "which reaches the model and is not shown to the person"
+
+- case: positive
+  question: "Why does the nudge report stale facts with no assertion as their own category?"
+  expected_file: "agent-lifecycle-roles.md"
+  expected_excerpt: "the nudge printed nothing while 49 agent-stamped facts were past their TTL"
 
 - case: positive
   question: "Is the engine's decision record part of the knowledge base the retrieval agent may answer from?"
