@@ -53,7 +53,7 @@ The wrapper, not the model, writes the packet's header (the skill, the library, 
 
 The limit, stated by the decision: the read-only tool list bounds what the model can do, not what it concludes, so a packet can be wrong in ways that read as right. The packet shows each item's source excerpt beside it so the reviewer can check rather than trust. The review is the control.
 
-Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-prepare]] · [[engine-changelog-unreleased]]
+Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-prepare]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 Recheck: grep -qF 'TOOLS = "Read,Grep,Glob"' "$KB_ENGINE_ROOT/scripts/kb-prepare"
 
@@ -100,7 +100,7 @@ Each schedulable command is a regression case run from `/` with a stripped envir
 
 `kb-watch`'s exit codes, and the old and new values it shows only at a terminal or with `--dry-run`, are in [[agent-lifecycle-roles]]. `kb-verify` shows a failed assertion's output only at a terminal. `kb-due` always exits 0, because it is a reminder and the session hook reads any other exit as a failure.
 
-Source: [[engine-contributing-schedulable]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-watch]] · [[script-kb-verify]] · [[engine-changelog-unreleased]]
+Source: [[engine-contributing-schedulable]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-watch]] · [[script-kb-verify]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## A backup is verified by restoring it

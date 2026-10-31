@@ -85,7 +85,7 @@ horizon, "so the trust tier between agent and human stamps cannot be declared aw
 
 The plan's first text had the Verifier re-run a fact against the live system, re-stamp `verified:` and flag a mismatch, and had a failed check produce a `contradictions.md` flag. The decision recording the Verifier as built states the difference plainly: the plan says a failed check becomes a `contradictions.md` flag, and the Verifier as built reports the failure and leaves the fact untouched.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[engine-changelog-unreleased]]
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
 ### The Watcher as built
@@ -132,7 +132,7 @@ sources were queued as unreachable on the first scheduled run. Nothing impersona
 server that refuses every client stays unreachable. Anything it cannot decide is `unreachable`,
 never conflated with dead.
 
-Source: [[script-kb-sources]] · [[engine-changelog-unreleased]]
+Source: [[script-kb-sources]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## Watcher safety design

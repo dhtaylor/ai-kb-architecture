@@ -55,7 +55,7 @@ Routing fails at the boundary between neighboring libraries. When two or more li
 
 `kb-library add` helps an author find the neighbor before routing does. It compares the new library's root `keywords:` and `tags:` with every other registered library's, and warns when two libraries share at least 3 terms and those terms are at least a quarter of the smaller library's terms. Terms are normalized (lowercase, runs of space, underscore and hyphen read as one hyphen, a trailing plural `s` dropped), and each library's own domain name and a list of generic words are removed first. The test uses the overlap against the smaller set and not Jaccard, because Jaccard hides a small library sitting inside a big neighbor's vocabulary, which is the pair routing confuses, and the count of 3 stops two short lists matching on one word. The warning names the neighbor and the shared terms, suggests a `Not covered here` line in each root `INDEX.md` and a rerun of the routing sample, and never refuses. It never changes the exit status and writes nothing. `kb-create-domain` asks for the line when a library is created.
 
-Source: [[agent-kb-retrieve]] · [[script-kb-library]] · [[engine-changelog-unreleased]] · [[conventions-contract-versions]]
+Source: [[agent-kb-retrieve]] · [[script-kb-library]] · [[engine-changelog-v0.3.0]] · [[conventions-contract-versions]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## A retrieval subagent is given the engine and the library list by a hook

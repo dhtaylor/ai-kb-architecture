@@ -200,14 +200,9 @@ history. Re-stamping without re-verifying is not a fix.
   finding: "Not restamped. The paragraph records a one-off synthetic run of kb-capture (refusal leaves the tree byte-identical, --from file untouched, piped draft saved mode 0600 outside the tree, clean note filed). No cited source records that run, so it cannot be confirmed from sources. Re-run on 2026-10-12 against engine c668ccd, the refusal, exit 1, untouched tree, 0600 draft and clean filing were observed again; the owner decides whether to restamp with method manual."
   resolved: "2026-10-12 — owner-approved: the one-off synthetic-run paragraph was re-run against engine 7541729 in temp dirs (refusal exit 1, tree byte-identical, --from file untouched, piped draft saved mode -rw------- outside the tree, clean note filed), the commands and observed values are in the PR body, and it is re-stamped method manual; a Recheck assertion now defends it"
 
-```
-
-## Open items
-
-```yaml
 - id: 8846dbfc
   category: stale fact
-  status: open
+  status: resolved
   file: sources/engine-changelog-unreleased.md
   section: "Source: ai-kb CHANGELOG, section Unreleased"
   severity: 5
@@ -217,4 +212,9 @@ history. Re-stamping without re-verifying is not a fix.
   escalate: false
   date: 2026-10-28
   finding: "The stub pins the changelog's Unreleased section at engine commit d16b78c. When v0.3.0 is released that section becomes the v0.3.0 release section, and the heading the stub and the facts that cite it name no longer exists. After the release: re-pin the stub to tag v0.3.0, re-read the section it cites, re-stamp the facts that cite it, and rename the stub if its title no longer fits. Not done before the release: the section is still Unreleased, and the engine is frozen from 2026-10-29."
+  resolved: "2026-10-31 — after the v0.3.0 release: the stub is renamed engine-changelog-v0.3.0 and pinned to tag v0.3.0 (commit 6a779f3), and the 10 Source lines citing it updated. git diff d16b78c v0.3.0 -- CHANGELOG.md changes only the section heading and its two-line introduction; every entry is byte-identical and no fact cites the heading or introduction, so the citing sections keep their 2026-10-28 stamps rather than being re-stamped without their other sources re-read"
 ```
+
+## Open items
+
+None.
