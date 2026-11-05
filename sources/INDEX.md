@@ -28,7 +28,7 @@ keywords: [sources, citations, stubs, provenance]
 - [adr-0016-versioned-library-contract](adr-0016-versioned-library-contract.md) — engine decision: the library contract has its own MAJOR.MINOR version, a library declares it, and pinning is the library's business
 - [adr-0017-unattended-preparation-attended-decisions](adr-0017-unattended-preparation-attended-decisions.md) — engine decision: prepare unattended, decide attended, report weekly; amends ADR-0013
 - [conventions-contract-versions](conventions-contract-versions.md) — engine contract text: what each contract version adds, the scope line, attended rechecks
-- [engine-changelog-unreleased](engine-changelog-unreleased.md) — engine change notes after the first release, with issue numbers
+- [engine-changelog-v0.3.0](engine-changelog-v0.3.0.md) — engine change notes for v0.3.0, the changes after the first release, with issue numbers
 - [engine-contributing-schedulable](engine-contributing-schedulable.md) — engine document: the property that makes a command safe to run unattended
 - [engine-watcher-readme](engine-watcher-readme.md) — engine document: what the Watcher watches, and the allowlist as shipped
 - [state-change-gates](state-change-gates.md) — engine document: every state-changing entry point against the three automation bands

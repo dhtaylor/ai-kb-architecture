@@ -41,7 +41,7 @@ Two more defects came from the grader reading the tool's output format as if it 
 
 The grader also fails a case with an off-KB read: a Read, or a content-mode Grep result, of a file in no registered library, with the contract itself exempt because the session context tells the agent to load it. A read in an unregistered library is off-KB too. The check was added after an agent answered a question the library cannot answer from an engine decision record: `grade-eval` failed the case while the routing grader passed it, because that grader did not count a read outside every registered library.
 
-Source: [[script-grade-routing]] · [[engine-changelog-unreleased]]
+Source: [[script-grade-routing]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 Recheck: grep -qF 'documents/eval-[^/]*' "$KB_ENGINE_ROOT/scripts/grade-routing"
 
@@ -58,7 +58,7 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 
 Golden-set values are read as YAML scalars. A single-quoted excerpt, the natural way to write one holding `"` or `: `, was searched for with its quotes still on and could never match. Now `'…'` loses its quotes and reads `''` as `'`, `"…"` reads its escapes, and a plain value keeps a closing quote of its own. `grade-eval` imports `check-golden`'s reader instead of keeping a copy, so the two cannot drift apart again. No existing golden set read differently afterward.
 
-Source: [[engine-changelog-unreleased]] · [[script-grade-eval]]
+Source: [[engine-changelog-v0.3.0]] · [[script-grade-eval]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## A grader must resolve identity, and demand only what the contract requires
