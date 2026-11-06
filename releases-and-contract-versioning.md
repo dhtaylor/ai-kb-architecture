@@ -1,6 +1,6 @@
 ---
 name: releases-and-contract-versioning
-description: How the engine is versioned and released (semantic versioning, the two-day freeze, what a library release records) and why the library contract has its own MAJOR.MINOR version that a library declares, how rules apply by that version, what a library behind, ahead or on an unsupported major is told, what each contract version adds, and why pinning the engine is the library owner's business.
+description: How the engine is versioned and released (semantic versioning, the two-day freeze, what a library release records, and why the reference library takes the engine's release tag) and why the library contract has its own MAJOR.MINOR version that a library declares, how rules apply by that version, what a library behind, ahead or on an unsupported major is told, what each contract version adds, and why pinning the engine is the library owner's business.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-28
 tags: [knowledge-architecture, releases, contract, versioning]
-keywords: [release, semantic versioning, minor bump, patch, code freeze, freeze, pinning, kb_contract, contract version, MAJOR.MINOR, declared version, behind, ahead, unsupported major, unsupported-contract, last two majors, conformance suite, Not covered here, Recheck (attended), sources, documents, migration notes, ADR-0015, ADR-0016]
+keywords: [release, semantic versioning, minor bump, patch, code freeze, freeze, pinning, kb_contract, contract version, MAJOR.MINOR, declared version, behind, ahead, unsupported major, unsupported-contract, last two majors, conformance suite, Not covered here, Recheck (attended), sources, documents, migration notes, reference library, same tag, release package, release day, ADR-0015, ADR-0016, ADR-0019]
 ---
 # Releases and contract versioning
 
@@ -36,7 +36,7 @@ Verified: 2026-10-28 · by: agent · method: doc-review
 
 ## A library release records what it was verified against, and a correction does not wait for one
 
-A library is content, so a correction propagates when it lands, not at the next release. A library tag marks a known-good point, nothing more. A library's release notes name the contract version it conforms to, not an engine version.
+A library is content, so a correction propagates when it lands, not at the next release. A library tag marks a known-good point, nothing more. A library's release notes name the contract version it conforms to, not an engine version. The engine's reference library is the one exception: it takes the engine's release tag, below ([[adr-0019-engine-and-reference-library-release-together]]).
 
 Whether a library's CI pins the engine, to what, and when it moves is the library owner's decision. The engine neither requires nor tracks it, and an engine release moves no library's pin. The engine's CI template (`documents/library-guardrails.yml`) stays as an example and clones a release tag. ADR-0016 calls pinning a release tag a sensible default for unattended use, and whether to pin the library owner's choice.
 
@@ -44,6 +44,29 @@ This replaced an earlier rule that every library's CI pin the engine to a releas
 
 Source: [[adr-0015-releases-and-pinning]] · [[adr-0016-versioned-library-contract]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+## The reference library takes the engine's release tag
+
+This library is the one exception to a library versioning itself. It is, in essence, the engine's detailed documentation: how the engine works and why. It is folded from the engine before each release, so it describes one engine version, and it is tied to the engine in a way no other library is. Every other library is released separately and versions itself.
+
+Each engine release `vX.Y.Z` tags this library `vX.Y.Z` on the same day, at the library commit verified against that engine. The rule starts at v0.4.0 for both, so this library goes from v0.2.0 to v0.4.0, and no library v0.3.0 exists. Before it, the two never shared a number: engine v0.2.0 with library v0.1.0 on 2026-10-16, and engine v0.3.0 with library v0.2.0 on 2026-10-31.
+
+- **Published tags stay as they are.** Library v0.1.0 and v0.2.0 are not moved or renamed, because someone may have pinned them.
+- **The notes still name the engine.** This library's release notes say "verified against ai-kb vX.Y.Z" and name the library contract it declares. "A matching number does not replace that proof."
+- **A fix to this library alone waits for the next release.** It lands on `main` as usual, but it gets no tag of its own. An engine patch release `vX.Y.Z+1` tags this library too, even if the library has not changed.
+
+On release day the two-day freeze covers both repositories. The release script stops at the first step that fails:
+
+1. Preflight: both `main` branches are still the commits the fresh-clone check passed, neither repository has tag `vX.Y.Z` yet, both working trees are clean, and the release pull request is green with the checked commit as its head.
+2. Merge the engine's release pull request, and confirm the merged tree matches the checked head.
+3. Tag the engine `vX.Y.Z`, and publish its release from the changelog's `vX.Y.Z` section.
+4. Tag this library `vX.Y.Z` at its verified commit, with the message "verified against ai-kb vX.Y.Z", and publish its release from its library notes.
+5. Cross-link the two releases: the engine's notes name the library release, and the library's notes name the engine release.
+
+The decision states its costs. The library's number skips v0.3.0, which looks like a missing release to someone reading its tag list, and its v0.4.0 notes say why. A library-only fix has no release of its own. And the library's version number no longer says how much the library changed, so its changelog or release notes have to. It is to be revisited if this library ever needs a release the engine does not, or if a second library joins the release package.
+
+Source: [[adr-0019-engine-and-reference-library-release-together]]
+Verified: 2026-11-06 · by: agent · method: doc-review
 
 ## The contract has its own version, so the engine can tighten a rule without breaking a library
 

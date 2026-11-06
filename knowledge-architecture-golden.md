@@ -694,4 +694,19 @@ contradiction lands.
   question: "Is retrieval as triage plus specialists built?"
   expected_file: "knowledge-architecture-open-questions.md"
   expected_excerpt: "it is not built and not decided: retrieval as triage plus specialists"
+
+- case: positive
+  question: "Does the knowledge-architecture library get its own version number, or follow the engine's?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "on the same day, at the library commit verified against that engine"
+
+- case: positive
+  question: "Why is there no knowledge-architecture library v0.3.0?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "so this library goes from v0.2.0 to v0.4.0, and no library v0.3.0 exists"
+
+- case: positive
+  question: "When does a fix to the reference library alone get released?"
+  expected_file: "releases-and-contract-versioning.md"
+  expected_excerpt: "but it gets no tag of its own"
 ```
