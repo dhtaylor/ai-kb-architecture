@@ -27,6 +27,7 @@ keywords: [sources, citations, stubs, provenance]
 - [adr-0015-releases-and-pinning](adr-0015-releases-and-pinning.md) — engine decision: semantic versioning of the engine, the two-day freeze, what a library release records; its pinning section superseded by ADR-0016
 - [adr-0016-versioned-library-contract](adr-0016-versioned-library-contract.md) — engine decision: the library contract has its own MAJOR.MINOR version, a library declares it, and pinning is the library's business
 - [adr-0017-unattended-preparation-attended-decisions](adr-0017-unattended-preparation-attended-decisions.md) — engine decision: prepare unattended, decide attended, report weekly; amends ADR-0013
+- [adr-0019-engine-and-reference-library-release-together](adr-0019-engine-and-reference-library-release-together.md) — engine decision: this library takes the engine's release tag; the release-day steps for both repositories
 - [conventions-contract-versions](conventions-contract-versions.md) — engine contract text: what each contract version adds, the scope line, attended rechecks
 - [engine-changelog-v0.3.0](engine-changelog-v0.3.0.md) — engine change notes for v0.3.0, the changes after the first release, with issue numbers
 - [engine-contributing-schedulable](engine-contributing-schedulable.md) — engine document: the property that makes a command safe to run unattended
