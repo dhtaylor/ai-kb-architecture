@@ -8,7 +8,7 @@ freshness_horizon: 90d
 agent_ttl: 30d
 verifier_budget: 15
 sweep_interval: 30d
-kb_contract: "2.3"
+kb_contract: "2.4"
 last_swept: 2026-10-29
 metadata:
   type: index
