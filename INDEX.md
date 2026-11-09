@@ -8,7 +8,9 @@ freshness_horizon: 90d
 agent_ttl: 30d
 verifier_budget: 15
 sweep_interval: 30d
-kb_contract: "2.5"
+kb_contract: "2.6"
+links_to:
+  claude-code-runtime: https://github.com/dhtaylor/claude-code-runtime.git
 last_swept: 2026-10-29
 metadata:
   type: index
