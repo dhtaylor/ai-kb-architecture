@@ -102,18 +102,12 @@ distilled, so what it measured is not served here as a fact.
 
 Source: [[conventions-contract-versions]] · [[script-kb-library]]
 
-## Is retrieval below the reopen line of the no-orchestrator decision, and what replaces one agent doing triage and specialist work?
+## Will triage and specialists meet the review trigger that accepts them?
 
-The reopen line of the no-orchestrator decision is in [[agent-lifecycle-roles]], "Orchestrator cost bounds".
-Whether that line has been crossed is not established by any distilled source; the retest above is not
-distilled. One direction is proposed, and it is not built and not decided: retrieval as triage plus specialists. A triage
-step would read a compact catalog (each library's name, scope and `Not covered here:` line) instead of every
-router and name the likeliest library, or two if the question spans them. Each specialist would be confined to
-one library and either answer under the full retrieval contract or reply that the question is not its own.
-A merge step would keep a single answer, flag an overlap without picking a side, and pass citations through
-unchanged. No decision record supersedes the no-orchestrator decision in the sources read.
+This replaces, on 2026-11-09, the question whether retrieval was below the no-orchestrator decision's reopen line and what would replace one agent: ADR-0018 records that the line was crossed, and built a triage desk and specialists ([[retrieval-agent-behavior]]). It is **Proposed**. Its delivery plan still lists a rerun "with decoys that carry a `Not covered here:` line, at 6 and 48 libraries", and a measure of the entry point in normal use, where a rise in direct `kb-retrieve` runs "would show sessions bypassing the desk." No source read records either as done, so whether `kb-ask` routes at least 95% at 48 libraries with no answer from the wrong library is not established.
 
-Source: [[issue-130-triage-and-specialist-retrieval]] · [[adr-0011-no-orchestrator-until-routing-fails]]
+Source: [[adr-0018-triage-and-specialists]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Does the redaction filter cover what the scan cannot see?
 

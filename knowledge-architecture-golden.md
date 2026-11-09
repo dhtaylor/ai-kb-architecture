@@ -34,7 +34,8 @@ quoting, transcript and wrong-corpus lessons in retrieval-eval-integrity), and b
 unattended Verifier, the Watcher exit codes and kb-sources request sequence, the redaction filter, the
 regression suite's git environment, the grader's contamination and attribution rules, and the retrieval
 cost and sample tooling), and by the engine-sync fold of 2026-11-09 (contract versions 2.4 to 2.6,
-ADR-0020's links_to, dependency mismatches and read-only consumers).
+ADR-0020's links_to, dependency mismatches and read-only consumers), and by fold B of the same date
+(triage and specialists, the files-first search and stop rule, and the runs that found nothing).
 
 Cross-root case: **not applicable** — the domain links into no other library. It once linked into
 claude-code-runtime, which is not published, so a reader of the published library could not follow
@@ -691,10 +692,11 @@ contradiction lands.
   expected_file: "releases-and-contract-versioning.md"
   expected_excerpt: "Rules apply by the declared version."
 
+# Amended 2026-11-09, engine-sync fold B: triage and specialists are now built (ADR-0018, Proposed), and the open question this record pointed at was replaced. The question is unchanged; the answer moved to the file that now states it.
 - case: positive
   question: "Is retrieval as triage plus specialists built?"
-  expected_file: "knowledge-architecture-open-questions.md"
-  expected_excerpt: "it is not built and not decided: retrieval as triage plus specialists"
+  expected_file: "retrieval-agent-behavior.md"
+  expected_excerpt: "The default way to answer from the knowledge base is the `kb-ask` skill, a triage desk that runs in the main session"
 
 - case: positive
   question: "Does the knowledge-architecture library get its own version number, or follow the engine's?"
@@ -737,3 +739,29 @@ contradiction lands.
   question: Can a consumer pin a read-only library to a release tag with kb-library add --ref today?
   expected_file: releases-and-contract-versioning.md
   expected_excerpt: "Pinning is decided but not built"
+
+# Added 2026-11-09, engine-sync fold B: triage and specialists, files-first search, the stop rule, not-found runs.
+- case: positive
+  question: What does a kb-retrieve specialist answer when the question's topic is outside its library, and how does that differ from fact not found?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "`fact not found` means the topic is inside it and the library does not hold the fact"
+
+- case: positive
+  question: How many libraries will kb-ask consult for one question at most, and when does it ask a second?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "or for a question that needs facts from two libraries, never more than two"
+
+- case: positive
+  question: Did triage and specialists reach 95% routing at 48 libraries?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "`kb-ask` scored 83% and today's agent 79%"
+
+- case: positive
+  question: A question spans three libraries. How many library-wide searches may kb-retrieve make before it stops?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "three libraries do not get fifteen searches"
+
+- case: positive
+  question: Does kb-telemetry --not-found list the questions a specialist answered not mine?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "is a routing miss, not a gap, and is not listed"

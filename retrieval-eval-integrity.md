@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-02
 tags: [knowledge-architecture, retrieval, eval, golden-set]
-keywords: [retrieval eval, golden set, oracle, grader, grade-eval, grade-routing, transcripts, SubagentHandback, verbatim quote, exclusion glob, wrong corpus, library list unknown, contamination, alt_excerpt, alternative excerpt, negative case, clean control, gold key, post hoc amendment, protocol, trials, sample size, discovery, kb-retrieve, blind, contamination definition, documents/eval, single-file Grep, ripgrep, YAML scalar, unquote, boundary case, neighboring library, kb-telemetry, kb-eval-sample, tokens, transcripts]
+keywords: [not found, --not-found, not mine, retrieval eval, golden set, oracle, grader, grade-eval, grade-routing, transcripts, SubagentHandback, verbatim quote, exclusion glob, wrong corpus, library list unknown, contamination, alt_excerpt, alternative excerpt, negative case, clean control, gold key, post hoc amendment, protocol, trials, sample size, discovery, kb-retrieve, blind, contamination definition, documents/eval, single-file Grep, ripgrep, YAML scalar, unquote, boundary case, neighboring library, kb-telemetry, kb-eval-sample, tokens, transcripts]
 ---
 # Retrieval eval integrity
 
@@ -140,9 +140,18 @@ Claude Code records each subagent run as a transcript with a metadata file namin
 - **wasted:** content files read that the answer does not cite;
 - **protocol:** reads of routers, contradictions, open-questions and queue files, counted apart from waste because the contract asks for them.
 
-A window with no runs still gets a row, because absence is a result, and windows are contiguous so a reshape of a library can be compared before and after. Eval runs are left out by their description. It is read-only and prints paths, counts and medians, never a question, an answer or a file's text.
+A window with no runs still gets a row, because absence is a result, and windows are contiguous so a reshape of a library can be compared before and after. Eval runs are left out by their description.
 
 Normal use does not say whether answers were right, so `kb-eval-sample` draws a seeded sample of a library's positive and cross-root golden cases, has a person put each to a fresh agent, and grades the runs with `grade-routing` and `grade-eval --transcripts`, joining each case with its cost measured the same way. The agents must be spawned in a session started after the change being measured, so they run the current definition. A random sample can miss what a reshape changed, so `--cases` draws exactly the cases named, for a before-and-after comparison.
 
 Source: [[script-kb-telemetry]] · [[script-kb-eval-sample]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+### The runs that found nothing, and what it prints
+
+`kb-telemetry` also counts, per library, the runs that answered `fact not found`. The reason: "A topic a library never holds is cheap to refuse once its root `Not covered here:` line names it", and "one field A/B cut such a question from 16-23 turns to 3. Nothing else tells a librarian which topics those are." `--not-found` lists those runs by library, costliest first, each with the question it was asked and whether it hit the search limit ([[retrieval-agent-behavior]]). "A specialist's `not mine` is a routing miss, not a gap, and is not listed." A person decides what each one is: an absent topic for the line, or a fact the library should hold. The weekly report carries one line for them; see [[unattended-preparation]].
+
+It is read-only. "By default it prints paths, counts and medians, never a question, an answer or a file's text." `--not-found` prints the question of each such run on one line, read from transcripts already on the machine, and never an answer or a file's text. Before `--not-found` was added on 2026-11-07, no mode printed a question.
+
+Source: [[script-kb-telemetry]]
+Verified: 2026-11-09 · by: agent · method: doc-review

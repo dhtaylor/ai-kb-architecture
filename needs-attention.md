@@ -31,6 +31,21 @@ external `Source:` URLs. The items below are the earlier sweeps' records, all re
 history. Re-stamping without re-verifying is not a fix.
 
 ```yaml
+- id: 7949faa6
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Is retrieval below the reopen line of the no-orchestrator decision, and what replaces one agent doing triage and specialist work?"
+  source: "issue-130-triage-and-specialist-retrieval"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[issue-130-triage-and-specialist-retrieval]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — engine-sync fold B (retrieval): ADR-0018 answered the question, so it was replaced by the question still open, whether triage meets its review trigger, stamped against ADR-0018, method doc-review"
+
 - id: 0ff2e48a
   category: stale fact
   status: resolved
@@ -273,20 +288,6 @@ history. Re-stamping without re-verifying is not a fix.
   escalate: false
   date: 2026-11-04
   finding: "The section's Source: line cites [[adr-0016-versioned-library-contract]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: 7949faa6
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Is retrieval below the reopen line of the no-orchestrator decision, and what replaces one agent doing triage and specialist work?"
-  source: "issue-130-triage-and-specialist-retrieval"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[issue-130-triage-and-specialist-retrieval]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
 
 - id: 8fe6b3bd
   category: unstamped fact
