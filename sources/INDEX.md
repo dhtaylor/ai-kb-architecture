@@ -28,8 +28,10 @@ keywords: [sources, citations, stubs, provenance]
 - [adr-0016-versioned-library-contract](adr-0016-versioned-library-contract.md) — engine decision: the library contract has its own MAJOR.MINOR version, a library declares it, and pinning is the library's business
 - [adr-0017-unattended-preparation-attended-decisions](adr-0017-unattended-preparation-attended-decisions.md) — engine decision: prepare unattended, decide attended, report weekly; amends ADR-0013
 - [adr-0019-engine-and-reference-library-release-together](adr-0019-engine-and-reference-library-release-together.md) — engine decision: this library takes the engine's release tag; the release-day steps for both repositories
+- [adr-0020-published-libraries-and-consumers](adr-0020-published-libraries-and-consumers.md) — engine decision: links_to names each linked library's origin, a same-named library from elsewhere is a dependency mismatch, a consumer's copy is read-only
 - [conventions-contract-versions](conventions-contract-versions.md) — engine contract text: what each contract version adds, the scope line, attended rechecks
 - [engine-changelog-v0.3.0](engine-changelog-v0.3.0.md) — engine change notes for v0.3.0, the changes after the first release, with issue numbers
+- [engine-changelog-v0.4.0](engine-changelog-v0.4.0.md) — engine change notes after v0.3.0, to be released as v0.4.0: the read-only role and contract 2.6 as built
 - [engine-contributing-schedulable](engine-contributing-schedulable.md) — engine document: the property that makes a command safe to run unattended
 - [engine-watcher-readme](engine-watcher-readme.md) — engine document: what the Watcher watches, and the allowlist as shipped
 - [state-change-gates](state-change-gates.md) — engine document: every state-changing entry point against the three automation bands
