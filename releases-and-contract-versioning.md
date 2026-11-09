@@ -1,6 +1,6 @@
 ---
 name: releases-and-contract-versioning
-description: How the engine is versioned and released (semantic versioning, the two-day freeze, what a library release records, and why the reference library takes the engine's release tag) and why the library contract has its own MAJOR.MINOR version that a library declares, how rules apply by that version, what a library behind, ahead or on an unsupported major is told, what each contract version adds, and why pinning the engine is the library owner's business.
+description: How the engine is versioned and released (semantic versioning, the two-day freeze, what a library release records, and why the reference library takes the engine's release tag) and why the library contract has its own MAJOR.MINOR version that a library declares, how rules apply by that version, what a library behind, ahead or on an unsupported major is told, what each contract version adds, why pinning the engine is the library owner's business, and how a library someone else publishes is installed: read-only, with `links_to` naming where each library it links into comes from, and a same-named library from elsewhere reported as a dependency mismatch.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-28
 tags: [knowledge-architecture, releases, contract, versioning]
-keywords: [release, semantic versioning, minor bump, patch, code freeze, freeze, pinning, kb_contract, contract version, MAJOR.MINOR, declared version, behind, ahead, unsupported major, unsupported-contract, last two majors, conformance suite, Not covered here, Recheck (attended), sources, documents, migration notes, reference library, same tag, release package, release day, ADR-0015, ADR-0016, ADR-0019]
+keywords: [release, semantic versioning, minor bump, patch, code freeze, freeze, pinning, kb_contract, contract version, MAJOR.MINOR, declared version, behind, ahead, unsupported major, unsupported-contract, last two majors, conformance suite, Not covered here, Recheck (attended), sources, documents, migration notes, reference library, same tag, release package, release day, ADR-0015, ADR-0016, ADR-0019, ADR-0020, Liveness manual, unsourced section, links_to, origin, dependency mismatch, read-only, consumer, published library, kb-library add, --read-only, --ref, aliasing]
 ---
 # Releases and contract versioning
 
@@ -117,6 +117,18 @@ Source: [[conventions-contract-versions]] · [[script-check-kb]] · [[tests-run-
 Verified: 2026-10-28 · by: agent · method: doc-review
 Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%s\nlast_swept: never\n---\n# x\n\n%s\n' "$1" "$2" "$3" > "$d/INDEX.md"; }; mk old "agent_ttl: 30d" ""; mk e23 'kb_contract: "2.3"' "Not covered here:"; mk e22 'kb_contract: "2.2"' "Not covered here:"; mk att 'kb_contract: "2.3"' ""; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: att\nscope: general\nverified: 2020-01-01\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2020-01-01\ntags: [x]\nkeywords: [x]\n---\n# F\n\n## A\n\nfact\n\nSource: manual\nVerified: 2020-01-01 · by: agent · method: manual\nRecheck (attended): false\n' > "$t/att/f.md"; "$s/check-kb" "$t/old" > "$t/o" 2>&1 && grep -qF '2.1: `sources/` holds only `.md` citation stubs' "$t/o" && grep -qF '2.2: `Recheck (attended):` marks an assertion' "$t/o" && grep -qF '2.3: A root `INDEX.md` may carry a `Not covered here:`' "$t/o" || r=1; "$s/check-kb" "$t/e23" > "$t/a" 2>&1; [ $? -eq 1 ] && grep -qF 'names nothing' "$t/a" || r=1; "$s/check-kb" "$t/e22" > "$t/b" 2>&1 && grep -qF 'fails from contract 2.3' "$t/b" || r=1; "$s/kb-verify" "$t/att" --yes --unattended > "$t/v" 2>&1 && grep -qF '1 attended assertion(s) skipped' "$t/v" && ! grep -qF 'FAIL' "$t/v" || r=1; "$s/kb-verify" "$t/att" --yes > "$t/w" 2>&1; grep -qF 'FAIL f.md' "$t/w" || r=1; rm -rf "$t"; exit $r
 
+### Versions 2.4 to 2.6
+
+- **2.4** lets a source stub carry `- **Liveness:** manual` for a source a script cannot check: `kb-sources` does not fetch it, and the weekly report lists it once per sweep interval for a person to check. `check-kb` fails a `Liveness:` value other than `manual`, from this version. Nothing is required to migrate.
+- **2.5** requires a `Source:` line on every section with content in a fact file. The intro under the `#` title, a heading with only subheadings under it, and a `CONFLICTED` section are exempt. `check-kb` fails a section with no `Source:` line, from this version, and `kb-due` counts them. Migrating from 2.4: `check-kb` warns about each unsourced section below 2.5, and the owner gives each one its source, moves a fact out of the intro under a heading, or removes what nobody can source.
+- **2.6** requires a tree that links across libraries to list, under `links_to:` in its root `INDEX.md`, the origin of each library its `[[library:slug]]` links name: the git remote it was linked against. `check-kb` fails a link whose library is not listed, from this version, and warns about an entry no link uses. A link inside an inline code span explains the form and needs no entry. Migrating from 2.5 means adding each linked library under `links_to:` with the git remote it was cloned from; "a library with no cross-library links changes only the declaration." Why, and what the engine does with the list, is below.
+
+Source: [[conventions-contract-versions]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%s\nlast_swept: never\n---\n# x\n\n- \133\133%s:y]] link\n' "$1" "$2" "other" > "$d/INDEX.md"; }; mk v25 'kb_contract: "2.5"'; mk v26 'kb_contract: "2.6"'; mk ok 'kb_contract: "2.6"
+links_to:
+  other: https://example.com/x/other.git'; "$s/check-kb" "$t/v25" > "$t/a" 2>&1 && grep -qF 'links_to does not name' "$t/a" && grep -qF 'fails from contract 2.6' "$t/a" || r=1; "$s/check-kb" "$t/v26" > "$t/b" 2>&1; [ $? -eq 1 ] && grep -qF 'links_to does not name' "$t/b" || r=1; "$s/check-kb" "$t/ok" > /dev/null 2>&1 || r=1; rm -rf "$t"; exit $r
+
 ## What the design costs
 
 The decision states its own costs. Every new rejection carries a version check, and the engine keeps two majors' rules, which dropping the older major when a new one ships bounds. A library whose owner ignores two majors' warnings stops being served, which falls only on a library nobody has updated across two contract majors. The checks can no longer simply apply "the rules": each rule needs the version that introduced it, and the tests cover each rule both below and at its version. A library behind the contract is reminded at every session start until it moves, deliberately, and that may be noisy for an owner who has decided to stay.
@@ -125,3 +137,67 @@ The decision's delivery plan also named a conformance suite per contract version
 
 Source: [[adr-0016-versioned-library-contract]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+## A library someone else publishes: three things went wrong
+
+ADR-0015 said to revisit its decisions "when a library is maintained by someone who is not the engine's maintainer". ADR-0020 records that this has happened: a library someone else publishes is installed with `kb-library add` on a machine that already holds a library of its own under a name the published one links into. It names three problems.
+
+1. **"A link names a library, and a name means something only on one machine."** A link was written against the publisher's library of that name, but the registry makes the registered name the only key and lets a name be registered once, so on the consumer's machine it resolves to the consumer's own library. A slug missing there is a dead link, and `check-xlinks` fails the commit. The consumer cannot fix the published library, and a "fix" in their own library would hide the problem. Nothing told "the library is absent" (a warning) from "a different library holds this name" (a failure, reported as an ordinary dead link).
+2. **"A library states no dependencies."** Its release did not say which other libraries it links into, or from where, so `kb-library add` could not warn before anything broke.
+3. **"Every registered library is treated as the machine's own."** The nudge, `kb-audit`, `kb-distill`, `kb-capture`, the weekly job and the commit hook all assumed the machine curates every library it has. A consumer of a published library wants it read-only: what they learn about it "belongs upstream as an issue, not in local commits that drift from the release they installed."
+
+Three options for identity were weighed. Globally unique names (`owner/name`) were rejected: every `[[library:slug]]` link in every library would change, "a major contract version for a problem only some machines have." An alias on registration was deferred: the consumer could then hold both libraries, but the rule that the registered name is the name a library declares would end, and every reader of the registry would need to learn the mapping. Chosen: a declared origin for each library a library links into, compared with the origin the registry already records. Links are unchanged, and a mismatch can be named for what it is. A block that also listed every slug relied on was rejected, because "the links already say which slugs a library relies on, and a second list would drift from them."
+
+Source: [[adr-0020-published-libraries-and-consumers]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+
+## A library says where each library it links into comes from, and a mismatch warns
+
+From contract 2.6 a library that links across libraries lists each one under `links_to:` in its root `INDEX.md`, with the origin the author linked against (above). The slugs are not listed: they are read from the links.
+
+Origins are compared by host and path. Scheme, user, case of the host and a trailing `.git` don't matter, so the `https://` and `git@` forms of one repository are the same origin. `kb-library import` uses the same comparison; it used to tell those forms apart.
+
+With `--installed`, `check-xlinks` reads a library's `links_to` entry for each library it links into, and the origin the registry records for that library:
+
+- **registered, same origin:** resolved as before; a missing slug is a dead link, and fails.
+- **registered, different origin:** a **dependency mismatch**. The links into it are not resolved, and it warns, naming both origins and the slugs. It does not fail.
+- **registered with no origin recorded:** resolved as before, plus a note that the origin cannot be confirmed.
+- **not registered:** absent, which warns, naming the origin to `kb-library add`.
+- **no `links_to` declared (below 2.6):** as before.
+
+"A mismatch warns because the person who sees it can't fix it. They can't edit a published library, and editing their own would make the warning go away without changing what is wrong."
+
+`kb-library add` warns, never refuses, both ways: when the new library's dependency here is from elsewhere or absent, with the number of links affected, and when a library already registered expects the new one from elsewhere. Like the overlap warning, it is advice and never changes the exit status.
+
+Source: [[adr-0020-published-libraries-and-consumers]] · [[engine-changelog-v0.4.0]] · [[conventions-contract-versions]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+
+## A consumer's copy is registered read-only: served, never curated here
+
+`kb-library add <path | git-url> --read-only` records the library as read-only in the registry. Re-adding the same path without the flag makes it curated again. A read-only library "is **served exactly as any other**", by `kb-ask` and `kb-retrieve`. What changes is that the machine does not curate it:
+
+- **The engine's library hook refuses commits in it**, naming the origin to file the correction with and the command that makes the library curated here. `--no-verify` still gets past it: "governance, not enforcement".
+- **Nothing that writes into a library runs on it.** `kb-verify --yes/--apply`, `kb-sources --yes`, `kb-prepare` and `kb-capture --into` refuse it, and `kb-watch` skips its sources. A dry run of `kb-verify` or `kb-sources`, which writes nothing, still works. The reason given for refusing verification: "The publisher verifies their library; a consumer verifying it would change a copy no one else reads."
+- **Nothing asks the machine to curate it.** The weekly job, the nudge and `kb-report` leave it out. Plain `kb-due` lists it as `read-only`.
+- **The curation skills refuse to write to it** (`kb-update-domain`, `kb-distill`, `kb-organize-domain`, `kb-audit`, `/kb-capture`) and say to file the finding with its origin. Session start marks each read-only library `(read-only)`, which is how a skill knows. A skill never files the issue itself: "posting to another person's tracker is a person's decision."
+- **Its outbound links never fail the machine's commits.** A dead link in a read-only library warns instead of failing. "Its publisher's CI is where it fails."
+
+A read-only flag on the registration was chosen over making files read-only on disk, because a file mode does not survive a `/mnt/c` mount, and it would stop `git pull` too. `kb-library list` shows the mode, and `kb-libraries --read-only` lists each read-only library with its origin.
+
+Source: [[adr-0020-published-libraries-and-consumers]] · [[engine-changelog-v0.4.0]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+
+## What ADR-0020 costs and leaves open
+
+The decision delivers in three steps: the read-only role and `links_to` with dependency mismatches, both in v0.4.0, then pinning. Pinning is decided but not built: `kb-library add <git-url> --read-only --ref <tag>` would clone at a tag, record the `ref` in the registry and show it in `kb-library list`, and moving to a newer release would be a person's step. It is delivered after v0.4.0.
+
+The stated costs: contract 2.6 means a pull request in every library that links across libraries, to declare `links_to`, and one in every library to declare 2.6. `links_to` is a second place an origin is written, so if a dependency moves its repository, every library linking to it needs a pull request; "that cost lands rarely and on the right person, the one who chose the dependency." And a read-only library's facts go unverified on the consumer's machine, deliberately: "the stamps a consumer reads are the publisher's."
+
+Not covered by the decision:
+
+- **Holding both same-named libraries on one machine.** A consumer whose own library collides with a dependency's still cannot install the dependency. The decision makes the collision visible and does not resolve it; aliasing is the way, "if a real case needs it."
+- **Filing upstream issues automatically.** A skill names where to file; a person files.
+- **A dependency's version.** `links_to` names a repository, not a release, so a slug the publisher's dependency gained after the consumer's copy is still a dead link, reported with the origin.
+
+Source: [[adr-0020-published-libraries-and-consumers]]
+Verified: 2026-11-09 · by: agent · method: doc-review

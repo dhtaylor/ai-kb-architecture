@@ -109,7 +109,9 @@ reported in one state: `ok`, `missing`, `not-a-library`, `name-mismatch` or `uns
 "Only `ok` libraries are served. Every other state is reported at session start, by name and path,
 and never dropped silently." The fifth state is a library whose declared contract version names a
 major the engine does not support, or cannot be read; see
-[[releases-and-contract-versioning]].
+[[releases-and-contract-versioning]]. A registration can also be marked read-only, for a consumer's
+copy of a library someone else publishes ([[adr-0020-published-libraries-and-consumers]]); what that
+changes is in the same file.
 
 The cost, stated by the decision that made the split: a library has no guardrails of its own, so a
 library cloned alone is unguarded until an engine is in reach. That is the price of not making a

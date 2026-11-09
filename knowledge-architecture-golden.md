@@ -33,7 +33,8 @@ quoting, transcript and wrong-corpus lessons in retrieval-eval-integrity), and b
 2026-10-28 (releases-and-contract-versioning, unattended-preparation and retrieval-agent-behavior, the
 unattended Verifier, the Watcher exit codes and kb-sources request sequence, the redaction filter, the
 regression suite's git environment, the grader's contamination and attribution rules, and the retrieval
-cost and sample tooling).
+cost and sample tooling), and by the engine-sync fold of 2026-11-09 (contract versions 2.4 to 2.6,
+ADR-0020's links_to, dependency mismatches and read-only consumers).
 
 Cross-root case: **not applicable** — the domain links into no other library. It once linked into
 claude-code-runtime, which is not published, so a reader of the published library could not follow
@@ -710,3 +711,29 @@ contradiction lands.
   expected_file: "releases-and-contract-versioning.md"
   expected_excerpt: "but it gets no tag of its own"
 ```
+
+# Added 2026-11-09, engine-sync fold: contract 2.4 to 2.6 and ADR-0020.
+- case: positive
+  question: From which contract version does check-kb fail a section in a fact file that has no Source line, and which sections are exempt?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "The intro under the `#` title, a heading with only subheadings under it, and a `CONFLICTED` section are exempt"
+
+- case: positive
+  question: My library links into another library. What must its root INDEX.md list under links_to, and does a link inside an inline code span need an entry?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "A link inside an inline code span explains the form and needs no entry"
+
+- case: positive
+  question: A library I installed links into a library I already have under the same name, but mine comes from a different repository. Will check-xlinks fail my commit?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "A mismatch warns because the person who sees it can't fix it"
+
+- case: positive
+  question: Can I commit a correction into a library I registered with kb-library add --read-only?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "The engine's library hook refuses commits in it"
+
+- case: positive
+  question: Can a consumer pin a read-only library to a release tag with kb-library add --ref today?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "Pinning is decided but not built"

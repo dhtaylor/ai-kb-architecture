@@ -15,14 +15,14 @@ metadata:
   node_type: router
   created: 2026-09-19
 tags: [knowledge-architecture]
-keywords: [knowledge base, architecture, thin agent, retrieval contract, scoping, provenance, currency, lifecycle, guardrails, librarian, retrieval eval, golden set, oracle, release, contract version, kb_contract, unattended, review packet, schedule, section read, scope line, redact]
+keywords: [knowledge base, architecture, thin agent, retrieval contract, scoping, provenance, currency, lifecycle, guardrails, librarian, retrieval eval, golden set, oracle, release, contract version, kb_contract, links_to, read-only, dependency mismatch, unattended, review packet, schedule, section read, scope line, redact]
 ---
 # Knowledge architecture
 
 Not covered here: Claude Code's own runtime mechanisms, such as its settings, its hook system, plugin loading and tool semantics (the engine's own hooks are covered here) — held by a separate claude-code-runtime library, not published with this one; the contract text itself — in ai-kb CONVENTIONS.md, not a library
 
 - [design-thesis](design-thesis.md) — why knowledge and behavior are separated, the knowledge-as-behavior anti-pattern, the three repository kinds, library registration and its states
-- [releases-and-contract-versioning](releases-and-contract-versioning.md) — engine semantic versioning and the two-day freeze, the library contract's own MAJOR.MINOR version, contract versions 2.0 to 2.3, pinning as the library owner's business
+- [releases-and-contract-versioning](releases-and-contract-versioning.md) — engine semantic versioning and the two-day freeze, the library contract's own MAJOR.MINOR version, contract versions 2.0 to 2.6, pinning as the library owner's business, installing someone else's library: read-only, links_to and dependency mismatches
 - [agent-lifecycle-roles](agent-lifecycle-roles.md) — the Curator, Research librarian and Fact-checker roles, the Verifier, Watcher and URL liveness check as built, mutation governance, agent TTL, the session-start nudge, why no orchestrator is built
 - [unattended-preparation](unattended-preparation.md) — why preparing may run unattended while deciding stays attended: review packets, the weekly report, the opt-in schedule, schedulable commands, the verified backup
 - [retrieval-agent-behavior](retrieval-agent-behavior.md) — how the retrieval agent decides where to look: what counts as the knowledge base, section reads, scoped search, the scope line, the subagent library list
