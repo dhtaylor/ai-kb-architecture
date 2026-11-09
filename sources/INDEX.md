@@ -60,6 +60,7 @@ keywords: [sources, citations, stubs, provenance]
 - [script-grade-routing](script-grade-routing.md) — header of the routing check's agent tier, graded from tool calls
 - [script-grade-eval](script-grade-eval.md) — header of the answer-grounding grader, with --transcripts
 - [agent-kb-retrieve](agent-kb-retrieve.md) — the retrieval agent's definition: the listed libraries are the complete set; quote what an answer rests on
+- [pr-159-search-limits-per-question](pr-159-search-limits-per-question.md) — engine pull request: kb-retrieve's search limits count per question across libraries; a visible tally tried and dropped
 - [pr-54-kb-retrieve-quotes](pr-54-kb-retrieve-quotes.md) — engine pull request: verbatim quotes and transcript grading, with a live sample
 - [pr-6-secret-entropy-pass](pr-6-secret-entropy-pass.md) — engine pull request: the heuristic pass for shapeless credentials, and its unstated base64 limit
 - [pr-8-distill-secrets-rule](pr-8-distill-secrets-rule.md) — engine pull request: reference-not-value at the distill gate, with the blind trap test
@@ -68,6 +69,8 @@ keywords: [sources, citations, stubs, provenance]
 - [issue-9-kb-capture-scan](issue-9-kb-capture-scan.md) — engine issue and decision: capture refuses, because retrieval reads the working tree
 - [issue-126-boundary-golden-cases](issue-126-boundary-golden-cases.md) — engine issue: golden cases at the boundary between neighboring libraries
 - [issue-127-run-checks-git-env](issue-127-run-checks-git-env.md) — engine issue: the regression suite aimed its fixtures at the repository being committed to
+- [issue-147-not-found-cost](issue-147-not-found-cost.md) — engine issue: the cost of a fact-not-found answer, and the field test of the files-first and stop rules
+- [adr-0018-triage-and-specialists](adr-0018-triage-and-specialists.md) — engine decision (Proposed): a triage desk sends each question to one library's specialist; the measurement and review trigger
 - [issue-130-triage-and-specialist-retrieval](issue-130-triage-and-specialist-retrieval.md) — engine issue: a proposed design for retrieval as triage plus specialists; not built
 - [eval-2026-09-26-intelligence-analysis-skill](eval-2026-09-26-intelligence-analysis-skill.md) — engine evidence: the behavioural eval of a thin review skill, and the post hoc gold-key amendment
 - [eval-2026-09-28-intelligence-analysis-bakeoff](eval-2026-09-28-intelligence-analysis-bakeoff.md) — engine evidence: the blind head-to-head against the legacy skill

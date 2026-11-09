@@ -19,4 +19,4 @@ keywords: [kb-telemetry, tokens, seconds, steps, wasted, protocol, subagent tran
 - **Date ingested:** 2026-10-28
 - **Artifact location:** `ai-kb:scripts/kb-telemetry` (docstring), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
-Source for the five measures per retrieval run and the choices behind them. Folded from it: what each measure counts and leaves out, how a run is attributed to a library, and that eval runs are left out by default. Not folded: the options.
+Source for the five measures per retrieval run and the choices behind them. Folded from it: what each measure counts and leaves out, how a run is attributed to a library, and that eval runs are left out by default. Not folded: the options. Re-read at engine commit `5fb833a` on 2026-11-09 for the count of `fact not found` runs, `--not-found` and what each mode prints.

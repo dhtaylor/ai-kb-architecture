@@ -72,6 +72,13 @@ A library with nothing to decide gets no section, and a week with nothing to dec
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
+### Questions that found nothing
+
+The report also lists, per library, the `kb-retrieve` runs in the past 7 days that answered `fact not found`: how many, the new tokens they cost, how many hit the search limit, and the command that lists the questions, `kb-telemetry --not-found --library <name>`. "An absent topic named in the root `Not covered here:` line makes the next such question far cheaper." It counts as a decision, and like the rest of the report it holds a count and a command, never a question's text. Why such runs are worth a person's look is in [[retrieval-eval-integrity]].
+
+Source: [[script-kb-report]] · [[script-kb-telemetry]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+
 ## The schedule is opt-in and edits no fact
 
 Nothing runs unless the user installs it with `kb-schedule install`, and `kb-schedule remove` leaves no trace. The job is a systemd user timer on Monday at 07:00 that catches up a missed week at the next start, or a crontab line where there is no systemd. For every registered library it runs, in order:

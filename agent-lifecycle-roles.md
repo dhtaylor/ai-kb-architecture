@@ -355,6 +355,13 @@ Reopen the no-orchestrator decision when any of these holds:
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded in part) · [[adr-0011-no-orchestrator-until-routing-fails]] (as amended 2026-10-12) · [[adr-0007-engine-content-separation]] · [[adr-0014-library-registry]] · [[agent-kb-retrieve]] · [[eval-2026-10-12-routing-run]]
 Verified: 2026-10-16 · by: agent · method: doc-review
 
+### The reopen trigger was met, and triage is proposed
+
+ADR-0018 records that the first two reopen conditions above were met, "Both have happened": routing fell below 95%, and more libraries made it worse. It built a triage desk with one specialist per library and is **Proposed**: "on acceptance" it supersedes "no orchestrator is built", and the reopen trigger "stays until the review trigger below is met." What was built, what was measured and the review trigger are in [[retrieval-agent-behavior]].
+
+Source: [[adr-0018-triage-and-specialists]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+
 ## Cautions: human ownership and data handling
 
 - **The verifier's logic decides truth — review it like the facts it checks, and test it** (see
