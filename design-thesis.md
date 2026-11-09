@@ -135,7 +135,7 @@ Verified: 2026-10-28 · by: agent · method: doc-review
 The claim that behaviour "retrieves at
 runtime" is about where facts live, not about when the behaviour itself is loaded — and those differ:
 in Claude Code, plugin behaviour is loaded once at session start while facts are read live per query
-(`[[claude-code-runtime:behaviour-loading]]`). The separation holds; the two halves simply refresh on
+(recorded in a separate claude-code-runtime library, not published with this one). The separation holds; the two halves simply refresh on
 different clocks.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§1) · [[knowledge-agent-architecture-combination-plan]] (§1, superseded) · [[adr-0007-engine-content-separation]] (amended) · [[adr-0014-library-registry]] · [[script-kb-libraries]] · [[adr-0016-versioned-library-contract]]
