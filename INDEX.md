@@ -9,8 +9,6 @@ agent_ttl: 30d
 verifier_budget: 15
 sweep_interval: 30d
 kb_contract: "2.6"
-links_to:
-  claude-code-runtime: https://github.com/dhtaylor/claude-code-runtime.git
 last_swept: 2026-10-29
 metadata:
   type: index
@@ -21,7 +19,7 @@ keywords: [knowledge base, architecture, thin agent, retrieval contract, scoping
 ---
 # Knowledge architecture
 
-Not covered here: Claude Code's own runtime mechanisms, such as its settings, its hook system, plugin loading and tool semantics (the engine's own hooks are covered here) — held by [[claude-code-runtime:behaviour-loading]]; the contract text itself — in ai-kb CONVENTIONS.md, not a library
+Not covered here: Claude Code's own runtime mechanisms, such as its settings, its hook system, plugin loading and tool semantics (the engine's own hooks are covered here) — held by a separate claude-code-runtime library, not published with this one; the contract text itself — in ai-kb CONVENTIONS.md, not a library
 
 - [design-thesis](design-thesis.md) — why knowledge and behavior are separated, the knowledge-as-behavior anti-pattern, the three repository kinds, library registration and its states
 - [releases-and-contract-versioning](releases-and-contract-versioning.md) — engine semantic versioning and the two-day freeze, the library contract's own MAJOR.MINOR version, contract versions 2.0 to 2.3, pinning as the library owner's business

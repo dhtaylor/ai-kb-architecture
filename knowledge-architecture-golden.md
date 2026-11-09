@@ -35,12 +35,10 @@ unattended Verifier, the Watcher exit codes and kb-sources request sequence, the
 regression suite's git environment, the grader's contamination and attribution rules, and the retrieval
 cost and sample tooling).
 
-Cross-root case: included — the domain holds three cross-library references into claude-code-runtime:
-the scope line of the root router (`[[claude-code-runtime:behaviour-loading]]`), design-thesis
-(`[[claude-code-runtime:behaviour-loading]]`) and guardrail-verification
-(`[[claude-code-runtime:config-resolution]]`). Two `cross-root` records below test the hops from
-design-thesis and from guardrail-verification; the scope line is routing signal and has no record of
-its own. Unresolved case: **not applicable** — nothing in the domain today carries `status: CONFLICTED`, so a genuine
+Cross-root case: **not applicable** — the domain links into no other library. It once linked into
+claude-code-runtime, which is not published, so a reader of the published library could not follow
+those links; on 2026-11-09 they became plain text, and the two records that tested the hops now test
+the answer this library holds. Unresolved case: **not applicable** — nothing in the domain today carries `status: CONFLICTED`, so a genuine
 UNRESOLVED case cannot yet be written without fabricating a conflict. Add one the day a real
 contradiction lands.
 
@@ -77,7 +75,8 @@ contradiction lands.
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
 
-- case: cross-root
+# Amended 2026-11-09: was cross-root; the link it followed into claude-code-runtime is now plain text.
+- case: positive
   question: Does the behaviour layer being "thin" mean it is reloaded whenever knowledge changes?
   expected_file: design-thesis.md
   expected_excerpt: "loaded once at session start while facts are read live per query"
@@ -286,9 +285,10 @@ contradiction lands.
   expected_excerpt: "found no engine and skipped its checks while exiting 0"
 
 # Amended 2026-10-28, after the retrieval run and the audit: the record used the older cross-root form, which names a file in this library and checks only where the hop starts, and the 2026-10-26 retest found agents going straight to the other library as the question invites. It now names the answering file in the other library, as contract section 10 specifies, and asks for what that file states.
-- case: cross-root
+# Amended 2026-11-09: was cross-root into claude-code-runtime:config-resolution.md; that link is now plain text, and guardrail-verification states the same excerpt.
+- case: positive
   question: "The engine's pre-commit hook found no engine and skipped its checks when fired outside an interactive terminal. What second channel did the fix give hooks, and why did the engine path exported from the shell startup file not reach that hook?"
-  expected_file: claude-code-runtime:config-resolution.md
+  expected_file: guardrail-verification.md
   expected_excerpt: "returns early for non-interactive shells"
 
 - case: positive
