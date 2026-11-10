@@ -4,7 +4,7 @@ description: Open questions from the knowledge-architecture domain — things th
 memory_type: reference
 domain: knowledge-architecture
 scope: general
-verified: unknown
+verified: 2026-11-09
 metadata:
   type: reference
   node_type: open-questions
@@ -21,40 +21,49 @@ digest reviewed on a cadence. None of the sources read in the revised-plan fold 
 exists, only that the offline snapshot comparison does.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A)
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Were the machine-readable bot label, the retrieval-check diff annotation, the pull notification on rollback and the per-domain corrections-log ever built?
 
 The plan specifies each. The sources read (decisions, the state-change inventory, script headers)
 record the high-blast gate, its label and the dormant two-reviewer rule, and are silent on these four.
-A live check on 2026-10-02 found no `corrections-log.md` in any installed library, which says nothing
-about whether the other three exist.
+Live checks on 2026-10-02 and 2026-11-09 found no `corrections-log.md` in any installed library, which says
+nothing about whether the other three exist. The engine's CI checks one label, `owner-approved`, on the
+high-blast gate.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A)
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Does the CI cold-start advice (shallow clone at a pinned tag, sparse checkout) carry over to per-domain library repositories?
 
 The plan's text was written for one general repository. Content now lives in one repository per
-domain, and no source read records a cold-start mechanism. Whether the advice still applies, or has
-become obsolete as other plan machinery did, is not stated.
+domain. Part of the advice carries over: the engine's CI template for a library clones the engine with
+`--depth 1` at a release tag. A sparse checkout has nothing to narrow in a repository that holds one
+domain. The template sets no cache key, and no source read says whether one is needed.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[adr-0007-engine-content-separation]]
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[adr-0007-engine-content-separation]] · ai-kb:documents/library-guardrails.yml@5fb833a
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Was fan-out token cost ever measured here?
 
-The 3–15× and ~20× figures are the plan's. The routing sample measured accuracy and which libraries
-were opened, not tokens, and the sources read state no measured cost. `kb-telemetry` now measures the
-cost of single-agent retrieval from transcripts ([[retrieval-eval-integrity]]); no source read records a
-figure from it, and no fan-out is built to measure.
+The 3–15× and ~20× figures are the plan's, for a broadcast to several workers. The 2026-09-28 routing
+sample measured accuracy and which libraries were opened, not tokens. ADR-0018 measured tokens and cost per
+question for one agent and for the triage desk ([[retrieval-agent-behavior]]), but the desk asks one
+specialist, two at most, and never broadcasts. No source read records a measured cost for a broadcast,
+and none is built to measure.
 
-Source: [[adr-0011-no-orchestrator-until-routing-fails]] · [[script-kb-telemetry]]
+Source: [[adr-0011-no-orchestrator-until-routing-fails]] · [[adr-0018-triage-and-specialists]] · [[script-kb-telemetry]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Where does the runtime's tool-scoping behaviour belong?
 
 The plan's phase-4 finding that a declared tool scope is enforced in some places and only a
-pre-approval in others is a claim about the Claude Code runtime. It was left out of this domain and
-no slug exists in claude-code-runtime for it yet, so there is nothing to link.
+pre-approval in others is a claim about the Claude Code runtime. It was left out of this domain. Its home is
+a claude-code-runtime library, which is not published with this one, so this library names it in plain text
+rather than linking; and no section there holds the finding yet.
 
 Source: [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[knowledge-agent-architecture-combination-plan-revised]] (§9.18)
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Would a `Recheck:` assertion have caught the stale hook fact sooner?
 
@@ -65,20 +74,14 @@ fact sooner" and labels that a hypothesis, since the assertion that catches the 
 the fact was already wrong. It was left out of the fact as a claim and no source read tests it.
 
 Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Where does the runtime's behaviour on library discovery by a sub-agent belong?
 
-The contract (section 3 of `ai-kb:CONVENTIONS.md`) says the session-start hook "and the SubagentStart hook for kb-retrieve" list each registered library, and an agent given no list refuses rather than searching. Whether sub-agents receive session-start context is a claim about the Claude Code runtime. It was left out of [[retrieval-eval-integrity]], which records only the general failure, and no slug exists in claude-code-runtime for it, so there is nothing to link.
+The contract (section 3 of `ai-kb:CONVENTIONS.md`) says the session-start hook "and the SubagentStart hook for kb-retrieve" list each registered library, and an agent given no list refuses rather than searching. [[retrieval-agent-behavior]] states the engine's premise as its hook records it, that "a subagent never sees the session-start context". Whether and when the Claude Code runtime passes session-start context to a sub-agent is a claim about the runtime itself. Its home is a claude-code-runtime library, which is not published with this one and holds no section on it yet.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · [[agent-kb-retrieve]]
-
-## Does an unneeded content read count against the routing-accuracy reopen trigger?
-
-[[agent-lifecycle-roles]] records the routing-accuracy trigger to reopen the no-orchestrator decision. The 2026-10-12 run read the expected file in 12 of 12 cases and scored 11/12,
-because one case read content from libraries it did not need. Whether that case is a routing-accuracy miss
-for the trigger, which would put the run at 92%, is not stated by any source read.
-
-Source: [[eval-2026-10-12-routing-run]] · [[adr-0011-no-orchestrator-until-routing-fails]]
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · [[agent-kb-retrieve]] · [[script-kb-session-start]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Are the contract's conformance suite and the split of its engine-facing text built?
 
@@ -91,16 +94,19 @@ The same decision specifies that a library on the previous major is warned ahead
 leaves support when the next is published; no source read records a script that gives that warning.
 
 Source: [[adr-0016-versioned-library-contract]] · [[conventions-contract-versions]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Does the scope line separate neighboring libraries in practice?
 
 The `Not covered here:` line (contract 2.3) is read by the retrieval agent to rule out a library
-([[retrieval-agent-behavior]]). The sources read state the intent and the rule, and record no measurement
-of whether it separates neighbors. A routing retest run after the line was introduced is recorded only in
-[[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]], an episodic note that has not been
-distilled, so what it measured is not served here as a fact.
+([[retrieval-agent-behavior]]). One measurement bears on it: in a field A/B, naming an absent topic in the line
+cut a question about that topic "from 16-23 turns to 3" ([[retrieval-eval-integrity]]). That tests a library
+ruling a question out, not two neighbors being told apart. ADR-0018's routing measurement used decoy
+libraries that carry no such line, and its rerun with decoys that do is the pending test of separation
+(below). The 2026-10-26 retest's scores were not distilled: they are one run's readings.
 
-Source: [[conventions-contract-versions]] · [[script-kb-library]]
+Source: [[conventions-contract-versions]] · [[script-kb-telemetry]] · [[adr-0018-triage-and-specialists]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Will triage and specialists meet the review trigger that accepts them?
 
@@ -116,6 +122,7 @@ The filter that cleans a review packet before it is saved runs the same three pa
 No source read says whether a packet is checked for such a name other than by the person who reads it.
 
 Source: [[script-check-secrets]] · [[adr-0017-unattended-preparation-attended-decisions]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Does `kb-apply` change a fact file, and which list does the weekly report hold?
 
@@ -124,8 +131,10 @@ script's own header says it never writes to a library: it lists packets, shows o
 skill does the writing once a person has decided each item. The two also list different things for the weekly
 report. The decision names packets waiting, failed rechecks, drifted or dead sources, queue items older than
 the last report, and a library behind the contract. The script lists a packet waiting, each open queue item,
-attended rechecks that are due, a sweep or notes awaiting distillation that no packet covers yet, and a library
-behind the contract or on one the engine cannot serve. This library follows the script
-([[unattended-preparation]]). The difference is flagged and not resolved: no source read says which is intended.
+attended rechecks that are due, a sweep or notes awaiting distillation that no packet covers yet, while a sweep
+is due the source stubs marked `Liveness: manual`, a library behind the contract or on one the engine cannot
+serve, and the past week's `fact not found` runs. This library follows the script ([[unattended-preparation]]).
+The difference is flagged and not resolved: no source read says which is intended.
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-apply]] · [[script-kb-report]]
+Verified: 2026-11-09 · by: agent · method: doc-review
