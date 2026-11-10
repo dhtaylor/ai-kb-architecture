@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, lifecycle, roles, governance, orchestrator]
-keywords: [curator, research librarian, fact-checker, verifier, watcher, kb-sources, URL liveness, agent_ttl, agent TTL, UNCORROBORATED, routing run, grade-routing, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note, unattended, kb-schedule, review packet, systemMessage, summary line, Recheck (attended), --unattended, User-Agent, GET fallback, exit code]
+keywords: [current state, changelog, supersede, check-transient, dated heading, sign-in redirect, Liveness manual, archived, new since the last sweep, unsourced section, curator, research librarian, fact-checker, verifier, watcher, kb-sources, URL liveness, agent_ttl, agent TTL, UNCORROBORATED, routing run, grade-routing, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note, unattended, kb-schedule, review packet, systemMessage, summary line, Recheck (attended), --unattended, User-Agent, GET fallback, exit code]
 ---
 # Agent lifecycle roles
 
@@ -135,6 +135,15 @@ never conflated with dead.
 Source: [[script-kb-sources]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
+#### Sign-in redirects, and sources only a person can check
+
+A redirect that lands on a sign-in page is `unreachable`, not alive, and is queued as `source-unreachable`. A sign-in page is a path segment `login`, `signin`, `sso` or `UserLogin` (any case, a `Special:` prefix or a file extension ignored), or `/oauth2/authorize`. "A login page answers 200, but it is not the source, and a page behind a sign-in wall cannot be checked by a script." Before the rule, a page behind single sign-on passed every run.
+
+A stub marked `- **Liveness:** manual` (contract 2.4) "is a source only a person can check: behind a sign-in wall, or refusing every client. It is never fetched, so it is counted and listed instead of queued". The weekly report lists such stubs while the library's sweep is due, so a person checks them once per sweep interval; see [[unattended-preparation]].
+
+Source: [[script-kb-sources]] · [[engine-changelog-v0.4.0]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+
 ## Watcher safety design
 
 Web-watching is brittle (pages restructure, move behind auth, render via JS), and it is the single
@@ -232,6 +241,23 @@ nothing to enforce it against), or not built.
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phases 4 and 5, §9.18) · [[knowledge-agent-architecture-combination-plan]] (§5A, §2) · [[adr-0002-governance-without-enforcement]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[state-change-gates]] · [[script-check-blast]] · [[script-kb-owner]]
 Verified: 2026-10-16 · by: agent · method: doc-review
 
+## A fact file holds current state, not a changelog
+
+The rule is in `kb-distill`, Step 4: "A fact file states current state, under subject headings." A section is named after what it describes, "never after an event, a date, a change or a session". "A heading like that turns the file into a changelog, and a reader has to replay it to learn what is true. The date belongs on the `Verified:` stamp, and the history belongs in the note and in git." Nothing is added to an event-titled section, and no new one is opened. The contract itself does not state the rule.
+
+Three placements follow from it:
+
+- **Supersede, not contradiction.** When a note records that a fact changed, the section is rewritten to state what is true now, keeping both source links and at most one line saying what it replaced and when. A dropped row leaves the table rather than staying with a "dropped" note beside it. "A contradiction is two sources disagreeing about the same state. A thing that changed is a supersede".
+- **"A reading is not a fact, even when it was observed."** A count, a size or a list of what is offline today stays in the note; the test is "*would this still be true if someone ran the same lookup a month from now?*" What the library keeps is the method that produces the reading.
+- **"Unmerged code is not current state."** Behavior seen on a branch, or in an open pull request or merge request, stays in the note until it merges.
+
+`check-transient` reports the two heading shapes that carry the failure in a fact file: a **dated heading**, holding a date (`YYYY-MM` or `YYYY-MM-DD`), which "records an event or a reading, and the next reader has to replay it to learn what is true now"; and a **ticket heading**, holding a change or work-item id (`PR`, `MR`, `WI`, then a number), since "a section titled after a change usually describes that change, often before it merged, rather than the subject." Only headings are read: body phrases "matched too much legitimate text in the field". Files dated by design, or that are not fact files, are not read. It is detection only: "This is never a commit gate: a dated heading can be right (a dated release, a legal effective date), and only a person can say." `kb-audit` queues each hit as `transient content`, at severity 7.
+
+The skill change was tested with one trial per case, a headless session doing the work and then distilling it. A superseding change in a file that already had dated `Update` sections failed with the old skill, which added another, and passed with the new one, which rewrote in place. A review of an unmerged pull request failed with the old skill and passed with the new one, which changed no fact file. The reading case and the dropped-row case were **not established**: in each, the session noticed its tool output was canned and refused for that reason. Removing a dropped row was not exercised by any run.
+
+Source: [[skill-kb-distill]] · [[script-check-transient]] · [[pr-145-distill-current-state]] · [[engine-changelog-v0.4.0]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+
 ## Cadence is surfaced at session start, and may be prepared on a schedule
 
 Surfacing is the baseline. The session-start hook calls `kb-due --nudge`, which reports only what is due, per library, and prints nothing when nothing is due. It never prompts or writes. It counts:
@@ -254,6 +280,15 @@ The category of stale facts with no assertion exists because of a measurement: t
 
 Source: [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-due]] · [[script-kb-session-start]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+### Only new unstamped sources, unsourced sections beside them, and archived trees left out
+
+- **Unstamped sources, once a library has been swept, are only those new since the sweep.** The sweep is "the commit that last changed last_swept in INDEX.md, read from git". A library never swept, or not in git, gets the full count, and a sweep not yet committed leaves nothing new. A source is matched by its section heading and `Source:` line, not by its file, so a section that `kb-organize-domain` moved is not new. Plain `kb-due` shows the full count per library. The reason: the whole standing count at every session start was, "in a large install", "hundreds of sources that only an owner can stamp, and the same line every day hid the ones that were new." Git and not a count kept by the sweep, because "a count can't tell 'one stamped, one added' from 'nothing changed', and kb-audit is a model following instructions, so it shouldn't be computing a number that has to be exact."
+- **Unsourced sections** (contract 2.5), sections with content and no `Source:` line, are counted beside unstamped sources: "nothing was cited, so there is nothing to recheck." `kb-audit` queues them at severity 4, beside unstamped facts.
+- **An archived tree drops out.** A tree whose root `INDEX.md` declares `archived: <date or reason>` contributes no line, because "a read-only archive cannot act on a nudge". Plain `kb-due` still lists it, marked archived. A registered library is served whatever it declares, so it is nudged as usual and told to use `kb-library remove`. This is a setting for `kb-due`, not part of the contract. A library registered read-only drops out too; see [[releases-and-contract-versioning]].
+
+Source: [[script-kb-due]] · [[engine-changelog-v0.4.0]] · [[pr-162-unstamped-since-sweep]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## Testing the fact-checkers
 

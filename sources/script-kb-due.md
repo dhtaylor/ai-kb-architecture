@@ -21,3 +21,5 @@ keywords: [kb-due, nudge, cadence, sweep, session start]
 - **Re-read:** at engine commit `720fcff` on 2026-10-16, for the fifth nudge category, unstamped sections, and its library list from the registry.
 
 Corroboration for cadence as built: a reminder reported where an agent is already standing, silent when nothing is due, never running an assertion. Re-read 2026-10-28 for the packets and weekly report it names, the stale-fact and unstamped-source categories, the contract line, and the one-line summary for the person.
+
+Re-read at engine commit `5fb833a` on 2026-11-09 for unstamped sources new since the last sweep, unsourced sections and archived trees.

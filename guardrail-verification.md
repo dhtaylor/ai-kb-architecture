@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-22
 tags: [knowledge-architecture, guardrails, ci, testing]
-keywords: [check-exec-bits, check-kb, regression suite, core.fileMode, PyYAML, kb-audit, kb-verify, blind spot, negative control, CI coverage, inspection, fresh reader, recurring defect, subshell counter, exit status, check-secrets, chained check, kb-init, kb-bootstrap, topology, restructure, obsolete, contract, precedence, default, --apply, literal date, test fixture, GIT_DIR, GIT_INDEX_FILE, linked worktree, local-env-vars, core.bare, core.hooksPath, fixture isolation, XDG]
+keywords: [check-xlinks usage error, library folder, check-exec-bits, check-kb, regression suite, core.fileMode, PyYAML, kb-audit, kb-verify, blind spot, negative control, CI coverage, inspection, fresh reader, recurring defect, subshell counter, exit status, check-secrets, chained check, kb-init, kb-bootstrap, topology, restructure, obsolete, contract, precedence, default, --apply, literal date, test fixture, GIT_DIR, GIT_INDEX_FILE, linked worktree, local-env-vars, core.bare, core.hooksPath, fixture isolation, XDG]
 ---
 # Guardrail verification
 
@@ -178,3 +178,10 @@ Both join the two earlier cases in this file: a case that expected only an exit 
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.18, §9.19) · ai-kb@386d30c · ai-kb@706d0dd
 Verified: 2026-10-12 · by: agent · method: doc-review
+
+## A check given the wrong kind of folder must refuse, not report clean
+
+`check-xlinks <kb-root>` treats every subfolder holding an `INDEX.md` as a library. Given one library's own folder instead, it "read the library's sub-indexes as libraries, scanned none of its files, and exited 0 over dead links." A `<kb-root>` with an `INDEX.md` of its own is now a usage error, exit 2, that names `check-xlinks --installed <path>`, which checks an unregistered library against the registered ones. The curation skills now run `check-xlinks --installed`, as the hooks do: the old form "missed libraries registered outside `kb/`, and invited the library-folder mistake" in the first place.
+
+Source: [[engine-changelog-v0.4.0]]
+Verified: 2026-11-09 · by: agent · method: doc-review
