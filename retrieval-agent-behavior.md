@@ -4,7 +4,7 @@ description: How the retrieval agent decides where to look and what counts as an
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-28
+verified: 2026-10-26
 metadata:
   type: fact
   node_type: memory
@@ -66,6 +66,11 @@ A library listed as registered but not served is reported as unavailable, and ne
 
 Source: [[script-kb-session-start]] · [[agent-kb-retrieve]] · [[script-kb-libraries]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+The nudge for a library built to an older contract is left out with it. With 48 libraries registered, 42 of them behind the engine's contract, the session-start context named each behind library, and the `--subagent` context named none.
+
+Source: [[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]]
+Verified: 2026-10-26 · by: agent · method: manual
 
 ## A question goes to a triage desk, which sends it to one library's specialist
 

@@ -33,3 +33,7 @@ Pre-release status check on 2026-10-28, the day before the v0.3.0 code freeze (f
 - I think a CONVENTIONS rule enforced by check-kb (e.g. "dated update sections are not valid") would need a contract bump to 2.4 and six library PRs under ADR-0016. Guidance-only text probably would not. Not confirmed against ADR-0016's wording.
 - The retest note is probably a good trap case for #134 because it is mostly point-in-time readings (94.2%, 18/24, "skipped"). Not tested, since the gate doesn't exist yet.
 - Whether a library-content PR (episodic note) counts as release work under the freeze was not decided. It was merged before the freeze, so the question didn't arise.
+
+## Distilled 2026-11-09
+
+Distilled from the 2026-11-09 review of a prepared packet. Nothing promoted: repository state and tracker history are readings that git and the tracker hold, the holds and orderings are decisions, and the estimates and contract-bump guess are speculation. The release-notes intention is held, from a stronger source, in [[releases-and-contract-versioning]]. The hold on distilling the 2026-10-26 note lifted when #134's gate shipped.
