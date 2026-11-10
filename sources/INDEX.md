@@ -56,10 +56,14 @@ keywords: [sources, citations, stubs, provenance]
 - [script-secret-entropy](script-secret-entropy.md) — header of the heuristic pass for shapeless credentials
 - [script-pii-scan](script-pii-scan.md) — header of the personal-identifier pass, with its allowlist file
 - [script-kb-capture](script-kb-capture.md) — header of the capture command and its refusal of secret-bearing notes
+- [script-check-transient](script-check-transient.md) — header of the engine's check-transient script: dated and ticket-titled headings in fact files
+- [skill-kb-distill](skill-kb-distill.md) — the engine's kb-distill skill, Steps 1 and 4: a reading is not a fact, unmerged code is not current state, supersede, subject headings
 - [script-kb-sources](script-kb-sources.md) — header of the external Source URL liveness check
 - [script-grade-routing](script-grade-routing.md) — header of the routing check's agent tier, graded from tool calls
 - [script-grade-eval](script-grade-eval.md) — header of the answer-grounding grader, with --transcripts
 - [agent-kb-retrieve](agent-kb-retrieve.md) — the retrieval agent's definition: the listed libraries are the complete set; quote what an answer rests on
+- [pr-145-distill-current-state](pr-145-distill-current-state.md) — engine pull request: kb-distill writes current state, with its trap-test results
+- [pr-162-unstamped-since-sweep](pr-162-unstamped-since-sweep.md) — engine pull request: the nudge names only unstamped sources new since the last sweep, read from git
 - [pr-159-search-limits-per-question](pr-159-search-limits-per-question.md) — engine pull request: kb-retrieve's search limits count per question across libraries; a visible tally tried and dropped
 - [pr-54-kb-retrieve-quotes](pr-54-kb-retrieve-quotes.md) — engine pull request: verbatim quotes and transcript grading, with a live sample
 - [pr-6-secret-entropy-pass](pr-6-secret-entropy-pass.md) — engine pull request: the heuristic pass for shapeless credentials, and its unstated base64 limit

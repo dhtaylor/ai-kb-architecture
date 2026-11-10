@@ -72,6 +72,13 @@ A library with nothing to decide gets no section, and a week with nothing to dec
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
+### Sources only a person can check
+
+While a library's sweep is due, the report also lists its source stubs marked `Liveness: manual`, "which only a person can check", by path. That puts them in front of a person once per sweep interval, with no new state. Why such stubs exist is in [[agent-lifecycle-roles]].
+
+Source: [[script-kb-report]] · [[engine-changelog-v0.4.0]]
+Verified: 2026-11-09 · by: agent · method: doc-review
+
 ### Questions that found nothing
 
 The report also lists, per library, the `kb-retrieve` runs in the past 7 days that answered `fact not found`: how many, the new tokens they cost, how many hit the search limit, and the command that lists the questions, `kb-telemetry --not-found --library <name>`. "An absent topic named in the root `Not covered here:` line makes the next such question far cheaper." It counts as a decision, and like the rest of the report it holds a count and a command, never a question's text. Why such runs are worth a person's look is in [[retrieval-eval-integrity]].

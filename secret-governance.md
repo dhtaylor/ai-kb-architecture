@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, secrets, governance]
-keywords: [secret scan, pre-commit, archived artifact, schema dump, bare rule, UTF-16, UNSCANNED, rotation, history rewrite, git filter-repo, push protection, server-side gate, check-secrets, entropy, PII, personal identifier, allowlist, lint-allow, kb-capture, working tree, reference not value, blind trap test, redact, redaction filter, review packet, UNSCANNED, exit 2]
+keywords: [dotted names, JWT, secret scan, pre-commit, archived artifact, schema dump, bare rule, UTF-16, UNSCANNED, rotation, history rewrite, git filter-repo, push protection, server-side gate, check-secrets, entropy, PII, personal identifier, allowlist, lint-allow, kb-capture, working tree, reference not value, blind trap test, redact, redaction filter, review packet, UNSCANNED, exit 2]
 ---
 # Secret governance
 
@@ -81,6 +81,13 @@ A `SECRET?` finding "shows its first three lines and says how many more there ar
 
 Source: [[script-check-secrets]] · [[script-secret-entropy]] · [[script-pii-scan]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+### Dotted names are judged segment by segment
+
+The second pass also does not flag "dotted names whose segments each pass on their own". A dotted name of three or more identifier segments, such as a fully qualified SQL name, is judged segment by segment, and passes when no segment would be flagged on its own. Before, "A mixed-case column at the end made the whole name read as a random string", and the scanner blocked the commit. Every dotted identifier is not simply exempt, because a JWT "is three dot-separated segments too, but each one is random-looking, so it is still caught."
+
+Source: [[script-secret-entropy]] · [[engine-changelog-v0.4.0]]
+Verified: 2026-11-09 · by: agent · method: doc-review
 
 The behaviour was also run once against synthetic input in a scratch directory: a labelled password, an email address, a home path and a domain-qualified account each blocked under `--file`; the same password line carrying `lint-allow: <reason>` passed; an untracked file holding the password was caught by `--worktree`.
 

@@ -35,7 +35,9 @@ unattended Verifier, the Watcher exit codes and kb-sources request sequence, the
 regression suite's git environment, the grader's contamination and attribution rules, and the retrieval
 cost and sample tooling), and by the engine-sync fold of 2026-11-09 (contract versions 2.4 to 2.6,
 ADR-0020's links_to, dependency mismatches and read-only consumers), and by fold B of the same date
-(triage and specialists, the files-first search and stop rule, and the runs that found nothing).
+(triage and specialists, the files-first search and stop rule, and the runs that found nothing), and by
+fold C of the same date (current state and check-transient, sign-in redirects and manual sources, the
+nudge's new-since-sweep count and archived trees, dotted names, and the check-xlinks usage error).
 
 Cross-root case: **not applicable** — the domain links into no other library. It once linked into
 claude-code-runtime, which is not published, so a reader of the published library could not follow
@@ -765,3 +767,29 @@ contradiction lands.
   question: Does kb-telemetry --not-found list the questions a specialist answered not mine?
   expected_file: retrieval-eval-integrity.md
   expected_excerpt: "is a routing miss, not a gap, and is not listed"
+
+# Added 2026-11-09, engine-sync fold C: curation and guardrails.
+- case: positive
+  question: Should a fact file get a new section titled "Update 2026-11-04" when something it states changes?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "The date belongs on the `Verified:` stamp, and the history belongs in the note and in git"
+
+- case: positive
+  question: Does check-transient block a commit that adds a dated heading?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "a dated heading can be right (a dated release, a legal effective date), and only a person can say"
+
+- case: positive
+  question: A source URL redirects to a single sign-on login page that answers 200. Does kb-sources treat the source as alive?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "A login page answers 200, but it is not the source"
+
+- case: positive
+  question: After a library has been swept, which unstamped sources does the session-start nudge name?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "the commit that last changed last_swept in INDEX.md, read from git"
+
+- case: positive
+  question: Will the secret scanner block a JWT written as three dot-separated segments?
+  expected_file: secret-governance.md
+  expected_excerpt: "each one is random-looking, so it is still caught"
