@@ -31,6 +31,186 @@ external `Source:` URLs. The items below are the earlier sweeps' records, all re
 history. Re-stamping without re-verifying is not a fix.
 
 ```yaml
+- id: 0f989e88
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Does an unneeded content read count against the routing-accuracy reopen trigger?"
+  source: "eval-2026-10-12-routing-run"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[eval-2026-10-12-routing-run]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: answered by ADR-0018, which judged the reopen trigger with grade-routing's scores and counted stray reads among the failures (\"a stray read is still a read\"); the question was removed, and the answer is held in retrieval-agent-behavior"
+
+- id: 1cc16ecf
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Where does the runtime's tool-scoping behaviour belong?"
+  source: "adr-0012-phase-4-safety-scoped-to-one-maintainer"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source and newer ones re-read; the question narrowed to what is still open and stamped, method doc-review"
+
+- id: 39d02c84
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Were the machine-readable bot label, the retrieval-check diff annotation, the pull notification on rollback and the per-domain corrections-log ever built?"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[knowledge-agent-architecture-combination-plan-revised]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source re-read and the question still open; stamped, method doc-review"
+
+- id: 54016ecc
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Are the contract's conformance suite and the split of its engine-facing text built?"
+  source: "adr-0016-versioned-library-contract"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[adr-0016-versioned-library-contract]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source re-read and the question still open; stamped, method doc-review"
+
+- id: 8fe6b3bd
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Is a human-maintained digest of external changes actually kept?"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[knowledge-agent-architecture-combination-plan-revised]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source re-read and the question still open; stamped, method doc-review"
+
+- id: 9f80cef8
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Does the CI cold-start advice (shallow clone at a pinned tag, sparse checkout) carry over to per-domain library repositories?"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[knowledge-agent-architecture-combination-plan-revised]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source and newer ones re-read; the question narrowed to what is still open and stamped, method doc-review"
+
+- id: a5ae4775
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Where does the runtime's behaviour on library discovery by a sub-agent belong?"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[knowledge-agent-architecture-combination-plan-revised]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source and newer ones re-read; the question narrowed to what is still open and stamped, method doc-review"
+
+- id: bc131855
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Does the redaction filter cover what the scan cannot see?"
+  source: "script-check-secrets"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[script-check-secrets]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source re-read and the question still open; stamped, method doc-review"
+
+- id: ccbd8499
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Does the scope line separate neighboring libraries in practice?"
+  source: "conventions-contract-versions"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[conventions-contract-versions]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source and newer ones re-read; the question narrowed to what is still open and stamped, method doc-review"
+
+- id: da6e91d3
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Does `kb-apply` change a fact file, and which list does the weekly report hold?"
+  source: "adr-0017-unattended-preparation-attended-decisions"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[adr-0017-unattended-preparation-attended-decisions]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source and newer ones re-read; the question narrowed to what is still open and stamped, method doc-review"
+
+- id: dc18c5c1
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Would a `Recheck:` assertion have caught the stale hook fact sooner?"
+  source: "2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source re-read and the question still open; stamped, method doc-review"
+
+- id: ef570338
+  category: unstamped fact
+  status: resolved
+  file: knowledge-architecture-open-questions.md
+  section: "Was fan-out token cost ever measured here?"
+  source: "adr-0011-no-orchestrator-until-routing-fails"
+  severity: 4
+  owner: "@dhtaylor"
+  stamp: none
+  age: unknown (no stamp, and no logged date for when the gap began)
+  escalate: false
+  date: 2026-11-04
+  finding: "The section's Source: line cites [[adr-0011-no-orchestrator-until-routing-fails]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
+  resolved: "2026-11-09 — open-questions review: the cited source and newer ones re-read; the question narrowed to what is still open and stamped, method doc-review"
+
 - id: 7949faa6
   category: unstamped fact
   status: resolved
@@ -233,171 +413,4 @@ history. Re-stamping without re-verifying is not a fix.
 ## Open items
 
 ```yaml
-- id: 0f989e88
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Does an unneeded content read count against the routing-accuracy reopen trigger?"
-  source: "eval-2026-10-12-routing-run"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[eval-2026-10-12-routing-run]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: 1cc16ecf
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Where does the runtime's tool-scoping behaviour belong?"
-  source: "adr-0012-phase-4-safety-scoped-to-one-maintainer"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: 39d02c84
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Were the machine-readable bot label, the retrieval-check diff annotation, the pull notification on rollback and the per-domain corrections-log ever built?"
-  source: "knowledge-agent-architecture-combination-plan-revised"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[knowledge-agent-architecture-combination-plan-revised]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: 54016ecc
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Are the contract's conformance suite and the split of its engine-facing text built?"
-  source: "adr-0016-versioned-library-contract"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[adr-0016-versioned-library-contract]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: 8fe6b3bd
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Is a human-maintained digest of external changes actually kept?"
-  source: "knowledge-agent-architecture-combination-plan-revised"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[knowledge-agent-architecture-combination-plan-revised]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: 9f80cef8
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Does the CI cold-start advice (shallow clone at a pinned tag, sparse checkout) carry over to per-domain library repositories?"
-  source: "knowledge-agent-architecture-combination-plan-revised"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[knowledge-agent-architecture-combination-plan-revised]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: a5ae4775
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Where does the runtime's behaviour on library discovery by a sub-agent belong?"
-  source: "knowledge-agent-architecture-combination-plan-revised"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[knowledge-agent-architecture-combination-plan-revised]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: bc131855
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Does the redaction filter cover what the scan cannot see?"
-  source: "script-check-secrets"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[script-check-secrets]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: ccbd8499
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Does the scope line separate neighboring libraries in practice?"
-  source: "conventions-contract-versions"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[conventions-contract-versions]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: da6e91d3
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Does `kb-apply` change a fact file, and which list does the weekly report hold?"
-  source: "adr-0017-unattended-preparation-attended-decisions"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[adr-0017-unattended-preparation-attended-decisions]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: dc18c5c1
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Would a `Recheck:` assertion have caught the stale hook fact sooner?"
-  source: "2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
-
-- id: ef570338
-  category: unstamped fact
-  status: open
-  file: knowledge-architecture-open-questions.md
-  section: "Was fan-out token cost ever measured here?"
-  source: "adr-0011-no-orchestrator-until-routing-fails"
-  severity: 4
-  owner: "@dhtaylor"
-  stamp: none
-  age: unknown (no stamp, and no logged date for when the gap began)
-  escalate: false
-  date: 2026-11-04
-  finding: "The section's Source: line cites [[adr-0011-no-orchestrator-until-routing-fails]] and carries no Verified: stamp beneath it, so its currency is unknown (§7). The section records an open question rather than a fact, and the contract does not exempt open-questions sections from stamps; the owner chose on 2026-11-04 to queue these rather than exempt them. The 2026-10-28 sweep did not raise them. To close: re-read the cited source and stamp the section with the method used, or remove the question if the source has since answered it."
 ```
