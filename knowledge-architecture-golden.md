@@ -793,3 +793,15 @@ contradiction lands.
   question: Will the secret scanner block a JWT written as three dot-separated segments?
   expected_file: secret-governance.md
   expected_excerpt: "each one is random-looking, so it is still caught"
+
+# Added 2026-11-09, distilled from the 2026-10-26 retest note.
+- case: positive
+  question: Does a kb-retrieve subagent's context carry the nudge that a library is behind the engine's contract?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "the session-start context named each behind library, and the `--subagent` context named none"
+
+- case: positive
+  question: Can a sampled retrieval run be graded while it is still running?
+  expected_file: retrieval-eval-integrity.md
+  expected_excerpt: "A grade of a run still in progress is a grade of a partial transcript"
+

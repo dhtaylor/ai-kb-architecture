@@ -147,6 +147,11 @@ Normal use does not say whether answers were right, so `kb-eval-sample` draws a 
 Source: [[script-kb-telemetry]] · [[script-kb-eval-sample]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
+A grade of a run still in progress is a grade of a partial transcript. In one retest, a case graded while its run was still going failed as "expected file 'story-format-and-invest.md' was never Read", and passed when re-graded after the run had ended.
+
+Source: [[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]]
+Verified: 2026-10-26 · by: agent · method: manual
+
 ### The runs that found nothing, and what it prints
 
 `kb-telemetry` also counts, per library, the runs that answered `fact not found`. The reason: "A topic a library never holds is cheap to refuse once its root `Not covered here:` line names it", and "one field A/B cut such a question from 16-23 turns to 3. Nothing else tells a librarian which topics those are." `--not-found` lists those runs by library, costliest first, each with the question it was asked and whether it hit the search limit ([[retrieval-agent-behavior]]). "A specialist's `not mine` is a routing miss, not a gap, and is not listed." A person decides what each one is: an absent topic for the line, or a fact the library should hold. The weekly report carries one line for them; see [[unattended-preparation]].

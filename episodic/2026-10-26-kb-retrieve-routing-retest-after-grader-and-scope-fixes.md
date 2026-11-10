@@ -60,3 +60,7 @@ Follow-ups done the same day:
 - One trial per case: these numbers show direction, not frequency. The 18/24 vs 17/24 at 48 libraries difference is one case and could be noise.
 - Haiku's reliance on CONVENTIONS.md looks like a model behaviour difference, but only two cases show it; not investigated.
 - The freeze reasoning for folding #125 into #130 (shipping alone would land in the v0.3.0 freeze from 2026-10-29 and change the contract twice) is a planning judgement, not a measurement.
+
+## Distilled 2026-11-09
+
+Distilled from the 2026-11-09 review of a prepared packet. Promoted: the `--subagent` context leaves out the contract-behind nudge ([[retrieval-agent-behavior]]), and a grade of an unfinished run reads a partial transcript ([[retrieval-eval-integrity]]), both stamped 2026-10-26, method manual; and a backlink confirming the session-start nudge names each library behind the contract ([[releases-and-contract-versioning]]). Not promoted: every score, count and seed (readings), the hedged judgments (speculation), and the round-skipping and issue-folding choices (decisions). Two Claude Code observations, the per-call `model:` override and the 20-subagent cap, belong in claude-code-runtime and stay here.
