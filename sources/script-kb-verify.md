@@ -19,5 +19,6 @@ keywords: [kb-verify, Verifier, Recheck, queue, assertion]
 - **Date ingested:** 2026-10-02
 - **Artifact location:** `ai-kb:scripts/kb-verify` (docstring), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 - **Re-read:** at engine commit `720fcff` on 2026-10-16, for `agent_ttl` and the report of assertions that cannot fail.
+- **Re-read:** on 2026-11-12 at tag `v0.4.0` (commit `a318c28`; the file's blob is `9ce152e`). Folded from it: a library whose `INDEX.md` declares no `verifier_budget:` gets a budget of 5, and `--budget N` overrides the declared one.
 
 Corroboration for the Verifier as built: reports and applies only when told, a failure is never applied, commands are approved per run, and a failure is written to the owning library's queue. Used for built behaviour only. Re-read 2026-10-28 for the unattended form: `--unattended` skips `Recheck (attended):` assertions, runs the rest with an empty `HOME` and only `PATH`, `KB_ENGINE_ROOT` and proxy settings, and refuses `--apply`.

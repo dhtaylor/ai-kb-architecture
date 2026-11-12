@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, lifecycle, roles, governance, orchestrator]
-keywords: [current state, changelog, supersede, check-transient, dated heading, sign-in redirect, Liveness manual, archived, new since the last sweep, unsourced section, curator, research librarian, fact-checker, verifier, watcher, kb-sources, URL liveness, agent_ttl, agent TTL, UNCORROBORATED, routing run, grade-routing, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note, unattended, kb-schedule, review packet, systemMessage, summary line, Recheck (attended), --unattended, User-Agent, GET fallback, exit code]
+keywords: [current state, changelog, supersede, check-transient, dated heading, sign-in redirect, Liveness manual, archived, new since the last sweep, unsourced section, curator, research librarian, fact-checker, verifier, watcher, kb-sources, URL liveness, agent_ttl, agent TTL, default verifier_budget, --budget, request timeout, 10 seconds, UNCORROBORATED, routing run, grade-routing, orchestrator, fan-out, PR review, rollback, corrections-log, PII, CODEOWNERS, Recheck, kb-verify, kb-watch, kb-due, check-blast, dormant, nudge, cadence, revisit trigger, idle, session-start cost, distilled note, unattended, kb-schedule, review packet, systemMessage, summary line, Recheck (attended), --unattended, User-Agent, GET fallback, exit code]
 ---
 # Agent lifecycle roles
 
@@ -88,6 +88,14 @@ The plan's first text had the Verifier re-run a fact against the live system, re
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
+#### The default budget
+
+A library whose `INDEX.md` declares no `verifier_budget:` gets a budget of 5, and `--budget N` overrides the declared one.
+
+Source: [[script-kb-verify]]
+Verified: 2026-11-12 · by: agent · method: doc-review
+Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mkdir "$t/l"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: x\nscope: general\nfreshness_horizon: 90d\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n' > "$t/l/INDEX.md"; "$s/kb-verify" "$t/l" 2>&1 | grep -qF 'budget 5)' || r=1; "$s/kb-verify" "$t/l" --budget 3 2>&1 | grep -qF 'budget 3)' || r=1; rm -rf "$t"; exit $r
+
 ### The Watcher as built
 
 Status: built, offline. It is a script, `kb-watch`, not an agent. It compares a saved snapshot
@@ -134,6 +142,14 @@ never conflated with dead.
 
 Source: [[script-kb-sources]] · [[engine-changelog-v0.3.0]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+#### The request timeout
+
+In `kb-sources`, each request has a 10-second timeout. A request that times out is `unreachable`, not `dead`.
+
+Source: [[script-kb-sources]]
+Verified: 2026-11-12 · by: agent · method: doc-review
+Recheck: python3 -I -B -c 'import types, urllib.request as R, sys; m = types.ModuleType("ks"); m.__file__ = sys.argv[1]; exec(compile(open(sys.argv[1]).read(), sys.argv[1], "exec"), m.__dict__); seen = []; R.urlopen = lambda req, timeout=None: seen.append(timeout) or (_ for _ in ()).throw(TimeoutError("timed out")); c = m.fetch("http://example.invalid/")[0]; sys.exit(0 if seen and set(seen) == {10} and c == "unreachable" else 1)' "$KB_ENGINE_ROOT/scripts/kb-sources"
 
 #### Sign-in redirects, and sources only a person can check
 
