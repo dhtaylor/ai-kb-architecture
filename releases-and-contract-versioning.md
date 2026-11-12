@@ -1,6 +1,6 @@
 ---
 name: releases-and-contract-versioning
-description: How the engine is versioned and released (semantic versioning, the two-day freeze, what a library release records, and why the reference library takes the engine's release tag) and why the library contract has its own MAJOR.MINOR version that a library declares, how rules apply by that version, what a library behind, ahead or on an unsupported major is told, what each contract version adds, why pinning the engine is the library owner's business, and how a library someone else publishes is installed: read-only, with `links_to` naming where each library it links into comes from, and a same-named library from elsewhere reported as a dependency mismatch.
+description: How the engine is versioned and released (semantic versioning, the two-day freeze, what a library release records, and why the reference library takes the engine's release tag) and why the library contract has its own MAJOR.MINOR version that a library declares, how rules apply by that version, what a library behind, ahead or on an unsupported major is told, what each contract version adds, why pinning the engine is the library owner's business, and how a library someone else publishes is installed: read-only (optionally pinned to a release tag with `--ref`), with `links_to` naming where each library it links into comes from, and a same-named library from elsewhere reported as a dependency mismatch.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -187,9 +187,19 @@ A read-only flag on the registration was chosen over making files read-only on d
 Source: [[adr-0020-published-libraries-and-consumers]] · [[engine-changelog-v0.4.0]]
 Verified: 2026-11-09 · by: agent · method: doc-review
 
+## A read-only copy can be pinned to a release tag
+
+`kb-library add <git-url> --read-only --ref <tag>` clones at the tag and records it as `ref` in the registry. It refuses, and clones nothing, if the remote has no such tag. `--ref` goes with `--read-only`; without it, `add` is a usage error. The pin is a registry fact about a consumer's copy, so `export` and `import` do not carry the ref.
+
+- **The registry shows the pin.** `kb-library list` shows `read-only @<tag>`, and says `(checkout moved: HEAD <sha>)` on the row if the clone is no longer at that tag. `kb-libraries` reads `ref` too.
+- **Moving to a newer release is a person's step.** Check the tag out in the clone, then run `kb-library add <path> --read-only --ref <tag>`. It checks HEAD is at the tag and changes nothing if not. Re-adding without `--ref` clears the pin.
+
+Source: [[engine-changelog-v0.4.0]] · [[script-kb-library]] · [[adr-0020-published-libraries-and-consumers]]
+Verified: 2026-11-11 · by: agent · method: doc-review
+
 ## What ADR-0020 costs and leaves open
 
-The decision delivers in three steps: the read-only role and `links_to` with dependency mismatches, both in v0.4.0, then pinning. Pinning is decided but not built: `kb-library add <git-url> --read-only --ref <tag>` would clone at a tag, record the `ref` in the registry and show it in `kb-library list`, and moving to a newer release would be a person's step. It is delivered after v0.4.0.
+The decision delivers in three steps, all in v0.4.0: the read-only role, then `links_to` with dependency mismatches, then `--ref` pinning (above). The decision record first placed pinning after v0.4.0; on 2026-11-11 the owner moved it into v0.4.0, and it is built.
 
 The stated costs: contract 2.6 means a pull request in every library that links across libraries, to declare `links_to`, and one in every library to declare 2.6. `links_to` is a second place an origin is written, so if a dependency moves its repository, every library linking to it needs a pull request; "that cost lands rarely and on the right person, the one who chose the dependency." And a read-only library's facts go unverified on the consumer's machine, deliberately: "the stamps a consumer reads are the publisher's."
 
@@ -199,5 +209,5 @@ Not covered by the decision:
 - **Filing upstream issues automatically.** A skill names where to file; a person files.
 - **A dependency's version.** `links_to` names a repository, not a release, so a slug the publisher's dependency gained after the consumer's copy is still a dead link, reported with the origin.
 
-Source: [[adr-0020-published-libraries-and-consumers]]
-Verified: 2026-11-09 · by: agent · method: doc-review
+Source: [[adr-0020-published-libraries-and-consumers]] · [[engine-changelog-v0.4.0]]
+Verified: 2026-11-11 · by: agent · method: doc-review
