@@ -189,7 +189,7 @@ same rule the contract states for provenance liveness — see `ai-kb:CONVENTIONS
 built; see the Watcher above.)
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[script-kb-watch]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: query
 Recheck: f="$KB_ENGINE_ROOT/scripts/kb-watch"; [ -f "$f" ] && ! grep -qE '^ *(import|from) .*(urllib|http|socket|requests|ftplib|smtplib|ssl)' "$f"
 Source: [[engine-watcher-readme]] (the allowlist bullet)
 Verified: 2026-10-28 · by: agent · method: doc-review
