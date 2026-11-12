@@ -199,7 +199,7 @@ Verified: 2026-11-11 · by: agent · method: doc-review
 
 ## What ADR-0020 costs and leaves open
 
-The decision delivers in three steps, all in v0.4.0: the read-only role, then `links_to` with dependency mismatches, then `--ref` pinning (above). The decision record first placed pinning after v0.4.0; on 2026-11-11 the owner moved it into v0.4.0, and it is built.
+The decision delivers in three steps, all in v0.4.0: the read-only role, then `links_to` with dependency mismatches, then `--ref` pinning (above).
 
 The stated costs: contract 2.6 means a pull request in every library that links across libraries, to declare `links_to`, and one in every library to declare 2.6. `links_to` is a second place an origin is written, so if a dependency moves its repository, every library linking to it needs a pull request; "that cost lands rarely and on the right person, the one who chose the dependency." And a read-only library's facts go unverified on the consumer's machine, deliberately: "the stamps a consumer reads are the publisher's."
 
