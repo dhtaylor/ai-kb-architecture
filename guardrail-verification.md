@@ -44,7 +44,7 @@ starts with a shebang — rather than what it is named or where it lives, so a f
 naming convention to be covered.
 
 Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@21758c6
-Verified: 2026-10-12 · by: agent · method: manual
+Verified: 2026-11-12 · by: agent · method: query
 Recheck: t=$(mktemp -d); git init -q "$t/r"; git -C "$t/r" config core.fileMode false; printf "#!/bin/sh\necho hi\n" > "$t/r/s"; chmod +x "$t/r/s"; git -C "$t/r" add -A; git -C "$t/r" -c user.email=t@t -c user.name=t commit -qm add; mode=$(git -C "$t/r" ls-files -s -- s | cut -d" " -f1); rm -rf "$t"; [ "$mode" = "100644" ]
 
 ## A defect that recurs needs a check that detects it, not another fix
@@ -52,7 +52,7 @@ Recheck: t=$(mktemp -d); git init -q "$t/r"; git -C "$t/r" config core.fileMode 
 The non-executable-script defect was found, fixed and written into a decision record, and then occurred twice more: once when new hook files were created during a restructure, once at library creation. The fix that held was not another fix but a check, `check-exec-bits`, run in every hook and in CI. That held for the files it knew how to find. It missed a fourth occurrence, described above, because its rule matched paths rather than what a file is. The commit that fixed the fourth occurrence says cloning into a throwaway directory and running the result as a teammate would is "the only way this class of bug is ever found".
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.6) · [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@21758c6
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: query
 Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; git init -q "$t/r"; mkdir "$t/r/tools"; printf '#!/bin/sh\necho hi\n' > "$t/r/tools/anything"; git -C "$t/r" add -A; git -C "$t/r" update-index --chmod=-x tools/anything; "$s/check-exec-bits" "$t/r" >/dev/null 2>&1; [ $? -eq 1 ] || r=1; git -C "$t/r" update-index --chmod=+x tools/anything; "$s/check-exec-bits" "$t/r" >/dev/null 2>&1 || r=1; rm -rf "$t"; exit $r
 
 ## A check nobody's CI executes guards nothing, even if it is correct on every developer's machine
