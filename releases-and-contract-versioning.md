@@ -125,9 +125,7 @@ Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkd
 
 Source: [[conventions-contract-versions]]
 Verified: 2026-11-09 · by: agent · method: doc-review
-Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%s\nlast_swept: never\n---\n# x\n\n- \133\133%s:y]] link\n' "$1" "$2" "other" > "$d/INDEX.md"; }; mk v25 'kb_contract: "2.5"'; mk v26 'kb_contract: "2.6"'; mk ok 'kb_contract: "2.6"
-links_to:
-  other: https://example.com/x/other.git'; "$s/check-kb" "$t/v25" > "$t/a" 2>&1 && grep -qF 'links_to does not name' "$t/a" && grep -qF 'fails from contract 2.6' "$t/a" || r=1; "$s/check-kb" "$t/v26" > "$t/b" 2>&1; [ $? -eq 1 ] && grep -qF 'links_to does not name' "$t/b" || r=1; "$s/check-kb" "$t/ok" > /dev/null 2>&1 || r=1; rm -rf "$t"; exit $r
+Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%b\nlast_swept: never\n---\n# x\n\n- \133\133%s:y]] link\n' "$1" "$2" "other" > "$d/INDEX.md"; }; mk v25 'kb_contract: "2.5"'; mk v26 'kb_contract: "2.6"'; mk ok 'kb_contract: "2.6"\nlinks_to:\n  other: https://example.com/x/other.git'; "$s/check-kb" "$t/v25" > "$t/a" 2>&1 && grep -qF 'links_to does not name' "$t/a" && grep -qF 'fails from contract 2.6' "$t/a" || r=1; "$s/check-kb" "$t/v26" > "$t/b" 2>&1; [ $? -eq 1 ] && grep -qF 'links_to does not name' "$t/b" || r=1; "$s/check-kb" "$t/ok" > /dev/null 2>&1 || r=1; rm -rf "$t"; exit $r
 
 ## What the design costs
 
