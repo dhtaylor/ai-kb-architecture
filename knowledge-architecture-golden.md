@@ -806,3 +806,18 @@ contradiction lands.
   expected_file: retrieval-eval-integrity.md
   expected_excerpt: "A grade of a run still in progress is a grade of a partial transcript"
 
+# Added 2026-11-12, v0.4.0 defaults fold: kb-verify's default budget, kb-sources' timeout, closed packets.
+- case: positive
+  question: What verifier_budget does kb-verify use when a library INDEX.md does not declare one?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "gets a budget of 5, and"
+
+- case: positive
+  question: How long does kb-sources wait for a URL to respond before it gives up on it?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "each request has a 10-second timeout"
+
+- case: positive
+  question: How long are review packets kept after kb-apply marks them applied, before they are deleted?
+  expected_file: unattended-preparation.md
+  expected_excerpt: "where it is kept. Nothing in the engine deletes a closed packet"

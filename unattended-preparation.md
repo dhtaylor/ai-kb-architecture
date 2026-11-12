@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-28
 tags: [knowledge-architecture, automation, unattended, governance]
-keywords: [unattended, preparation, review packet, kb-prepare, kb-apply, kb-report, kb-schedule, kb-backup, headless, claude -p, read-only tools, STALE, weekly report, schedulable, systemd timer, cron, dollar cap, never automated, attended, ADR-0017, ADR-0013, stripped environment, canary]
+keywords: [unattended, preparation, review packet, kb-prepare, kb-apply, done folder, closed packet, kb-report, kb-schedule, kb-backup, headless, claude -p, read-only tools, STALE, weekly report, schedulable, systemd timer, cron, dollar cap, never automated, attended, ADR-0017, ADR-0013, stripped environment, canary]
 ---
 # Unattended preparation, attended decisions
 
@@ -42,6 +42,14 @@ Only `kb-distill` and `kb-audit` get a prepare step. `kb-update-domain` folds ex
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-prepare]] · [[script-kb-apply]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+### A closed packet is kept
+
+`kb-apply done <packet> applied|rejected` rewrites the packet's status and moves it to a `done/` folder beside it, where it is kept. Nothing in the engine deletes a closed packet.
+
+Source: [[script-kb-apply]]
+Verified: 2026-11-12 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; mkdir "$t/lib"; printf -- '---\npacket: kb-distill\nstatus: pending\n---\nbody\n' > "$t/lib/p.md"; "$KB_ENGINE_ROOT/scripts/kb-apply" done "$t/lib/p.md" applied >/dev/null 2>&1 || r=1; [ ! -e "$t/lib/p.md" ] && grep -qx 'status: applied' "$t/lib/done/p.md" || r=1; "$KB_ENGINE_ROOT/scripts/kb-apply" list --out "$t" >/dev/null 2>&1; [ -f "$t/lib/done/p.md" ] || r=1; rm -rf "$t"; exit $r
 
 ## A headless run cannot write, and that is enforcement rather than instruction
 

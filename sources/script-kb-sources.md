@@ -22,3 +22,5 @@ keywords: [kb-sources, URL liveness, provenance rots, source-dead, source-unreac
 Source for the provenance-liveness check as built. Folded from it: its three rules and that a dead or unreachable URL is queued, never edited. Not folded: the classification table and queue-record fields. Re-read 2026-10-28 for the request sequence: HEAD, then GET on any HTTP error but 429 with GET deciding, then one more GET with the default client name on a 403.
 
 Re-read at engine commit `5fb833a` on 2026-11-09 for the sign-in redirect rule and `Liveness: manual` stubs.
+
+- **Re-read:** on 2026-11-12 at tag `v0.4.0` (commit `a318c28`; the file's blob is `90b6503`). Folded from it: each request has a 10-second timeout, and a timeout is `unreachable`, not `dead`.
