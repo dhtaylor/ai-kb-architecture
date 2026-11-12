@@ -31,7 +31,7 @@ keywords: [sources, citations, stubs, provenance]
 - [adr-0020-published-libraries-and-consumers](adr-0020-published-libraries-and-consumers.md) — engine decision: links_to names each linked library's origin, a same-named library from elsewhere is a dependency mismatch, a consumer's copy is read-only
 - [conventions-contract-versions](conventions-contract-versions.md) — engine contract text: what each contract version adds, the scope line, attended rechecks
 - [engine-changelog-v0.3.0](engine-changelog-v0.3.0.md) — engine change notes for v0.3.0, the changes after the first release, with issue numbers
-- [engine-changelog-v0.4.0](engine-changelog-v0.4.0.md) — engine change notes after v0.3.0, to be released as v0.4.0: the read-only role and contract 2.6 as built
+- [engine-changelog-v0.4.0](engine-changelog-v0.4.0.md) — engine change notes after v0.3.0, released as v0.4.0: the read-only role, contract 2.6 and `--ref` pinning as built
 - [engine-contributing-schedulable](engine-contributing-schedulable.md) — engine document: the property that makes a command safe to run unattended
 - [engine-watcher-readme](engine-watcher-readme.md) — engine document: what the Watcher watches, and the allowlist as shipped
 - [state-change-gates](state-change-gates.md) — engine document: every state-changing entry point against the three automation bands
@@ -46,7 +46,7 @@ keywords: [sources, citations, stubs, provenance]
 - [script-kb-telemetry](script-kb-telemetry.md) — header of the retrieval cost report read from transcripts
 - [script-kb-eval-sample](script-kb-eval-sample.md) — header of the seeded retrieval sample graded and joined with cost
 - [script-kb-libraries](script-kb-libraries.md) — header of the registry reader and the states a library can be in
-- [script-kb-library](script-kb-library.md) — header of the registration command and its overlap warning
+- [script-kb-library](script-kb-library.md) — header of the registration command: its overlap warning and `--ref` pinning
 - [script-kb-session-start](script-kb-session-start.md) — header of the session and subagent hook
 - [script-check-kb](script-check-kb.md) — the structure check's contract version gating
 - [tests-run-checks](tests-run-checks.md) — preamble of the regression suite: the environment it clears before building fixtures

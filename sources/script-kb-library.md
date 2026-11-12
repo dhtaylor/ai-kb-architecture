@@ -1,6 +1,6 @@
 ---
 name: script-kb-library
-description: Source stub — header of the engine's kb-library script, registering a library and warning of an overlap.
+description: Source stub — header of the engine's kb-library script, registering a library, pinning a read-only copy to a tag, and warning of an overlap.
 memory_type: reference
 domain: knowledge-architecture
 scope: general
@@ -20,3 +20,5 @@ keywords: [kb-library, add, overlap, keywords, tags, neighbor, Not covered here]
 - **Artifact location:** `ai-kb:scripts/kb-library` (docstring and the comment above the overlap constants), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for the overlap warning when a library is added: the test, why it uses a count and a ratio of the smaller set, and that it only advises. Folded from it: the rule and its reasons. Not folded: the registry commands, which are the engine's reference.
+
+- **Re-read:** on 2026-11-11 at engine `main` commit `dfa93f9` (the file's blob is `dcad783`), whose docstring now also describes `add <git-url> --read-only --ref <tag>` and `add <path> --read-only --ref <tag>`. Folded from it: the pinning behaviour, in [[releases-and-contract-versioning]], together with the change notes ([[engine-changelog-v0.4.0]]). The overlap warning's rule is unchanged.

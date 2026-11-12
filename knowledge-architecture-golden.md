@@ -737,10 +737,11 @@ contradiction lands.
   expected_file: releases-and-contract-versioning.md
   expected_excerpt: "The engine's library hook refuses commits in it"
 
+# Amended 2026-11-11: --ref pinning is built and ships in v0.4.0; the record asked whether it was built "today" and expected "Pinning is decided but not built", which is no longer true.
 - case: positive
-  question: Can a consumer pin a read-only library to a release tag with kb-library add --ref today?
+  question: Can a consumer pin a read-only library to a release tag with kb-library add --ref?
   expected_file: releases-and-contract-versioning.md
-  expected_excerpt: "Pinning is decided but not built"
+  expected_excerpt: "clones at the tag and records it as `ref` in the registry"
 
 # Added 2026-11-09, engine-sync fold B: triage and specialists, files-first search, the stop rule, not-found runs.
 - case: positive
