@@ -46,7 +46,7 @@ Recheck: t=$(mktemp -d); git init -q "$t/r"; mkdir -p "$t/r/.githooks"; printf "
 The engine's `check-secrets` header states the same: "a pre-commit hook is bypassable with --no-verify, so the enforcement boundary is the server-side gate", and that the scan is "the committer-side half of the guardrail only". Of the committer-side scan and the server-side gate it says: "Both are required."
 
 Source: [[script-check-secrets]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 This workspace's current, concrete standing on both points — what is enforced, dormant, or
 absent here specifically — is recorded in `ai-kb:documents/decisions/0002-governance-without-enforcement.md`,
@@ -143,7 +143,7 @@ Verified: 2026-10-12 · by: agent · method: doc-review
 A refusal writes nothing and routes nothing, and exits 1. A draft typed in an editor or piped in is saved to a private (`0600`) file outside the tree, with the retry command printed; a draft given with `--from FILE` is left untouched. `lint-allow: <reason>` on a line clears a deliberate example, as it does everywhere else. For the same reason `check-secrets --worktree` scans untracked, non-ignored files, so a sweep sees what retrieval sees.
 
 Source: [[script-kb-capture]] · [[issue-9-kb-capture-scan]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 The refusal was also run once against synthetic input in a scratch tree: a note holding a labelled password was refused with the tree byte-identical afterwards, the `--from` file untouched, a piped draft saved with mode `-rw-------` outside the tree, and a clean note filed as normal.
 

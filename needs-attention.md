@@ -417,7 +417,7 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
 ```yaml
 - id: 032e28c5
   category: stale fact
-  status: open
+  status: resolved
   file: guardrail-verification.md
   section: "A contract can only be tested by following it"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -428,10 +428,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.5) and ai-kb:CONVENTIONS.md at v0.4.0 (a318c28), and re-stamped, method doc-review"
 
 - id: 0daec394
   category: stale fact
-  status: open
+  status: resolved
   file: secret-governance.md
   section: "A pre-commit hook is not the enforcement boundary"
   source: "script-check-secrets"
@@ -442,10 +443,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[script-check-secrets]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against ai-kb:scripts/check-secrets at v0.4.0 (a318c28; unchanged since the stub's pinned c9dc309) and re-stamped, method doc-review"
 
 - id: 141a0ce2
   category: stale fact
-  status: open
+  status: resolved
   file: design-thesis.md
   section: "The anti-pattern this rejects: knowledge-as-behavior"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -456,10 +458,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against §0 of documents/knowledge-agent-architecture-combination-plan-revised.md and documents/knowledge-agent-architecture-combination-plan.md (identical text) and re-stamped, method doc-review"
 
 - id: 14b55b7b
   category: stale fact
-  status: open
+  status: resolved
   file: retrieval-eval-integrity.md
   section: "A result is about the protocol that held still"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -470,10 +473,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.14, §9.16, §9.17) and re-stamped, method doc-review"
 
 - id: 1510663a
   category: stale fact
-  status: open
+  status: resolved
   file: retrieval-eval-integrity.md
   section: "One trial per case shows direction, not frequency"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -484,10 +488,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.17) and ai-kb:documents/eval-2026-09-28-intelligence-analysis-bakeoff and eval-2026-09-28-routing-sample READMEs at v0.4.0 (a318c28), and re-stamped, method doc-review"
 
 - id: 16787c74
   category: stale fact
-  status: open
+  status: resolved
   file: guardrail-verification.md
   section: "Verification is scoped to the structure it ran against"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -498,10 +503,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.9, §9.11) and ai-kb:CONVENTIONS.md section 5 at v0.4.0 (a318c28), and re-stamped, method doc-review"
 
 - id: 26bd81ce
   category: stale fact
-  status: open
+  status: resolved
   file: secret-governance.md
   section: "The capture boundary: refuse before anything is written"
   source: "script-kb-capture"
@@ -512,10 +518,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[script-kb-capture]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against ai-kb:scripts/kb-capture at v0.4.0 (a318c28; the stub pins 35f0e95, the only change since is an unrelated read-only-library guard), ai-kb:scripts/check-secrets and engine issue #9, and re-stamped, method doc-review"
 
 - id: 303af03e
   category: stale fact
-  status: open
+  status: resolved
   file: guardrail-verification.md
   section: "A clean kb-audit sweep proves structural soundness, not that a fact's content is still true"
   source: "2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed"
@@ -526,10 +533,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against episodic/2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed.md and documents/knowledge-agent-architecture-combination-plan-revised.md (§9.13) and re-stamped, method doc-review"
 
 - id: 49312329
   category: stale fact
-  status: open
+  status: resolved
   file: design-thesis.md
   section: "The separation principle"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -540,10 +548,11 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against §0 and §9.13 of documents/knowledge-agent-architecture-combination-plan-revised.md and §0 of documents/knowledge-agent-architecture-combination-plan.md (identical text) and re-stamped, method doc-review"
 
 - id: 4b7911b3
   category: stale fact
-  status: open
+  status: resolved
   file: guardrail-verification.md
   section: "A default is part of the guardrail"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -554,4 +563,5 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   escalate: true
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-12 — re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.18), ai-kb:documents/state-change-gates.md and scripts/kb-bootstrap at v0.4.0 (a318c28) and ai-kb@cabe940; \"the one script that writes machine-level configuration\" no longer held (kb-library and kb-schedule also write machine-level state), so reworded to the gates doc's \"highest-blast-radius script\" and re-stamped, method doc-review"
 ```

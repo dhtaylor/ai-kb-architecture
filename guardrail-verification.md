@@ -105,7 +105,7 @@ caught that fact sooner is untested: the assertion that catches it today was wri
 already wrong (see [[knowledge-architecture-open-questions]]).
 
 Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · [[knowledge-agent-architecture-combination-plan-revised]] (§9.13)
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## A scanner that prints its findings and exits 0 is worse than none
 
@@ -131,7 +131,7 @@ Moving the repository topology moved every hook, script, path and interface that
 A related discipline: when a restructure makes machinery unnecessary, record it as obsolete rather than deleting it, in the decision that first required it. "six months on, a rule quietly dropped and a rule deliberately retired are indistinguishable, and the first invites someone to reinstate it." The two retirements the plan names, cross-root slug uniqueness and the slug-to-path manifest, are recorded in `ai-kb:CONVENTIONS.md` section 5 and are not restated here.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.9, §9.11)
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## A contract can only be tested by following it
 
@@ -141,14 +141,14 @@ The contract's own defects each read as coherent and were self-contradictory in 
 - **A known defect is not a fixed one.** One of the defects was flagged at a review gate and then "left unfixed for hours".
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.5)
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## A default is part of the guardrail
 
-`kb-bootstrap`, the one script that writes machine-level configuration (user settings, global git configuration and a shell startup file), reports and changes nothing unless given `--apply`, the same idiom the Verifier uses. It had applied its changes by default, with `--check` as the opt-out. "Nobody had noticed, because it had only ever been run on purpose." The same commit's regression cases for both script gates were each shown to fail when the gate was removed (nine new cases, ai-kb@cabe940).
+`kb-bootstrap`, the highest-blast-radius script (it writes user settings, global git configuration and a shell startup file), reports and changes nothing unless given `--apply`, the same idiom the Verifier uses. It had applied its changes by default, with `--check` as the opt-out. "Nobody had noticed, because it had only ever been run on purpose." The same commit's regression cases for both script gates were each shown to fail when the gate was removed (nine new cases, ai-kb@cabe940).
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.18) · [[state-change-gates]] · ai-kb@cabe940
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## A regression suite run from a hook inherits the hook's repository environment
 
