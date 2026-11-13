@@ -412,5 +412,146 @@ history. Re-stamping without re-verifying is not a fix.
 
 ## Open items
 
+The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 sections whose Recheck passed that day. The mechanical checks (`check-kb`, `check-scope`, `check-golden`, `check-xlinks --installed`, `check-transient`) passed. The only decay found is 25 stale agent stamps, all dated 2026-10-12 (31 days against an `agent_ttl` of 30d), none in a section with a Recheck assertion; `kb-verify` lists the same 25. They are all severity 5, all the same age and all owned by @dhtaylor, so they sort by ID, and the cap of 10 per owner cuts from the bottom. Held back (15), still stale and to be raised by the next sweep: 5c2cefe8, 64e3db48, 6c82b80a, 7f7cb6b1, 8e75173a, 9b143b51, 9ffb90b7, a00bcfec, ae583862, cc3a9c90, cca10a95, dc358049, e461b653, e78d6b53, e8dd6ce4.
+
 ```yaml
+- id: 032e28c5
+  category: stale fact
+  status: open
+  file: guardrail-verification.md
+  section: "A contract can only be tested by following it"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 0daec394
+  category: stale fact
+  status: open
+  file: secret-governance.md
+  section: "A pre-commit hook is not the enforcement boundary"
+  source: "script-check-secrets"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[script-check-secrets]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 141a0ce2
+  category: stale fact
+  status: open
+  file: design-thesis.md
+  section: "The anti-pattern this rejects: knowledge-as-behavior"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 14b55b7b
+  category: stale fact
+  status: open
+  file: retrieval-eval-integrity.md
+  section: "A result is about the protocol that held still"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 1510663a
+  category: stale fact
+  status: open
+  file: retrieval-eval-integrity.md
+  section: "One trial per case shows direction, not frequency"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 16787c74
+  category: stale fact
+  status: open
+  file: guardrail-verification.md
+  section: "Verification is scoped to the structure it ran against"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 26bd81ce
+  category: stale fact
+  status: open
+  file: secret-governance.md
+  section: "The capture boundary: refuse before anything is written"
+  source: "script-kb-capture"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[script-kb-capture]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 303af03e
+  category: stale fact
+  status: open
+  file: guardrail-verification.md
+  section: "A clean kb-audit sweep proves structural soundness, not that a fact's content is still true"
+  source: "2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 49312329
+  category: stale fact
+  status: open
+  file: design-thesis.md
+  section: "The separation principle"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+
+- id: 4b7911b3
+  category: stale fact
+  status: open
+  file: guardrail-verification.md
+  section: "A default is part of the guardrail"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-12 · by: agent · method: doc-review"
+  age: 31d
+  escalate: true
+  date: 2026-11-12
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
 ```

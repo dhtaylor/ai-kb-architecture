@@ -9,7 +9,7 @@ agent_ttl: 30d
 verifier_budget: 15
 sweep_interval: 30d
 kb_contract: "2.6"
-last_swept: 2026-10-29
+last_swept: 2026-11-12
 metadata:
   type: index
   node_type: router
