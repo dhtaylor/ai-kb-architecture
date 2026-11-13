@@ -4,7 +4,7 @@ description: The core design thesis of a governed-KB-plus-thin-agent architectur
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-12
+verified: 2026-10-28
 metadata:
   type: fact
   node_type: memory
@@ -33,7 +33,7 @@ The loop as built is in [[agent-lifecycle-roles]], "The Verifier as built". The 
 itself is unchanged: section 0 reads identically in the revised plan and the original.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§0, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§0, identical text)
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## The anti-pattern this rejects: knowledge-as-behavior
 
@@ -56,7 +56,7 @@ design. The optimum is the KB as substrate with a thin behavior layer on top of 
 (duplicated, unsourced, drifting facts) is exactly what the governed substrate prevents.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§0) · [[knowledge-agent-architecture-combination-plan]] (§0, identical text)
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## Target layering
 

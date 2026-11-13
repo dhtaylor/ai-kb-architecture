@@ -101,7 +101,7 @@ Every drop across the four runs above had a cause outside the library. What the 
 The first library evaluated after the eval stopped changing scored 16/19, and that measures the knowledge and the agent, not the apparatus. No defect was found in the grader or the contract. Two of the three misses were the one-sentence pattern above. The third was a refusal that explained itself: the agent refused, then cited the files that showed why no answer exists, and paraphrased the fixed phrase. The contract already covers it (a refusal names what it checked in its text and cites nothing), so it is a miss, not a gap. The remaining misses were not patched one run at a time.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14, §9.16, §9.17)
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## A clean control is a claim
 
@@ -121,7 +121,7 @@ Each case in both skill evals ran once per round, and the plan says what that bu
 The routing sample behind the decision not to build an orchestrator had the same limit: 12 questions, three agents answering four each, graded by hand against a key; its limits are stated under "Orchestrator cost bounds" in [[agent-lifecycle-roles]] and are not restated here.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.17) · [[eval-2026-09-28-intelligence-analysis-bakeoff]] · [[eval-2026-09-28-routing-sample]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## A golden set that never asks across the boundary does not test where routing fails
 
