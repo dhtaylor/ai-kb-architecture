@@ -4,7 +4,7 @@ description: The three librarian roles that keep a governed KB operating (Curato
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-12
+verified: 2026-10-16
 metadata:
   type: fact
   node_type: memory
@@ -328,7 +328,7 @@ The decision recording the Verifier as built replaced the flag with "reported, f
 false-fresh-stamp half stands.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.18) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## Steady-state defaults are judged by what they say when nothing is wrong
 
@@ -339,7 +339,7 @@ The session-start surfacing described under "Cadence is surfaced at session star
 - **Detection output is still a file under the contract.** Neither queue writer had routed the queue it created, so the first real finding in a library would have blocked every commit there (the consequence is stated above under the Watcher). The general form: a detection tool that breaks the thing it watches is worse than none.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.19) · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[script-kb-due]] · ai-kb@23fcc18 · ai-kb@4ad3422
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## Orchestrator cost bounds
 
@@ -425,4 +425,4 @@ Verified: 2026-11-09 · by: agent · method: doc-review
   finding belongs to and does not yet enforce owner review.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[adr-0002-governance-without-enforcement]] · [[script-kb-owner]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review

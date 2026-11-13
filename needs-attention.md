@@ -412,7 +412,7 @@ history. Re-stamping without re-verifying is not a fix.
 
 ## Open items
 
-The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 sections whose Recheck passed that day. The mechanical checks (`check-kb`, `check-scope`, `check-golden`, `check-xlinks --installed`, `check-transient`) passed. The only decay found is 25 stale agent stamps, all dated 2026-10-12 (31 days against an `agent_ttl` of 30d), none in a section with a Recheck assertion; `kb-verify` lists the same 25. They are all severity 5, all the same age and all owned by @dhtaylor, so they sort by ID, and the cap of 10 per owner cuts from the bottom. Held back (15), still stale and to be raised by the next sweep: 5c2cefe8, 64e3db48, 6c82b80a, 7f7cb6b1, 8e75173a, 9b143b51, 9ffb90b7, a00bcfec, ae583862, cc3a9c90, cca10a95, dc358049, e461b653, e78d6b53, e8dd6ce4.
+The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 sections whose Recheck passed that day. The mechanical checks (`check-kb`, `check-scope`, `check-golden`, `check-xlinks --installed`, `check-transient`) passed. The only decay found is 25 stale agent stamps, all dated 2026-10-12 (31 days against an `agent_ttl` of 30d), none in a section with a Recheck assertion; `kb-verify` lists the same 25. They are all severity 5, all the same age and all owned by @dhtaylor, so they sort by ID, and the cap of 10 per owner cuts from the bottom. Held back (15) and re-checked the same day, 2026-11-12: each of the 15 sources was re-read, all held, and all 15 stamps were renewed, so none is held back or stale any longer (5c2cefe8, 64e3db48, 6c82b80a, 7f7cb6b1, 8e75173a, 9b143b51, 9ffb90b7, a00bcfec, ae583862, cc3a9c90, cca10a95, dc358049, e461b653, e78d6b53, e8dd6ce4).
 
 ```yaml
 - id: 032e28c5
