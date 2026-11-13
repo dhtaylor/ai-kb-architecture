@@ -4,7 +4,7 @@ description: Secret and personal-identifier governance — why rotation is not r
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-12
+verified: 2026-10-16
 metadata:
   type: fact
   node_type: memory
@@ -59,7 +59,7 @@ substitute for it. A repository where neither is enforced is "recorded as unenfo
 described as protected".
 
 Source: [[adr-0002-governance-without-enforcement]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## What check-secrets covers: three passes
 
@@ -125,7 +125,7 @@ One miss is structural rather than statistical, and the headers do not state it:
 On identifiers: "The PII pass sees identifiers only: it cannot detect a personal NAME in prose — that is a human call at review." A name in prose therefore passes every scan, and only the human gate stops it. The personal-identifier pass also misses an account whose user name starts with an escape letter (n, t, r, f, v, a, b or 0), because it reads that as an escape sequence.
 
 Source: [[script-check-secrets]] · [[script-secret-entropy]] · [[script-pii-scan]] · [[pr-6-secret-entropy-pass]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## Why a finding is recorded by reference
 
@@ -134,7 +134,7 @@ The rule — record a finding by reference, never by value; redact before archiv
 Consolidating a security finding is the step where a literal is most likely to be pasted: when a model distills a note that says a system had a plaintext password, "the natural (wrong) move is to paste the literal value as evidence". A knowledge base that does so has leaked the secret "through the front door, as documentation". A fold's ethic of copying load-bearing values character for character is the same instinct, which is why `kb-update-domain` carries an explicit carve-out: "faithful copying stops at the secret". The scan is the net behind the rule, not a substitute for it, and it leaves names to the human gate.
 
 Source: [[issue-5-distill-secrets-gate]] · [[pr-8-distill-secrets-rule]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## The capture boundary: refuse before anything is written
 
@@ -158,4 +158,4 @@ The reference-not-value rule at the distill gate was tested once, blind, and the
 This is a single run by one agent, reported by the change's author; it has not been re-run here. It also found a gap: the raw note held the secret from the moment `kb-capture` wrote it, and nothing flagged it until commit time. That gap is what the capture boundary above closes.
 
 Source: [[pr-8-distill-secrets-rule]] · [[issue-9-kb-capture-scan]]
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review

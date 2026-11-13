@@ -4,7 +4,7 @@ description: Why a retrieval eval can pass or fail for reasons that have nothing
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-12
+verified: 2026-10-16
 metadata:
   type: fact
   node_type: memory
@@ -52,7 +52,7 @@ The first run scored 5/6 and both discrepancies were defects in the eval. An exp
 The grader still confused punctuation with grounding afterwards. It failed escaped, nested and curly quotes, and a quote that stopped before the excerpt's full stop, and it crashed outright on an answer missing a field. It now folds quote characters, ignores an excerpt's trailing punctuation, and fails a malformed record by name. A paraphrase still fails. Every earlier run, re-graded against its original oracle, kept its stored verdict.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.8, §9.15)
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## An oracle must have one reader
 
@@ -81,7 +81,7 @@ The oracle accepts one sentence per fact, and a file may state a fact twice, usu
 The plan first recorded whether a golden record should accept alternative excerpts as an open decision. It was taken on 2026-09-24: a record may name `alt_excerpt`, and the grader passes an answer quoting any listed excerpt while still requiring every one to be in the file (ai-kb@3bbd400; rules in `ai-kb:CONVENTIONS.md` §10). On the first library evaluated on a protocol that held still, `alt_excerpt` was judged to reduce the pattern but not eliminate it: "adding alternatives after each run would make the oracle follow the agent", so none was added. An alternative added after results were seen is an amendment and is recorded as one, as is a shortened excerpt: in one run an excerpt was shortened because two independent agents quoted around it, and the change is recorded as post hoc in the golden file and the evidence README.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14, §9.15, §9.16) · ai-kb@3bbd400
-Verified: 2026-10-12 · by: agent · method: doc-review
+Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## Library discovery must be exact, and checked from tool calls
 
