@@ -22,3 +22,5 @@ keywords: [kb-library, add, overlap, keywords, tags, neighbor, Not covered here]
 Source for the overlap warning when a library is added: the test, why it uses a count and a ratio of the smaller set, and that it only advises. Folded from it: the rule and its reasons. Not folded: the registry commands, which are the engine's reference.
 
 - **Re-read:** on 2026-11-11 at engine `main` commit `dfa93f9` (the file's blob is `dcad783`), whose docstring now also describes `add <git-url> --read-only --ref <tag>` and `add <path> --read-only --ref <tag>`. Folded from it: the pinning behaviour, in [[releases-and-contract-versioning]], together with the change notes ([[engine-changelog-v0.4.0]]). The overlap warning's rule is unchanged.
+
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the docstring's `export` and `import` entries. Folded from it: a read-only library also gets `readOnly = true` and a pinned one its `ref` in an export, and import registers such a library read-only and clones it at its tag. Nothing folded earlier changed.

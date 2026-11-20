@@ -1,6 +1,6 @@
 ---
 name: releases-and-contract-versioning
-description: How the engine is versioned and released (semantic versioning, the two-day freeze, what a library release records, and why the reference library takes the engine's release tag) and why the library contract has its own MAJOR.MINOR version that a library declares, how rules apply by that version, what a library behind, ahead or on an unsupported major is told, what each contract version adds, why pinning the engine is the library owner's business, and how a library someone else publishes is installed: read-only (optionally pinned to a release tag with `--ref`), with `links_to` naming where each library it links into comes from, and a same-named library from elsewhere reported as a dependency mismatch.
+description: How the engine is versioned and released (semantic versioning, the two-day freeze, what a library release records, and why the reference library takes the engine's release tag) and why the library contract has its own MAJOR.MINOR version that a library declares, how rules apply by that version, what a library behind, ahead or on an unsupported major is told, what each contract version adds, why pinning the engine is the library owner's business, and how a library someone else publishes is installed: read-only (optionally pinned to a release tag with `--ref`), with `links_to` naming where each library it links into comes from, and a same-named library from elsewhere reported as a dependency mismatch; a local-only library is listed by its path, and export and import carry the read-only mode and the pin.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-28
 tags: [knowledge-architecture, releases, contract, versioning]
-keywords: [release, semantic versioning, minor bump, patch, code freeze, freeze, pinning, kb_contract, contract version, MAJOR.MINOR, declared version, behind, ahead, unsupported major, unsupported-contract, last two majors, conformance suite, Not covered here, Recheck (attended), sources, documents, migration notes, reference library, same tag, release package, release day, ADR-0015, ADR-0016, ADR-0019, ADR-0020, Liveness manual, unsourced section, links_to, origin, dependency mismatch, read-only, consumer, published library, kb-library add, --read-only, --ref, aliasing]
+keywords: [release, semantic versioning, minor bump, patch, code freeze, freeze, pinning, kb_contract, contract version, MAJOR.MINOR, declared version, behind, ahead, unsupported major, unsupported-contract, last two majors, conformance suite, Not covered here, Recheck (attended), sources, documents, migration notes, reference library, same tag, release package, release day, ADR-0015, ADR-0016, ADR-0019, ADR-0020, Liveness manual, unsourced section, links_to, origin, dependency mismatch, read-only, consumer, published library, kb-library add, --read-only, --ref, aliasing, local-only, absolute path, export, import, readOnly]
 ---
 # Releases and contract versioning
 
@@ -121,11 +121,13 @@ Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkd
 
 - **2.4** lets a source stub carry `- **Liveness:** manual` for a source a script cannot check: `kb-sources` does not fetch it, and the weekly report lists it once per sweep interval for a person to check. `check-kb` fails a `Liveness:` value other than `manual`, from this version. Nothing is required to migrate.
 - **2.5** requires a `Source:` line on every section with content in a fact file. The intro under the `#` title, a heading with only subheadings under it, and a `CONFLICTED` section are exempt. `check-kb` fails a section with no `Source:` line, from this version, and `kb-due` counts them. Migrating from 2.4: `check-kb` warns about each unsourced section below 2.5, and the owner gives each one its source, moves a fact out of the intro under a heading, or removes what nobody can source.
-- **2.6** requires a tree that links across libraries to list, under `links_to:` in its root `INDEX.md`, the origin of each library its `[[library:slug]]` links name: the git remote it was linked against. `check-kb` fails a link whose library is not listed, from this version, and warns about an entry no link uses. A link inside an inline code span explains the form and needs no entry. Migrating from 2.5 means adding each linked library under `links_to:` with the git remote it was cloned from; "a library with no cross-library links changes only the declaration." Why, and what the engine does with the list, is below.
+- **2.6** requires a tree that links across libraries to list, under `links_to:` in its root `INDEX.md`, the origin of each library its `[[library:slug]]` links name: the git remote it was linked against. `check-kb` fails a link whose library is not listed, from this version, and warns about an entry no link uses. A link inside an inline code span explains the form and needs no entry. Migrating from 2.5 means adding each linked library under `links_to:` with the git remote it was cloned from, or its absolute path if it is local-only (§5); "a library with no cross-library links changes only the declaration." Why, and what the engine does with the list, is below.
 
 Source: [[conventions-contract-versions]]
 Verified: 2026-11-09 · by: agent · method: doc-review
 Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%b\nlast_swept: never\n---\n# x\n\n- \133\133%s:y]] link\n' "$1" "$2" "other" > "$d/INDEX.md"; }; mk v25 'kb_contract: "2.5"'; mk v26 'kb_contract: "2.6"'; mk ok 'kb_contract: "2.6"\nlinks_to:\n  other: https://example.com/x/other.git'; "$s/check-kb" "$t/v25" > "$t/a" 2>&1 && grep -qF 'links_to does not name' "$t/a" && grep -qF 'fails from contract 2.6' "$t/a" || r=1; "$s/check-kb" "$t/v26" > "$t/b" 2>&1; [ $? -eq 1 ] && grep -qF 'links_to does not name' "$t/b" || r=1; "$s/check-kb" "$t/ok" > /dev/null 2>&1 || r=1; rm -rf "$t"; exit $r
+Source: [[conventions-contract-versions]] (the migration note under 2.6, as at 5433f08)
+Verified: 2026-11-20 · by: agent · method: doc-review
 
 ## What the design costs
 
@@ -170,6 +172,14 @@ With `--installed`, `check-xlinks` reads a library's `links_to` entry for each l
 Source: [[adr-0020-published-libraries-and-consumers]] · [[engine-changelog-v0.4.0]] · [[conventions-contract-versions]]
 Verified: 2026-11-09 · by: agent · method: doc-review
 
+### A local-only library's origin is its path
+
+A library with no remote ([[design-thesis]]) is listed under `links_to:` by its absolute path, as `kb-libraries` prints it, not a `~` form. The registry records no origin for it, so `check-xlinks` compares nothing and resolves the links as for any library: a path is a record of what was linked against, not a check, and it names a folder on one machine only. Once the library has a remote and is registered with it, the path is another origin than the URL, and the links are a dependency mismatch until `links_to:` is changed to the URL.
+
+Source: [[conventions-contract-versions]] · [[engine-changelog-after-v0.4.0]]
+Verified: 2026-11-20 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; export HOME="$t/h" GIT_CONFIG_GLOBAL="$t/gc" GIT_CONFIG_NOSYSTEM=1; mkdir -p "$HOME"; k="$KB_ENGINE_ROOT/scripts/kb-library"; ix() { printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\nkb_contract: "2.6"\n%b---\n# x\n\n- \133foo](foo.md) — foo\n' "$1" "$2"; }; mkdir -p "$t/fxloc" "$t/fxcon"; git init -q "$t/fxloc"; ix fxloc > "$t/fxloc/INDEX.md"; printf -- '---\nname: foo\ndescription: d\nmemory_type: semantic\ndomain: fxloc\nscope: general\n---\n# foo\n' > "$t/fxloc/foo.md"; l="$t/fxloc"; ix fxcon "links_to:\n  fxloc: $l\n" > "$t/fxcon/INDEX.md"; printf '\nSee \133\133fxloc:foo]].\n' >> "$t/fxcon/INDEX.md"; "$k" add "$l" >/dev/null 2>&1; x="$KB_ENGINE_ROOT/scripts/check-xlinks"; o=$("$x" --installed "$t/fxcon" 2>&1); [ $? -eq 0 ] || r=1; printf '%s\n' "$o" | grep -qi 'mismatch' && r=1; git -C "$l" remote add origin https://example.invalid/fxloc.git; "$k" remove fxloc >/dev/null 2>&1; "$k" add "$l" >/dev/null 2>&1; "$x" --installed "$t/fxcon" 2>&1 | grep -qi 'dependency mismatch' || r=1; rm -rf "$t"; exit $r
+
 ## A consumer's copy is registered read-only: served, never curated here
 
 `kb-library add <path | git-url> --read-only` records the library as read-only in the registry. Re-adding the same path without the flag makes it curated again. A read-only library "is **served exactly as any other**", by `kb-ask` and `kb-retrieve`. What changes is that the machine does not curate it:
@@ -187,13 +197,17 @@ Verified: 2026-11-09 · by: agent · method: doc-review
 
 ## A read-only copy can be pinned to a release tag
 
-`kb-library add <git-url> --read-only --ref <tag>` clones at the tag and records it as `ref` in the registry. It refuses, and clones nothing, if the remote has no such tag. `--ref` goes with `--read-only`; without it, `add` is a usage error. The pin is a registry fact about a consumer's copy, so `export` and `import` do not carry the ref.
+`kb-library add <git-url> --read-only --ref <tag>` clones at the tag and records it as `ref` in the registry. It refuses, and clones nothing, if the remote has no such tag. `--ref` goes with `--read-only`; without it, `add` is a usage error. The pin is a registry fact about a consumer's copy. The earlier statement here, that `export` and `import` do not carry the ref, is superseded after v0.4.0 (#178): `kb-library export` and `import` now carry a library's read-only mode and pinned tag. Export writes `readOnly` and `ref` for each library that has them; import clones such a library at its tag and registers it read-only and pinned. A tag the remote no longer has refuses that library alone and the rest are still imported, with exit 1 as for any library not imported. An export without the keys imports as before.
 
 - **The registry shows the pin.** `kb-library list` shows `read-only @<tag>`, and says `(checkout moved: HEAD <sha>)` on the row if the clone is no longer at that tag. `kb-libraries` reads `ref` too.
 - **Moving to a newer release is a person's step.** Check the tag out in the clone, then run `kb-library add <path> --read-only --ref <tag>`. It checks HEAD is at the tag and changes nothing if not. Re-adding without `--ref` clears the pin.
 
 Source: [[engine-changelog-v0.4.0]] · [[script-kb-library]] · [[adr-0020-published-libraries-and-consumers]]
 Verified: 2026-11-11 · by: agent · method: doc-review
+
+Source: [[engine-changelog-after-v0.4.0]] · [[script-kb-library]] (the paragraph on `export` and `import`)
+Verified: 2026-11-20 · by: agent · method: doc-review
+Recheck: (t=$(mktemp -d); r=0; export HOME="$t/h" GIT_CONFIG_GLOBAL="$t/gc" GIT_CONFIG_NOSYSTEM=1; mkdir -p "$HOME"; for n in fxro fxrw fxloc; do mkdir -p "$t/$n"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n' "$n" > "$t/$n/INDEX.md"; git init -q "$t/$n"; [ $n = fxloc ] || git -C "$t/$n" remote add origin "https://example.invalid/$n.git"; done; k="$KB_ENGINE_ROOT/scripts/kb-library"; "$k" add "$t/fxro" --read-only >/dev/null 2>&1; "$k" add "$t/fxrw" >/dev/null 2>&1; "$k" add "$t/fxloc" >/dev/null 2>&1; o=$("$k" export 2>&1); printf '%s\n' "$o" | grep -A3 'library "fxro"' | grep -qF 'readOnly = true' || r=1; printf '%s\n' "$o" | grep -A3 'library "fxrw"' | grep -qF 'readOnly' && r=1; printf '%s\n' "$o" | grep -F 'fxloc' | grep -q '^#' || r=1; rm -rf "$t"; exit $r) && grep -qF 'is registered read-only, and one with a `ref` is cloned at that tag' "$KB_ENGINE_ROOT/scripts/kb-library"
 
 ## What ADR-0020 costs and leaves open
 

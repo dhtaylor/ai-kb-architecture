@@ -23,3 +23,5 @@ keywords: [kb-due, nudge, cadence, sweep, session start]
 Corroboration for cadence as built: a reminder reported where an agent is already standing, silent when nothing is due, never running an assertion. Re-read 2026-10-28 for the packets and weekly report it names, the stale-fact and unstamped-source categories, the contract line, and the one-line summary for the person.
 
 Re-read at engine commit `5fb833a` on 2026-11-09 for unstamped sources new since the last sweep, unsourced sections and archived trees.
+
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the docstring and the nudge function. Folded from it, beside the change notes ([[engine-changelog-after-v0.4.0]]): the recheck count is every due assertion, with ", N a run" added when it is more than the `verifier_budget`; a pending `kb-audit` packet leaves the sweep out of the nudge and a pending `kb-distill` packet the episodic notes; an `INDEX.md` `Source:` line is not counted as unstamped; a malformed `kb_contract:` is reported and the next tree goes on. Nothing folded earlier changed.

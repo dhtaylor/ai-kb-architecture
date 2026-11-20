@@ -821,3 +821,124 @@ contradiction lands.
   question: How long are review packets kept after kb-apply marks them applied, before they are deleted?
   expected_file: unattended-preparation.md
   expected_excerpt: "where it is kept. Nothing in the engine deletes a closed packet"
+
+# Added 2026-11-20, pre-release fold of the engine's Unreleased change notes and ADR-0021: fixed paths, local-only libraries, KB_TODAY, the nudge and the weekly report, what kb-verify reads, the one root INDEX.md reader.
+- case: positive
+  question: Why did the engine stop following XDG_CONFIG_HOME for where kb-schedule keeps its config?
+  expected_file: design-thesis.md
+  expected_excerpt: "ran with preparation off and without the PATH install had saved"
+
+- case: positive
+  question: How can a person keep the engine's review packets and weekly reports somewhere other than its default state folder?
+  expected_file: design-thesis.md
+  expected_excerpt: "A person who wants state elsewhere sets"
+
+- case: positive
+  question: A person had XDG_STATE_HOME set before the engine moved to fixed paths. What happens to their old packets and reports?
+  expected_file: design-thesis.md
+  expected_excerpt: "the engine no longer reads the old folders"
+
+- case: positive
+  question: What replaced the five copies of the state-folder rule that were spread across the engine's scripts?
+  expected_file: design-thesis.md
+  expected_excerpt: "replaces five copies of the state-folder rule"
+
+- case: positive
+  question: After upgrading, what must a person with a scheduled job do for CLAUDE_CONFIG_DIR to reach the scheduled run?
+  expected_file: design-thesis.md
+  expected_excerpt: "reinstall to record it"
+
+- case: positive
+  question: What checks a commit made with --no-verify in a library that has no git remote?
+  expected_file: design-thesis.md
+  expected_excerpt: "Its only gate is the commit hook"
+
+- case: positive
+  question: What does a library's links_to entry hold when the library it links into has no remote, and is that checked?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "a path is a record of what was linked against, not a check"
+
+- case: positive
+  question: Does kb-library export record that a registered library is read-only?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "now carry a library's read-only mode and pinned tag"
+
+- case: positive
+  question: A library's root INDEX.md repeats a key in its frontmatter. Which occurrence do the engine's scripts read?
+  expected_file: design-thesis.md
+  expected_excerpt: "On a repeated key the first occurrence wins"
+
+- case: positive
+  question: What happens when KB_TODAY is set to something that is not a date?
+  expected_file: guardrail-verification.md
+  expected_excerpt: "A malformed value exits 2 and names the variable; it never falls back to the real date."
+
+- case: positive
+  question: A library has more rechecks due than its verifier budget. Does the session-start nudge count all of them or only one run's worth?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "Within the budget the wording is unchanged"
+
+- case: positive
+  question: Does a pending kb-distill review packet hide a due sweep from the nudge?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "A packet covers only what its skill does: an audit packet does not hide the notes, nor a distill packet the sweep."
+
+- case: positive
+  question: Why did kb-due count a stamp-less Source line in a router as an unstamped source, and does it still?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "so a router counted"
+
+- case: positive
+  question: What does session start do with a kb.nudge value it does not recognise?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "warns in the session-start message"
+
+- case: positive
+  question: How does kb-verify treat a Verified stamp that names no by field?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "so the shorter agent TTL applies"
+
+- case: positive
+  question: Does rejecting a Recheck that the shell cannot parse need a contract version bump?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "It fails at every contract version, like an indented stamp"
+
+- case: positive
+  question: Which assertions does the WEAK check in kb-verify judge, now that containing a URL is not enough?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "It judges one that fetches it"
+
+- case: positive
+  question: Why did check-transient report a dated heading found in a library's Claude Code settings folder?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "which lacked those two"
+
+- case: positive
+  question: Is an archived library that is not registered still reported in the weekly report?
+  expected_file: unattended-preparation.md
+  expected_excerpt: "A registered library is still reported: it is served whatever it declares."
+
+- case: positive
+  question: When does kb-report still end with exit 2 now that one unreadable library no longer stops it?
+  expected_file: unattended-preparation.md
+  expected_excerpt: "Exit 2 stays for an engine that cannot load its readers, or a report folder inside a library."
+
+- case: positive
+  question: Does check-secrets --file give a non-md file under a library's documents folder the raw-artifact exemption?
+  expected_file: secret-governance.md
+  expected_excerpt: "gets the same raw-artifact exemption as"
+
+- case: positive
+  question: Why was a plain slug in a keywords list once flagged by check-secrets?
+  expected_file: secret-governance.md
+  expected_excerpt: "looked like a mixed-class token"
+
+- case: negative
+  question: Which release number will the engine's changes after v0.4.0 ship under?
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: negative
+  question: Who decided that the engine's state should live at fixed paths?
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
