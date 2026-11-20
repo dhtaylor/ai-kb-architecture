@@ -1,6 +1,6 @@
 ---
 name: unattended-preparation
-description: Why the engine may prepare knowledge work unattended but never decide it — the split of kb-distill and kb-audit at their review gate into review packets, why a headless run cannot write, the weekly report of decisions, the opt-in schedule, what makes a command safe to schedule, the verified backup, what is never automated, and what the design costs.
+description: Why the engine may prepare knowledge work unattended but never decide it — the split of kb-distill and kb-audit at their review gate into review packets, why a headless run cannot write, the weekly report of decisions, the opt-in schedule, what makes a command safe to schedule, the verified backup, what is never automated, and what the design costs; the weekly report's handling of a library ahead of the contract, an archived one and one it cannot read.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-28
 tags: [knowledge-architecture, automation, unattended, governance]
-keywords: [unattended, preparation, review packet, kb-prepare, kb-apply, done folder, closed packet, kb-report, kb-schedule, kb-backup, headless, claude -p, read-only tools, STALE, weekly report, schedulable, systemd timer, cron, dollar cap, never automated, attended, ADR-0017, ADR-0013, stripped environment, canary]
+keywords: [unattended, preparation, review packet, kb-prepare, kb-apply, done folder, closed packet, kb-report, kb-schedule, kb-backup, headless, claude -p, read-only tools, STALE, weekly report, schedulable, systemd timer, cron, dollar cap, never automated, attended, ADR-0017, ADR-0013, stripped environment, canary, ahead of the contract, archived, unreadable queue record, registry unreadable]
 ---
 # Unattended preparation, attended decisions
 
@@ -73,12 +73,31 @@ Recheck: grep -qF 'TOOLS = "Read,Grep,Glob"' "$KB_ENGINE_ROOT/scripts/kb-prepare
 - each open queue item, by category and location;
 - rechecks that are due but marked `Recheck (attended):`, which a scheduled run skips (see [[agent-lifecycle-roles]]);
 - a sweep that is due, or notes awaiting distillation, that no packet covers yet;
-- a library behind the contract or on one the engine cannot serve.
+- a library behind the contract, ahead of the engine's, or on one the engine cannot serve.
 
 A library with nothing to decide gets no section, and a week with nothing to decide gets one line. The file is written either way, so a quiet week can be told from a week the job did not run. It never holds a fact's, a source's or a packet's text: paths, counts, headings and ids only. The session-start nudge points the person at the latest report; see [[agent-lifecycle-roles]].
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]]
 Verified: 2026-10-28 · by: agent · method: doc-review
+
+### A library ahead of the engine's contract, and an archived one
+
+- **`kb-report` lists a library whose contract is newer than the engine's** (#204). It named a library behind the contract, or on one the engine cannot serve, but said nothing about one ahead, which `kb-due` already told to upgrade the engine.
+- **`kb-report` leaves out a library that declares `archived:` and is not registered** (#204), as `kb-due` already did (#141). It listed that library's sweep and anything else due, though a read-only archive cannot act on a decision. A registered library is still reported: it is served whatever it declares.
+
+Source: [[engine-changelog-after-v0.4.0]] · [[script-kb-report]]
+Verified: 2026-11-20 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; mkdir -p "$t/h" "$t/lib-a" "$t/lib-b" "$t/lib-c"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n%b---\n# x\n\n- \133f](f.md) — f\n' fxa 'kb_contract: "2.99"\n' > "$t/lib-a/INDEX.md"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n%s---\n# x\n\n- \133f](f.md) — f\n' fxb 'archived: gone\n' > "$t/lib-b/INDEX.md"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n%s---\n# x\n\n- \133f](f.md) — f\n' fxc '' > "$t/lib-c/INDEX.md"; HOME="$t/h" KB_REPORTS="$t/o" "$KB_ENGINE_ROOT/scripts/kb-report" "$t/lib-a" "$t/lib-b" "$t/lib-c" >/dev/null 2>&1; cat "$t/o/"*.md > "$t/rep"; grep -qF 'newer than this engine' "$t/rep" || r=1; grep -qF '## lib-c' "$t/rep" || r=1; grep -qF '## lib-b' "$t/rep" && r=1; rm -rf "$t"; exit $r
+
+### What the report does when it cannot read something
+
+- **It lists the queue records it cannot read** (#204). `kb-due` has counted them since #168, but the report skipped them in silence, so an unreadable record was missing from both the queue items and the decisions. It now says how many there are, and that `check-kb` names the lines.
+- **It no longer stops at the first library it cannot read** (#204). A malformed `agent_ttl:` or an unreadable `needs-attention.md` ended the whole run with exit 2 and no report. It now writes "Could not compute …" as an item under that library and reports the others. Exit 2 stays for an engine that cannot load its readers, or a report folder inside a library.
+- **It goes on when the library registry cannot be read** (#204), as `kb-due` does. It stopped with exit 2 and "could not load the engine's readers". It now warns on stderr that the registry is unreadable, reports any library named on the command line, and finds none to report otherwise.
+
+Source: [[engine-changelog-after-v0.4.0]] · [[script-kb-report]]
+Verified: 2026-11-20 · by: agent · method: doc-review
+Recheck: (t=$(mktemp -d); r=0; mkdir -p "$t/h" "$t/lib-a" "$t/lib-b"; for n in a b; do printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fx%s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n%b---\n# x\n' "$n" "$([ $n = a ] && printf 'agent_ttl: bogus\\n')" > "$t/lib-$n/INDEX.md"; done; HOME="$t/h" KB_REPORTS="$t/o" "$KB_ENGINE_ROOT/scripts/kb-report" "$t/lib-a" "$t/lib-b" >/dev/null 2>&1; [ $? -ne 2 ] || r=1; cat "$t/o/"*.md > "$t/rep"; grep -qF '## lib-b' "$t/rep" || r=1; grep -qF 'Could not compute' "$t/rep" || r=1; rm -rf "$t"; exit $r) && grep -qF 'library registry unreadable, registered libraries skipped' "$KB_ENGINE_ROOT/scripts/kb-report" && grep -qF 'and how many records of the queue could not be read at all' "$KB_ENGINE_ROOT/scripts/kb-report"
 
 ### Sources only a person can check
 

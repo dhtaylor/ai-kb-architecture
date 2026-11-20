@@ -1,6 +1,6 @@
 ---
 name: secret-governance
-description: Secret and personal-identifier governance — why rotation is not removal, why a pre-commit scan is not the enforcement boundary, what the engine's three-pass scan covers and cannot see, why raw artifacts archived in a library skip the bare-entropy rule and UTF-16 text is blocked, why capture refuses a note holding a credential, how the redaction filter keeps a secret out of an unattended model's output, and the evidence a gate works.
+description: Secret and personal-identifier governance — why rotation is not removal, why a pre-commit scan is not the enforcement boundary, what the engine's three-pass scan covers and cannot see, why raw artifacts archived in a library skip the bare-entropy rule (also in --file mode, unless --strict) and UTF-16 text is blocked, why capture refuses a note holding a credential, how the redaction filter keeps a secret out of an unattended model's output, and the evidence a gate works.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-09-19
 tags: [knowledge-architecture, secrets, governance]
-keywords: [dotted names, JWT, secret scan, pre-commit, archived artifact, schema dump, bare rule, UTF-16, UNSCANNED, rotation, history rewrite, git filter-repo, push protection, server-side gate, check-secrets, entropy, PII, personal identifier, allowlist, lint-allow, kb-capture, working tree, reference not value, blind trap test, redact, redaction filter, review packet, UNSCANNED, exit 2]
+keywords: [dotted names, JWT, secret scan, pre-commit, archived artifact, schema dump, bare rule, UTF-16, UNSCANNED, rotation, history rewrite, git filter-repo, push protection, server-side gate, check-secrets, entropy, PII, personal identifier, allowlist, lint-allow, kb-capture, working tree, reference not value, blind trap test, redact, redaction filter, review packet, UNSCANNED, exit 2, --file, --strict, flow list, slug]
 ---
 # Secret governance
 
@@ -109,12 +109,28 @@ Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; p=Ab1#; printf 'o
 
 A library archives the evidence it was folded from under `documents/`, verbatim. The pilot that exposed the problem archived a schema dump of 1,383 SQL files plus diagram exports, and the bare rule flagged it about 1,900 times, nearly all on identifiers, while the pattern file found 0. The only escape was `lint-allow:` on every line, which would have meant editing thousands of lines of a verbatim artifact and blinding them to a future real secret.
 
-Two exceptions in `check-secrets` cover such artifacts. A non-`.md` file under `documents/` in a library repository (one whose root `INDEX.md` declares `domain:`) skips the bare rule, "which flags its long identifiers on nearly every line. The patterns, the labelled rule and PII still run on every line of it." The engine's own `documents/` is not a library's, and keeps every rule; in `--file` mode "no file is exempt". UTF-16 text "reads as binary to every pass and so would be skipped unseen. It is reported `UNSCANNED` and blocks until converted to UTF-8."
+Two exceptions in `check-secrets` cover such artifacts. A non-`.md` file under `documents/` in a library repository (one whose root `INDEX.md` declares `domain:`) skips the bare rule, "which flags its long identifiers on nearly every line. The patterns, the labelled rule and PII still run on every line of it." The engine's own `documents/` is not a library's, and keeps every rule; the earlier statement that in `--file` mode "no file is exempt" is superseded, see below. UTF-16 text "reads as binary to every pass and so would be skipped unseen. It is reported `UNSCANNED` and blocks until converted to UTF-8."
 
 What the exemption gives up, as the change states it: "a prefixless, unlabeled random literal inside an archived non-`.md` artifact is no longer caught." The contract's rule for archiving as UTF-8 is in `ai-kb:CONVENTIONS.md` §6 and is not restated here.
 
 Source: [[script-check-secrets]] · [[pr-59-archived-artifacts]]
 Verified: 2026-10-16 · by: agent · method: doc-review
+
+### `--file` follows the enclosing library
+
+`check-secrets --file` now resolves its path against the enclosing library, so a non-`.md` file under `documents/` gets the same raw-artifact exemption as `--worktree`; a file outside any library is still checked strictly (#183). `--file PATH --strict` switches the exemption off, and `kb-capture` uses it, so `--from` a library's `documents/` file cannot borrow the exemption for a note filed elsewhere.
+
+Source: [[engine-changelog-after-v0.4.0]] · [[script-check-secrets]]
+Verified: 2026-11-20 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; s="$KB_ENGINE_ROOT/scripts/check-secrets"; git init -q "$t/lib"; mkdir -p "$t/lib/documents" "$t/out"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxs\nscope: general\n---\n# x\n' > "$t/lib/INDEX.md"; for f in "$t/lib/documents/dump.sql" "$t/out/dump.sql"; do printf 'CREATE TABLE %s%s (id int);\n' aB3dE5fG7hI9 jK1lM3nO5pQ7rS9 > "$f"; done; "$s" --file "$t/lib/documents/dump.sql" >/dev/null 2>&1 || r=1; "$s" --file "$t/lib/documents/dump.sql" --strict >/dev/null 2>&1 && r=1; "$s" --file "$t/out/dump.sql" >/dev/null 2>&1 && r=1; rm -rf "$t"; exit $r
+
+### A plain slug in a flow list is not a secret
+
+`check-secrets` no longer flags a plain slug in a frontmatter flow list (#183). The `]` closing `keywords: [a2a-setup-external]` was counted as a symbol, so a lowercase hyphenated slug with a digit looked like a mixed-class token. A trailing `]` on a lowercase slug is now ignored; a credential in `keywords:` or `tags:` is still caught. <!-- lint-allow: the #183 example slug, which an engine before the fix flags -->
+
+Source: [[engine-changelog-after-v0.4.0]]
+Verified: 2026-11-20 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; s="$KB_ENGINE_ROOT/scripts/check-secrets"; git init -q "$t/lib"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxs\nscope: general\nkeywords: [a2a-setup-external]\n---\n# x\n' > "$t/lib/INDEX.md"; "$s" --file "$t/lib/INDEX.md" >/dev/null 2>&1 || r=1; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxs\nscope: general\nkeywords: [%s%s]\n---\n# x\n' aB3dE5fG7hI9 jK1lM3nO5pQ7rS9 > "$t/lib/INDEX.md"; "$s" --file "$t/lib/INDEX.md" >/dev/null 2>&1 && r=1; rm -rf "$t"; exit $r
 
 ## What check-secrets cannot see
 
