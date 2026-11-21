@@ -20,3 +20,4 @@ keywords: [kb-distill, reading, durable, unmerged, supersede, current state, sub
 - **Artifact location:** `ai-kb:plugins/knowledge-tools/skills/kb-distill/SKILL.md`, Steps 1 and 4, read at engine commit `5fb833a` on 2026-11-09. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 The skill's instructions for turning episodic notes into facts. Folded from it: that a reading is not a fact, that unmerged code is not current state, the supersede outcome, and that a fact file states current state under subject headings. Not folded: the rest of the skill's steps.
+- **Re-read:** at engine commit `5433f08` on 2026-11-20, for the skill's description, tier and tools, Step 7 review gate, Refusals and the checks it runs, folded into skills-agents-and-commands.md.
