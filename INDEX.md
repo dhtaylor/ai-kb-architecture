@@ -1,6 +1,6 @@
 ---
 name: knowledge-architecture-index
-description: Router for how this governed knowledge base and its thin-agent layer are designed to work — conventions, scoping, lifecycle, guardrails and agent contracts.
+description: Router for ai-kb, the governed knowledge-base engine, as it stands — installing and using it, the contract's rules, what every script, skill, agent and command does, the decisions behind them, and why the knowledge base and its thin-agent layer are designed as they are.
 memory_type: reference
 domain: knowledge-architecture
 scope: general
@@ -15,11 +15,11 @@ metadata:
   node_type: router
   created: 2026-09-19
 tags: [knowledge-architecture]
-keywords: [KB_TODAY, XDG, fixed paths, local-only, knowledge base, architecture, thin agent, retrieval contract, scoping, provenance, currency, lifecycle, guardrails, librarian, retrieval eval, golden set, oracle, release, contract version, kb_contract, links_to, read-only, dependency mismatch, unattended, review packet, schedule, section read, scope line, redact]
+keywords: [ai-kb, install, set up, kb-bootstrap, kb-init, commit hook, contributing, CONVENTIONS, contract rules, frontmatter, currency stamp, script reference, exit codes, skills, commands, decision records, ADR, KB_TODAY, XDG, fixed paths, local-only, knowledge base, architecture, thin agent, retrieval contract, scoping, provenance, currency, lifecycle, guardrails, librarian, retrieval eval, golden set, oracle, release, contract version, kb_contract, links_to, read-only, dependency mismatch, unattended, review packet, schedule, section read, scope line, redact]
 ---
 # Knowledge architecture
 
-Not covered here: Claude Code's own runtime mechanisms, such as its settings, its hook system, plugin loading and tool semantics (the engine's own hooks are covered here) — held by a separate claude-code-runtime library, not published with this one; the contract text itself — in ai-kb CONVENTIONS.md, not a library
+Not covered here: Claude Code's own runtime mechanisms, such as its settings, its hook system, plugin loading and tool semantics (the engine's own hooks, and how ai-kb uses Claude Code, are covered here) — held by a separate claude-code-runtime library, not published with this one
 
 - [design-thesis](design-thesis.md) — why knowledge and behavior are separated, the knowledge-as-behavior anti-pattern, the three repository kinds, library registration and its states, a local-only library, the engine's files at fixed paths (XDG not read), the one reader of a root INDEX.md
 - [releases-and-contract-versioning](releases-and-contract-versioning.md) — engine semantic versioning and the two-day freeze, the library contract's own MAJOR.MINOR version, contract versions 2.0 to 2.6, pinning as the library owner's business, installing someone else's library: read-only and pinned to a release tag with --ref, links_to and dependency mismatches, a local-only library's origin as its path, export and import carrying read-only and the pin
