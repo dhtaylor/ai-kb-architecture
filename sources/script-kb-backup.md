@@ -20,3 +20,4 @@ keywords: [kb-backup, git bundle, restore test, SHA256SUMS, fsck]
 - **Artifact location:** `ai-kb:scripts/kb-backup` (docstring), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for why a bundle is verified by restoring it and not by git's own bundle check, and what the command refuses. Folded from it: the verification method and the refusals. Not folded: the options and the run directory naming.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

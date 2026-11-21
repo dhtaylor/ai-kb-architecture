@@ -20,3 +20,4 @@ keywords: [kb-libraries, registry, ok, missing, not-a-library, name-mismatch, un
 - **Artifact location:** `ai-kb:scripts/kb-libraries` (docstring), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for the states a registered library can be in and that only `ok` is served. Folded from it: the fifth state, `unsupported-contract`, and why it is not served. The four older states are folded from the registry decision.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

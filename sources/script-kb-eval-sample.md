@@ -20,3 +20,4 @@ keywords: [kb-eval-sample, seeded sample, grade-routing, grade-eval, cost, --cas
 - **Artifact location:** `ai-kb:scripts/kb-eval-sample` (docstring), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for how a seeded sample of golden cases is prepared, put to fresh agents and graded by the two existing graders. Folded from it: the two steps, why `--cases` exists, and that the runs are kept out of normal-use cost. Not folded: the options and exit codes.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

@@ -24,3 +24,4 @@ keywords: [secret-entropy, heuristic, high entropy, labelled value, lint-allow]
 Source for the second check-secrets pass: its two rules, what it deliberately does not flag, and its stated limit. Folded: the two rules and the limit. Not folded: the numeric thresholds beyond those stated in the docstring, and the code itself.
 
 Re-read at engine commit `5fb833a` on 2026-11-09 for dotted names judged segment by segment (engine issue #140).
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

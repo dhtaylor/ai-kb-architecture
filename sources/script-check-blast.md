@@ -22,3 +22,4 @@ keywords: [check-blast, high blast radius, gate, owner-approved, never automated
 - **Re-read:** at engine commit `d16b78c` on 2026-10-28, with the engine's `main` at that commit: unchanged. Nothing folded from it changed.
 
 Corroboration for the gate as built: detection only, what counts as a high-blast change in a library and in the engine, the owner-approved label, and the dormant 2-reviewer half. Platform label-permission details in the header were not folded (product behaviour).
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

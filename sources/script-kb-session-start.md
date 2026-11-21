@@ -20,3 +20,4 @@ keywords: [kb-session-start, SessionStart, SubagentStart, systemMessage, additio
 - **Artifact location:** `ai-kb:scripts/kb-session-start` (header and the comments in its body), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for what the hook injects at session start and for a retrieval subagent, and how the nudge reaches the person. Folded from it: the subagent form and why it exists, and the one-line message. Not folded: the shape of the hook's output.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

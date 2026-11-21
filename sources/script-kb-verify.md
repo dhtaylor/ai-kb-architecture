@@ -22,3 +22,4 @@ keywords: [kb-verify, Verifier, Recheck, queue, assertion]
 - **Re-read:** on 2026-11-12 at tag `v0.4.0` (commit `a318c28`; the file's blob is `9ce152e`). Folded from it: a library whose `INDEX.md` declares no `verifier_budget:` gets a budget of 5, and `--budget N` overrides the declared one.
 
 Corroboration for the Verifier as built: reports and applies only when told, a failure is never applied, commands are approved per run, and a failure is written to the owning library's queue. Used for built behaviour only. Re-read 2026-10-28 for the unattended form: `--unattended` skips `Recheck (attended):` assertions, runs the rest with an empty `HOME` and only `PATH`, `KB_ENGINE_ROOT` and proxy settings, and refuses `--apply`.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

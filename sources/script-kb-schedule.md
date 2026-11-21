@@ -20,3 +20,4 @@ keywords: [kb-schedule, systemd timer, cron, Persistent, lock, weekly job, prepa
 - **Artifact location:** `ai-kb:scripts/kb-schedule` (docstring), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for what the weekly job runs and in what order, that preparation is a second opt-in, and what its log holds. Folded from it: the steps, the opt-in, the lock and the log's content. Not folded: the install options and unit file details.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.
