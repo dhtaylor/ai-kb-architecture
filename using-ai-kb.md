@@ -247,7 +247,7 @@ Recheck: grep -qF 'still holds for Claude sessions, with two changes: the variab
 
 ## What is the engine's status?
 
-README: "This is early, working software, version 0.4.0, with one author so far." Releases are tagged and described in `CHANGELOG.md`; what a version number means is ADR-0015, how a library states which contract version it was built to is ADR-0016, and "The reference library, ai-kb-architecture, is released with the engine under the same tag" (ADR-0019) — see [[releases-and-contract-versioning]].
+README: "This is early, working software, version 0.5.0, with one author so far." (Supersedes "version 0.4.0", which the README said until the v0.5.0 release on 2026-11-23.) Releases are tagged and described in `CHANGELOG.md`; what a version number means is ADR-0015, how a library states which contract version it was built to is ADR-0016, and "The reference library, ai-kb-architecture, is released with the engine under the same tag" (ADR-0019) — see [[releases-and-contract-versioning]].
 
 - **Built and tested**, as README lists it: "the contract (version 2.6), ADRs 1 to 17, the five skills, the retrieval agent, both halves of the retrieval eval, the guardrails above, and the weekly job." The same README says elsewhere that the repository holds ADR-0001 to ADR-0021.
 - **Evidenced, not guaranteed**: "that an agent retrieves rather than recalls has been tested on five libraries by agents that never saw the answer key", with "The protocol changed between runs as defects in the eval itself were found". The eval's defects are in [[retrieval-eval-integrity]].
@@ -257,5 +257,5 @@ README: "This is early, working software, version 0.4.0, with one author so far.
 The license is MIT and "covers this engine only. Each domain library is its own repository, with its own terms."
 
 Source: [[engine-readme]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF 'This is early, working software, version 0.4.0, with one author so far.' "$KB_ENGINE_ROOT/README.md"
+Verified: 2026-11-23 · by: agent · method: doc-review
+Recheck: grep -qF 'This is early, working software, version 0.5.0, with one author so far.' "$KB_ENGINE_ROOT/README.md"

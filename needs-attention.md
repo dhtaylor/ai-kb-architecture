@@ -664,4 +664,15 @@ The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 
   date: 2026-11-12
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-12, 31 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-11. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
   resolved: "2026-11-12 — re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.18), ai-kb:documents/state-change-gates.md and scripts/kb-bootstrap at v0.4.0 (a318c28) and ai-kb@cabe940; \"the one script that writes machine-level configuration\" no longer held (kb-library and kb-schedule also write machine-level state), so reworded to the gates doc's \"highest-blast-radius script\" and re-stamped, method doc-review"
+- id: e695ed8d
+  category: "stale-recheck"
+  status: "resolved"
+  file: "using-ai-kb.md"
+  section: "What is the engine's status?"
+  assertion: "grep -qF 'This is early, working software, version 0.4.0, with one author so far.' \"$KB_ENGINE_ROOT/README.md\""
+  stamp: "2026-11-21 · by: agent · method: doc-review"
+  exit: "exit 1"
+  date: "2026-11-23"
+  resolved: "2026-11-23 — the v0.5.0 release changes the README status line to version 0.5.0; the fact is superseded with a note, the Recheck greps the new sentence and passes against release-v0.5.0 (94b5882), and fails against v0.4.0"
+
 ```
