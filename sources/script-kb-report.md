@@ -23,5 +23,5 @@ Source for what the weekly report lists and what it never holds. Folded from it:
 
 Re-read at engine commit `5fb833a` on 2026-11-09 for the `Liveness: manual` stubs listed while a sweep is due.
 
-- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the docstring and `main`. Folded from it, beside the change notes ([[engine-changelog-after-v0.4.0]]): the report lists a library ahead of the engine's contract and leaves out an archived library that is not registered. Nothing folded earlier changed.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the docstring and `main`. Folded from it, beside the change notes ([[engine-changelog-v0.5.0]]): the report lists a library ahead of the engine's contract and leaves out an archived library that is not registered. Nothing folded earlier changed.
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

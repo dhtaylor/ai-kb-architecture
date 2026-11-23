@@ -49,10 +49,10 @@ Verified: 2026-10-28 · by: agent · method: doc-review
 
 This library is the one exception to a library versioning itself. It is, in essence, the engine's detailed documentation: how the engine works and why. It is folded from the engine before each release, so it describes one engine version, and it is tied to the engine in a way no other library is. Every other library is released separately and versions itself.
 
-Each engine release `vX.Y.Z` tags this library `vX.Y.Z` on the same day, at the library commit verified against that engine. The rule starts at v0.4.0 for both, so this library goes from v0.2.0 to v0.4.0, and no library v0.3.0 exists. Before it, the two never shared a number: engine v0.2.0 with library v0.1.0 on 2026-10-16, and engine v0.3.0 with library v0.2.0 on 2026-10-31.
+Each engine release `vX.Y.Z` tags this library `vX.Y.Z` on the same day, at the library commit verified against that engine. The rule starts at v0.4.0 for both, so this library goes from v0.2.0 to v0.4.0, and no library v0.3.0 exists. Before it, the two never shared a number: engine v0.2.0 with library v0.1.0 on 2026-10-16, and engine v0.3.0 with library v0.2.0 on 2026-10-31. Since then they have shared it: v0.4.0 on 2026-11-12 and v0.5.0 on 2026-11-23.
 
 - **Published tags stay as they are.** Library v0.1.0 and v0.2.0 are not moved or renamed, because someone may have pinned them.
-- **The notes still name the engine.** This library's release notes say "verified against ai-kb vX.Y.Z" and name the library contract it declares. "A matching number does not replace that proof."
+- **The notes still name the engine.** This library's release notes say "verified against ai-kb vX.Y.Z" and name the library contract it declares. "ADR-0016 requires a library's notes to name only the contract. Naming the engine too is this library's rule. A matching number does not replace that proof."
 - **A fix to this library alone waits for the next release.** It lands on `main` as usual, but it gets no tag of its own. An engine patch release `vX.Y.Z+1` tags this library too, even if the library has not changed.
 
 On release day the two-day freeze covers both repositories. The release script stops at the first step that fails:
@@ -66,7 +66,7 @@ On release day the two-day freeze covers both repositories. The release script s
 The decision states its costs. The library's number skips v0.3.0, which looks like a missing release to someone reading its tag list, and its v0.4.0 notes say why. A library-only fix has no release of its own. And the library's version number no longer says how much the library changed, so its changelog or release notes have to. It is to be revisited if this library ever needs a release the engine does not, or if a second library joins the release package.
 
 Source: [[adr-0019-engine-and-reference-library-release-together]]
-Verified: 2026-11-06 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## The contract has its own version, so the engine can tighten a rule without breaking a library
 
@@ -176,7 +176,7 @@ Verified: 2026-11-09 · by: agent · method: doc-review
 
 A library with no remote ([[design-thesis]]) is listed under `links_to:` by its absolute path, as `kb-libraries` prints it, not a `~` form. The registry records no origin for it, so `check-xlinks` compares nothing and resolves the links as for any library: a path is a record of what was linked against, not a check, and it names a folder on one machine only. Once the library has a remote and is registered with it, the path is another origin than the URL, and the links are a dependency mismatch until `links_to:` is changed to the URL.
 
-Source: [[conventions-contract-versions]] · [[engine-changelog-after-v0.4.0]]
+Source: [[conventions-contract-versions]] · [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; export HOME="$t/h" GIT_CONFIG_GLOBAL="$t/gc" GIT_CONFIG_NOSYSTEM=1; mkdir -p "$HOME"; k="$KB_ENGINE_ROOT/scripts/kb-library"; ix() { printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\nkb_contract: "2.6"\n%b---\n# x\n\n- \133foo](foo.md) — foo\n' "$1" "$2"; }; mkdir -p "$t/fxloc" "$t/fxcon"; git init -q "$t/fxloc"; ix fxloc > "$t/fxloc/INDEX.md"; printf -- '---\nname: foo\ndescription: d\nmemory_type: semantic\ndomain: fxloc\nscope: general\n---\n# foo\n' > "$t/fxloc/foo.md"; l="$t/fxloc"; ix fxcon "links_to:\n  fxloc: $l\n" > "$t/fxcon/INDEX.md"; printf '\nSee \133\133fxloc:foo]].\n' >> "$t/fxcon/INDEX.md"; "$k" add "$l" >/dev/null 2>&1; x="$KB_ENGINE_ROOT/scripts/check-xlinks"; o=$("$x" --installed "$t/fxcon" 2>&1); [ $? -eq 0 ] || r=1; printf '%s\n' "$o" | grep -qi 'mismatch' && r=1; git -C "$l" remote add origin https://example.invalid/fxloc.git; "$k" remove fxloc >/dev/null 2>&1; "$k" add "$l" >/dev/null 2>&1; "$x" --installed "$t/fxcon" 2>&1 | grep -qi 'dependency mismatch' || r=1; rm -rf "$t"; exit $r
 
@@ -205,7 +205,7 @@ Verified: 2026-11-09 · by: agent · method: doc-review
 Source: [[engine-changelog-v0.4.0]] · [[script-kb-library]] · [[adr-0020-published-libraries-and-consumers]]
 Verified: 2026-11-11 · by: agent · method: doc-review
 
-Source: [[engine-changelog-after-v0.4.0]] · [[script-kb-library]] (the paragraph on `export` and `import`)
+Source: [[engine-changelog-v0.5.0]] · [[script-kb-library]] (the paragraph on `export` and `import`)
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: (t=$(mktemp -d); r=0; export HOME="$t/h" GIT_CONFIG_GLOBAL="$t/gc" GIT_CONFIG_NOSYSTEM=1; mkdir -p "$HOME"; for n in fxro fxrw fxloc; do mkdir -p "$t/$n"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n' "$n" > "$t/$n/INDEX.md"; git init -q "$t/$n"; [ $n = fxloc ] || git -C "$t/$n" remote add origin "https://example.invalid/$n.git"; done; k="$KB_ENGINE_ROOT/scripts/kb-library"; "$k" add "$t/fxro" --read-only >/dev/null 2>&1; "$k" add "$t/fxrw" >/dev/null 2>&1; "$k" add "$t/fxloc" >/dev/null 2>&1; o=$("$k" export 2>&1); printf '%s\n' "$o" | grep -A3 'library "fxro"' | grep -qF 'readOnly = true' || r=1; printf '%s\n' "$o" | grep -A3 'library "fxrw"' | grep -qF 'readOnly' && r=1; printf '%s\n' "$o" | grep -F 'fxloc' | grep -q '^#' || r=1; rm -rf "$t"; exit $r) && grep -qF 'is registered read-only, and one with a `ref` is cloned at that tag' "$KB_ENGINE_ROOT/scripts/kb-library"
 
