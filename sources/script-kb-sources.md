@@ -27,3 +27,4 @@ Re-read at engine commit `5fb833a` on 2026-11-09 for the sign-in redirect rule a
 
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`: `TIMEOUT = 10` and the docstring's "10s timeout" are unchanged, and a timeout is classed `unreachable`. The request-timeout section was re-stamped from its `Recheck:`, which now runs.
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.
+- **Re-read:** on 2026-11-23 at tag `v0.5.0` (commit `3b60c08`): "THE QUEUE is written through kbengine.queue, as kb-verify and kb-watch do (#202)" (engine commit `ef44a44`). Folded into agent-lifecycle-roles.md, "The source-URL liveness check as built".

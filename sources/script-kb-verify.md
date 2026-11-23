@@ -23,3 +23,4 @@ keywords: [kb-verify, Verifier, Recheck, queue, assertion]
 
 Corroboration for the Verifier as built: reports and applies only when told, a failure is never applied, commands are approved per run, and a failure is written to the owning library's queue. Used for built behaviour only. Re-read 2026-10-28 for the unattended form: `--unattended` skips `Recheck (attended):` assertions, runs the rest with an empty `HOME` and only `PATH`, `KB_ENGINE_ROOT` and proxy settings, and refuses `--apply`.
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.
+- **Re-read:** on 2026-11-23 at tag `v0.5.0` (commit `3b60c08`): the queue is now written through `kbengine.queue`, as kb-watch does (#202, engine commit `d98fa91`, 2026-11-16), superseding the import of kb-watch's queue primitives. The 2026-11-20 re-read missed this. Folded into agent-lifecycle-roles.md, "The Watcher as built".

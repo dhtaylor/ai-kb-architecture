@@ -4,7 +4,7 @@ description: Secret and personal-identifier governance — why rotation is not r
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-28
+verified: 2026-11-09
 metadata:
   type: fact
   node_type: memory
@@ -80,7 +80,7 @@ The third pass has three rules: an email address; an uppercase domain-qualified 
 A `SECRET?` finding "shows its first three lines and says how many more there are".
 
 Source: [[script-check-secrets]] · [[script-secret-entropy]] · [[script-pii-scan]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ### Dotted names are judged segment by segment
 
@@ -102,7 +102,7 @@ Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; p=Ab1#; printf 'k
 Two choices make it safe to put in front of a model's output. `lint-allow` exempts nothing in filtered text, because in text being filtered it is just more input, so a line that announces its own exemption is still redacted. And a failure to scan never passes text through: the filter exits 2 with no output when the input cannot be scanned (UTF-16, binary, or a pass that failed), so a caller holds the input rather than passing it on unscanned. Exit 0 means nothing was redacted and exit 1 means something was, with the output still safe to keep. The gate modes are unchanged.
 
 Source: [[script-check-secrets]] · [[engine-changelog-v0.3.0]] · [[adr-0017-unattended-preparation-attended-decisions]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: query
 Recheck: s="$KB_ENGINE_ROOT/scripts" && t=$(mktemp -d) && r=0; p=Ab1#; printf 'ok line\npassword = %s%s%s lint-allow: demo\n' "$p" "$p" "$p" > "$t/in"; "$s/check-secrets" --redact < "$t/in" > "$t/out" 2>/dev/null; [ $? -eq 1 ] || r=1; grep -qxF '[redacted: secret]' "$t/out" && ! grep -q 'Ab1#' "$t/out" || r=1; printf '\377\376a\000b\000\n' | "$s/check-secrets" --redact > "$t/u" 2>/dev/null; [ $? -eq 2 ] && [ ! -s "$t/u" ] || r=1; rm -rf "$t"; exit $r
 
 ## Raw artifacts archived in a library

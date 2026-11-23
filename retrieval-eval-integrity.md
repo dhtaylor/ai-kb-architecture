@@ -4,7 +4,7 @@ description: Why a retrieval eval can pass or fail for reasons that have nothing
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-26
+verified: 2026-11-09
 metadata:
   type: fact
   node_type: memory
@@ -42,7 +42,7 @@ Two more defects came from the grader reading the tool's output format as if it 
 The grader also fails a case with an off-KB read: a Read, or a content-mode Grep result, of a file in no registered library, with the contract itself exempt because the session context tells the agent to load it. A read in an unregistered library is off-KB too. The check was added after an agent answered a question the library cannot answer from an engine decision record: `grade-eval` failed the case while the routing grader passed it, because that grader did not count a read outside every registered library.
 
 Source: [[script-grade-routing]] · [[engine-changelog-v0.3.0]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: query
 Recheck: grep -qF 'documents/eval-[^/]*' "$KB_ENGINE_ROOT/scripts/grade-routing"
 
 ## A grader must test grounding, not formatting
@@ -59,7 +59,7 @@ Verified: 2026-11-12 · by: agent · method: doc-review
 Golden-set values are read as YAML scalars. A single-quoted excerpt, the natural way to write one holding `"` or `: `, was searched for with its quotes still on and could never match. Now `'…'` loses its quotes and reads `''` as `'`, `"…"` reads its escapes, and a plain value keeps a closing quote of its own. `grade-eval` imports `check-golden`'s reader instead of keeping a copy, so the two cannot drift apart again. No existing golden set read differently afterward.
 
 Source: [[engine-changelog-v0.3.0]] · [[script-grade-eval]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A grader must resolve identity, and demand only what the contract requires
 
@@ -112,7 +112,7 @@ The tell was that independent reviewers under three versions of the skill conver
 What generalises: a clean control is a claim, and it needs the same scrutiny as a planted flaw. When independent reviewers converge on the same "false positive", check the key before the reviewer.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.17) · [[eval-2026-09-26-intelligence-analysis-skill]] · ai-kb@889ab0b
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## One trial per case shows direction, not frequency
 
@@ -128,7 +128,7 @@ Verified: 2026-11-12 · by: agent · method: doc-review
 The routing failures that mattered were questions near the line between two libraries, and a golden set with only a handful of `cross-root` cases barely tests that line. A boundary case is a question whose wording fits a neighboring library but whose answer lives in the library being tested. The rule is two to four per library, written by someone who has not seen the routers' wording, and at least two per library with `check-golden` passing.
 
 Source: [[issue-126-boundary-golden-cases]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## Cost is measured from transcripts already on disk, and a sample is graded from the same transcripts
 
@@ -145,12 +145,12 @@ A window with no runs still gets a row, because absence is a result, and windows
 Normal use does not say whether answers were right, so `kb-eval-sample` draws a seeded sample of a library's positive and cross-root golden cases, has a person put each to a fresh agent, and grades the runs with `grade-routing` and `grade-eval --transcripts`, joining each case with its cost measured the same way. The agents must be spawned in a session started after the change being measured, so they run the current definition. A random sample can miss what a reshape changed, so `--cases` draws exactly the cases named, for a before-and-after comparison.
 
 Source: [[script-kb-telemetry]] · [[script-kb-eval-sample]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 A grade of a run still in progress is a grade of a partial transcript. In one retest, a case graded while its run was still going failed as "expected file 'story-format-and-invest.md' was never Read", and passed when re-graded after the run had ended.
 
 Source: [[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]]
-Verified: 2026-10-26 · by: agent · method: manual
+Verified: 2026-11-23 · by: agent · method: manual
 
 ### The runs that found nothing, and what it prints
 

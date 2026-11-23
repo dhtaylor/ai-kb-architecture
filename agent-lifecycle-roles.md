@@ -4,7 +4,7 @@ description: The three librarian roles that keep a governed KB operating (Curato
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-28
+verified: 2026-11-09
 metadata:
   type: fact
   node_type: memory
@@ -41,7 +41,7 @@ Three roles cover that lifecycle.
   `update-domain`, `distill-episodic` and `meditate`, and the source it cites still uses those names.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[state-change-gates]] · [[agent-kb-retrieve]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ### The Verifier as built
 
@@ -85,8 +85,8 @@ horizon, "so the trust tier between agent and human stamps cannot be declared aw
 
 The plan's first text had the Verifier re-run a fact against the live system, re-stamp `verified:` and flag a mismatch, and had a failed check produce a `contradictions.md` flag. The decision recording the Verifier as built states the difference plainly: the plan says a failed check becomes a `contradictions.md` flag, and the Verifier as built reports the failure and leaves the fact untouched.
 
-Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[engine-changelog-v0.3.0]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded) · [[adr-0009-recheck-assertions]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0005-currency-cadence]] (amended 2026-10-16) · [[state-change-gates]] · [[script-kb-verify]] · [[engine-changelog-v0.3.0]] · [[conventions-contract-rules]] (§7)
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 #### The default budget
 
@@ -143,17 +143,19 @@ saved snapshot, so the Watcher detects drift between two copies and does not not
 gone stale.
 
 The Verifier and the Watcher feed one routed queue, the library's `needs-attention.md`. The Verifier
-imports the Watcher's queue primitives so the two writers cannot drift apart. Neither writer edits a
+writes the queue through `kbengine.queue`, as the Watcher does, "so the writers of one file can never drift
+apart" (#202). That shared module superseded, on 2026-11-16, the Verifier importing the Watcher's queue
+primitives, which the decision recording the steady state still describes. Neither writer edits a
 fact. Both add the queue's router line to the library's `INDEX.md`; an unrouted queue is an orphan
 that fails `check-kb`, which would have blocked every commit in that library.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4, §9.13) · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[adr-0013-steady-state-surfaced-not-scheduled]] · [[script-kb-watch]] · [[script-kb-verify]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ### The source-URL liveness check as built
 
 Status: built — a third writer, `kb-sources`, which asks whether the external URLs that source stubs
-cite still resolve. It reuses the Watcher's queue primitives as the Verifier does. Its three rules:
+cite still resolve. It writes the queue through `kbengine.queue`, as the Verifier and the Watcher do (#202). Its three rules:
 "NOTHING IS FETCHED WITHOUT --yes"; "DETECTION ONLY. A dead URL never edits a fact, never edits a
 stub, and never marks a section `provenance: BROKEN`"; and "A HUMAN TRIAGES", so a URL that comes
 back alive does not resolve its entry. It sends one HEAD request per URL. On any HTTP error except
@@ -167,7 +169,7 @@ server that refuses every client stays unreachable. Anything it cannot decide is
 never conflated with dead.
 
 Source: [[script-kb-sources]] · [[engine-changelog-v0.3.0]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 #### The request timeout
 
@@ -226,7 +228,7 @@ Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A) · [[ad
 Verified: 2026-11-12 · by: agent · method: query
 Recheck: f="$KB_ENGINE_ROOT/scripts/kb-watch"; [ -f "$f" ] && ! grep -qE '^ *(import|from) .*(urllib|http|socket|requests|ftplib|smtplib|ssl)' "$f"
 Source: [[engine-watcher-readme]] (the allowlist bullet)
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## Mutation governance
 
@@ -340,7 +342,7 @@ The category of stale facts with no assertion exists because of a measurement: t
 **Where the schedule comes in.** The opt-in schedule answers the consequence the first cadence decision stated, that nothing happens unless a session starts; see [[unattended-preparation]].
 
 Source: [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-due]] · [[script-kb-session-start]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 Source: [[engine-changelog-v0.5.0]] · [[script-kb-due]] (the two bullets and the two paragraphs on the recheck count and on a pending packet)
 Verified: 2026-11-20 · by: agent · method: doc-review

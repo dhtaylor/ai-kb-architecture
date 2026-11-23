@@ -4,7 +4,7 @@ description: The core design thesis of a governed-KB-plus-thin-agent architectur
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-28
+verified: 2026-11-12
 metadata:
   type: fact
   node_type: memory
@@ -91,7 +91,7 @@ set and one router chain, so a domain could not be moved, shared or cloned witho
 of the tier with it.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§1) · [[knowledge-agent-architecture-combination-plan]] (§1, superseded) · [[adr-0007-engine-content-separation]] (amended)
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A library is installed on a machine by being registered there
 
@@ -128,8 +128,8 @@ both trees. It was rewritten to the three repository kinds above, and no orchest
 [[agent-lifecycle-roles]], "Orchestrator cost bounds"). Least-privilege enforcement remains in the
 guardrails list; its as-built strength is recorded under "Mutation governance" in the same file.
 
-Source: [[adr-0014-library-registry]] · [[script-kb-libraries]] · [[adr-0016-versioned-library-contract]] · [[adr-0007-engine-content-separation]] (amended)
-Verified: 2026-10-28 · by: agent · method: doc-review
+Source: [[adr-0014-library-registry]] · [[script-kb-libraries]] · [[adr-0016-versioned-library-contract]] · [[adr-0007-engine-content-separation]] (amended) · [[knowledge-agent-architecture-combination-plan]] (§1, superseded) · [[knowledge-agent-architecture-combination-plan-revised]] (§1)
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A library may be local-only
 
@@ -210,4 +210,4 @@ in Claude Code, plugin behaviour is loaded once at session start while facts are
 different clocks.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§1) · [[knowledge-agent-architecture-combination-plan]] (§1, superseded) · [[adr-0007-engine-content-separation]] (amended) · [[adr-0014-library-registry]] · [[script-kb-libraries]] · [[adr-0016-versioned-library-contract]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review

@@ -21,3 +21,4 @@ keywords: [kb-watch, Watcher, snapshot, drift, unreachable, allowlist]
 
 Corroboration for the Watcher as built: offline, compares two saved snapshots, no network module imported, no model in the loop, drift and unreachable findings written to a queue as escaped, truncated data. Re-read 2026-10-28 for the schedulable form: it exits 1 when a source drifted or was unreachable, shows old and new values only at a terminal or with `--dry-run`, and writes the queue and router by replacing the file in one rename.
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.
+- **Re-read:** on 2026-11-23 at tag `v0.5.0` (commit `3b60c08`): the queue is written through `kbengine.queue` (#202, engine commit `8ce53fa`). Folded into agent-lifecycle-roles.md, "The Watcher as built".

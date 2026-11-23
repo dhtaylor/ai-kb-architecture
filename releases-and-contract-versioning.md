@@ -4,7 +4,7 @@ description: How the engine is versioned and released (semantic versioning, the 
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-28
+verified: 2026-11-09
 metadata:
   type: fact
   node_type: memory
@@ -23,7 +23,7 @@ A release is a git tag `vMAJOR.MINOR.PATCH` on `main`, with a release on the hos
 The first release was numbered 0.2.0 and not 0.1.0, because `0.1.0` had sat in the manifests and the README since the first commit and named every unreleased state of the engine. Tagging a release with that number would have given two different things one name.
 
 Source: [[adr-0015-releases-and-pinning]] · [[adr-0016-versioned-library-contract]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A release is preceded by a two-day freeze
 
@@ -32,7 +32,7 @@ From two days before a release date, `main` takes release work only: the changel
 The reason is that what is tagged should be what was checked. The fresh-clone check and the notes describe a `main` that no longer moves under them.
 
 Source: [[adr-0015-releases-and-pinning]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A library release records what it was verified against, and a correction does not wait for one
 
@@ -43,7 +43,7 @@ Whether a library's CI pins the engine, to what, and when it moves is the librar
 This replaced an earlier rule that every library's CI pin the engine to a release tag, with each release moving the pins. That rule assumed the engine's maintainer knows every library. The engine is meant for wide adoption, so the expected case is libraries owned by people the maintainer will never hear of, and the earlier decision's own review trigger, a library maintained by someone else, is the normal state.
 
 Source: [[adr-0015-releases-and-pinning]] · [[adr-0016-versioned-library-contract]] · [[engine-changelog-v0.3.0]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## The reference library takes the engine's release tag
 
@@ -82,7 +82,7 @@ Three options were weighed. The first, chosen: the library's declared contract v
 The contract is meant to be a spec a stranger can build to, complete without the engine's code, so that a person who has read only it can build a library the engine accepts.
 
 Source: [[adr-0016-versioned-library-contract]] · [[tests-run-checks]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A library declares its version, and rules apply by it
 
@@ -101,7 +101,7 @@ An engine supports every minor of the current major and of the one before it, so
 A library on an unsupported or newer major is refused rather than served with a warning because its markers may mean something this engine does not read. Serving it "could serve a disputed fact as settled, which the retrieval contract exists to prevent."
 
 Source: [[adr-0016-versioned-library-contract]] · [[script-check-kb]] · [[script-kb-libraries]] · [[conventions-contract-versions]] · [[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: query
 Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d/sources"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%s\nlast_swept: never\n---\n# x\n' "$1" "$2" > "$d/INDEX.md"; [ -z "$3" ] || printf 'CREATE TABLE t (id int);\n' > "$d/sources/t.sql"; }; mk absent "agent_ttl: 30d" raw; mk v20 'kb_contract: "2.0"' raw; mk v21 'kb_contract: "2.1"' raw; mk v29 'kb_contract: "2.9"'; mk bare "kb_contract: 2.1"; mk v30 'kb_contract: "3.0"'; "$s/check-kb" "$t/absent" > "$t/a" 2>&1 && grep -qF 'built to contract 2.0' "$t/a" && grep -qF 'fails from contract 2.1' "$t/a" || r=1; "$s/check-kb" "$t/v20" > /dev/null 2>&1 || r=1; "$s/check-kb" "$t/v21" > "$t/b" 2>&1; [ $? -eq 1 ] && grep -qF 'raw artifact' "$t/b" || r=1; "$s/check-kb" "$t/v29" > "$t/c" 2>&1 && grep -qF 'upgrade the engine' "$t/c" || r=1; "$s/check-kb" "$t/bare" > "$t/d" 2>&1; [ $? -eq 1 ] && grep -qF 'must be quoted' "$t/d" || r=1; "$s/check-kb" "$t/v30" > "$t/e" 2>&1; [ $? -eq 1 ] && grep -qF 'not supported by this engine' "$t/e" || r=1; rm -rf "$t"; exit $r
 
 ## What each contract version adds
@@ -114,7 +114,7 @@ The versions an engine knows are the `### X.Y` headings of the contract's sectio
 - **2.3** lets a root `INDEX.md` carry a `Not covered here:` line naming the neighboring topics the library does not hold and, where known, the library that does. `check-kb` fails a line with nothing after the colon, from this version, and warns below it. Nothing is required to migrate. How retrieval uses the line is in [[retrieval-agent-behavior]].
 
 Source: [[conventions-contract-versions]] · [[script-check-kb]] · [[tests-run-checks]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: query
 Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%s\nlast_swept: never\n---\n# x\n\n%s\n' "$1" "$2" "$3" > "$d/INDEX.md"; }; mk old "agent_ttl: 30d" ""; mk e23 'kb_contract: "2.3"' "Not covered here:"; mk e22 'kb_contract: "2.2"' "Not covered here:"; mk att 'kb_contract: "2.3"' ""; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: att\nscope: general\nverified: 2020-01-01\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2020-01-01\ntags: [x]\nkeywords: [x]\n---\n# F\n\n## A\n\nfact\n\nSource: manual\nVerified: 2020-01-01 · by: agent · method: manual\nRecheck (attended): false\n' > "$t/att/f.md"; "$s/check-kb" "$t/old" > "$t/o" 2>&1 && grep -qF '2.1: `sources/` holds only `.md` citation stubs' "$t/o" && grep -qF '2.2: `Recheck (attended):` marks an assertion' "$t/o" && grep -qF '2.3: A root `INDEX.md` may carry a `Not covered here:`' "$t/o" || r=1; "$s/check-kb" "$t/e23" > "$t/a" 2>&1; [ $? -eq 1 ] && grep -qF 'names nothing' "$t/a" || r=1; "$s/check-kb" "$t/e22" > "$t/b" 2>&1 && grep -qF 'fails from contract 2.3' "$t/b" || r=1; "$s/kb-verify" "$t/att" --yes --unattended > "$t/v" 2>&1 && grep -qF '1 attended assertion(s) skipped' "$t/v" && ! grep -qF 'FAIL' "$t/v" || r=1; "$s/kb-verify" "$t/att" --yes > "$t/w" 2>&1; grep -qF 'FAIL f.md' "$t/w" || r=1; rm -rf "$t"; exit $r
 
 ### Versions 2.4 to 2.6
@@ -136,7 +136,7 @@ The decision states its own costs. Every new rejection carries a version check, 
 The decision's delivery plan also named a conformance suite per contract version and a split of the contract so it holds only the library-facing spec. No source read records either as built; see [[knowledge-architecture-open-questions]].
 
 Source: [[adr-0016-versioned-library-contract]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A library someone else publishes: three things went wrong
 

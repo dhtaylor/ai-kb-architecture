@@ -4,7 +4,7 @@ description: Why the engine may prepare knowledge work unattended but never deci
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-28
+verified: 2026-11-09
 metadata:
   type: fact
   node_type: memory
@@ -27,7 +27,7 @@ Four options were weighed. The first, chosen: the engine ships an opt-in schedul
 What stands from the first decision: the nudge at session start, the routing of the queue, the offline Watcher and the capture guide.
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0013-steady-state-surfaced-not-scheduled]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A curation skill splits at its existing review gate
 
@@ -41,7 +41,7 @@ Only `kb-distill` and `kb-audit` get a prepare step. `kb-update-domain` folds ex
 `kb-prepare` runs a model only when there is work: notes awaiting distillation, or a sweep that is due. A packet already waiting for the same library and skill is not drafted again. `kb-audit`'s first step runs the mechanical checks, which the model cannot do without a shell, so the script runs them and gives the model their results.
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-prepare]] · [[script-kb-apply]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ### A closed packet is kept
 
@@ -62,7 +62,7 @@ The wrapper, not the model, writes the packet's header (the skill, the library, 
 The limit, stated by the decision: the read-only tool list bounds what the model can do, not what it concludes, so a packet can be wrong in ways that read as right. The packet shows each item's source excerpt beside it so the reviewer can check rather than trust. The review is the control.
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-prepare]] · [[engine-changelog-v0.3.0]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: query
 Recheck: grep -qF 'TOOLS = "Read,Grep,Glob"' "$KB_ENGINE_ROOT/scripts/kb-prepare"
 
 ## The weekly report lists decisions and holds no knowledge
@@ -78,7 +78,7 @@ Recheck: grep -qF 'TOOLS = "Read,Grep,Glob"' "$KB_ENGINE_ROOT/scripts/kb-prepare
 A library with nothing to decide gets no section, and a week with nothing to decide gets one line. The file is written either way, so a quiet week can be told from a week the job did not run. It never holds a fact's, a source's or a packet's text: paths, counts, headings and ids only. The session-start nudge points the person at the latest report; see [[agent-lifecycle-roles]].
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ### A library ahead of the engine's contract, and an archived one
 
@@ -125,7 +125,7 @@ Then, once, it runs `check-xlinks --installed`, `kb-watch` on the allowlist chos
 What it costs, as the decision states it. The job runs only while the machine is up: without systemd lingering a user timer runs only while the user is logged in, and a WSL distribution stops when idle, so catch-up depends on the timer's `Persistent=true` and on the machine being used. Preparation spends money every week whether or not anyone reads the report, which the cap bounds. And the engine gains moving parts, a scheduler, a packet format and an apply step, each with failure modes and tests of its own.
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-schedule]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A command is schedulable only if it behaves the same from nowhere
 
@@ -142,7 +142,7 @@ Each schedulable command is a regression case run from `/` with a stripped envir
 `kb-watch`'s exit codes, and the old and new values it shows only at a terminal or with `--dry-run`, are in [[agent-lifecycle-roles]]. `kb-verify` shows a failed assertion's output only at a terminal. `kb-due` always exits 0, because it is a reminder and the session hook reads any other exit as a failure.
 
 Source: [[engine-contributing-schedulable]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-watch]] · [[script-kb-verify]] · [[engine-changelog-v0.3.0]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A backup is verified by restoring it
 
@@ -151,7 +151,7 @@ Each library is its own repository, and one with no permitted remote has no seco
 A bundle is verified by restoring it into a scratch repository and comparing the restored refs with the ones recorded when it was made. `git bundle verify` is not used, because it reads only a bundle's header, so a truncated bundle passes it. `--restore-test` also clones each bundle and runs `git fsck --full`. A destination inside a backed-up repository is refused, since the destination holds everything the libraries hold and is as sensitive as they are. `--keep N` prunes only directories the command wrote. A library with no commits is skipped with a note, because git cannot bundle an empty repository and that is not a backup fault.
 
 Source: [[script-kb-backup]] · [[adr-0017-unattended-preparation-attended-decisions]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## What stays attended whatever the schedule does
 
@@ -160,4 +160,4 @@ Resolving a `CONFLICTED` section, deleting knowledge, promoting scope, writing a
 The decision names its own review triggers: a packet is applied that a reviewer later finds wrong, the weekly report goes unread for a month, or a cloud schedule can run without stored credentials.
 
 Source: [[adr-0017-unattended-preparation-attended-decisions]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review

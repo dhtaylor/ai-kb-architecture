@@ -4,7 +4,7 @@ description: Why a guardrail that is correct on the machine that wrote it can st
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-28
+verified: 2026-11-09
 metadata:
   type: fact
   node_type: memory
@@ -166,7 +166,7 @@ The configuration was restored by hand. Nothing showed on the machine that wrote
 The repair is at the top of the suite: unset every variable `git rev-parse --local-env-vars` lists, so each fixture runs against its own repository, plus a case that fails if any such variable survives into the suite. The same preamble clears the variables that move a per-user location away from `HOME` (`XDG_CONFIG_HOME` and its kin), because on a CI runner that sets one, a scheduler test's install landed in the runner's own configuration.
 
 Source: [[issue-127-run-checks-git-env]] · [[tests-run-checks]] · [[engine-changelog-v0.3.0]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: query
 Recheck: grep -qF 'unset $(git rev-parse --local-env-vars)' "$KB_ENGINE_ROOT/tests/run-checks"
 
 ## A test can pass for the wrong reason
