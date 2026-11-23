@@ -412,6 +412,100 @@ history. Re-stamping without re-verifying is not a fix.
 
 ## Open items
 
+The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate after the widening fold (PR #52). The mechanical checks (`check-kb` 121 files, `check-scope`, `check-golden` 246 records with 19 negative, `check-xlinks --installed`, `check-transient`) passed. No section has a `Source:` and no stamp, no file is listed by two routers, no router line points at the golden set, no routed leaf is empty, and no live `CONFLICTED` or `UNCORROBORATED` marker exists (every occurrence is a quoted example), so the golden set needs no unresolved or uncorroborated case; it states why no cross-root case applies. Decay found: 6 stale agent stamps dated 2026-10-16 with no Recheck assertion (`kb-verify` lists the same 6), and index bloat at 15 topic files. Nothing is held back by the cap. Not covered by any check: whether each folded fact matches its source (the fold's human gate) and the liveness of external `Source:` URLs.
+
+```yaml
+- id: 07cd5abd
+  category: stale fact
+  status: open
+  file: agent-lifecycle-roles.md
+  section: "Orchestrator cost bounds"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-16 · by: agent · method: doc-review"
+  age: 38d
+  escalate: true
+  date: 2026-11-23
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+- id: 0d3f93c0
+  category: stale fact
+  status: open
+  file: retrieval-eval-integrity.md
+  section: "The agent under test must not be able to reach the oracle"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-16 · by: agent · method: doc-review"
+  age: 38d
+  escalate: true
+  date: 2026-11-23
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+- id: 15a6d7db
+  category: stale fact
+  status: open
+  file: agent-lifecycle-roles.md
+  section: "Mutation governance"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-16 · by: agent · method: doc-review"
+  age: 38d
+  escalate: true
+  date: 2026-11-23
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+- id: a6f10748
+  category: stale fact
+  status: open
+  file: retrieval-eval-integrity.md
+  section: "A grader must resolve identity, and demand only what the contract requires"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-16 · by: agent · method: doc-review"
+  age: 38d
+  escalate: true
+  date: 2026-11-23
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+- id: cd4aef98
+  category: stale fact
+  status: open
+  file: retrieval-eval-integrity.md
+  section: "Library discovery must be exact, and checked from tool calls"
+  source: "knowledge-agent-architecture-combination-plan-revised"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-16 · by: agent · method: doc-review"
+  age: 38d
+  escalate: true
+  date: 2026-11-23
+  finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+- id: dcae130c
+  category: stale fact
+  status: open
+  file: secret-governance.md
+  section: "Raw artifacts archived in a library"
+  source: "script-check-secrets"
+  severity: 5
+  owner: "@dhtaylor"
+  stamp: "2026-10-16 · by: agent · method: doc-review"
+  age: 38d
+  escalate: true
+  date: 2026-11-23
+  finding: "The stamp under the Source: line citing [[script-check-secrets]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+- id: ebc4bbd9
+  category: index bloat
+  status: open
+  file: INDEX.md
+  section: "-"
+  severity: 7
+  owner: "@dhtaylor"
+  age: unknown
+  escalate: false
+  date: 2026-11-23
+  finding: "The library holds 15 topic files under a flat root INDEX.md after the widening fold (PR #52), at the roughly-15 threshold where kb-organize-domain introduces a sub-index. Detection only: whether to reshape is the owner's call. The coverage probe of 2026-11-21 answered 49 of 54 questions fully on the flat layout, so routing has not yet degraded measurably."
+```
+
 The kb-audit sweep of 2026-11-12 ran on main at 5dff597, after the restamp of 8 sections whose Recheck passed that day. The mechanical checks (`check-kb`, `check-scope`, `check-golden`, `check-xlinks --installed`, `check-transient`) passed. The only decay found is 25 stale agent stamps, all dated 2026-10-12 (31 days against an `agent_ttl` of 30d), none in a section with a Recheck assertion; `kb-verify` lists the same 25. They are all severity 5, all the same age and all owned by @dhtaylor, so they sort by ID, and the cap of 10 per owner cuts from the bottom. Held back (15) and re-checked the same day, 2026-11-12: each of the 15 sources was re-read, all held, and all 15 stamps were renewed, so none is held back or stale any longer (5c2cefe8, 64e3db48, 6c82b80a, 7f7cb6b1, 8e75173a, 9b143b51, 9ffb90b7, a00bcfec, ae583862, cc3a9c90, cca10a95, dc358049, e461b653, e78d6b53, e8dd6ce4).
 
 ```yaml
