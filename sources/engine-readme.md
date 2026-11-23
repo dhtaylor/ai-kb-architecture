@@ -18,5 +18,6 @@ keywords: [README, getting started, install, kb-bootstrap, kb-init, how it is us
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-11-20
 - **Artifact location:** `ai-kb:README.md`, read at engine commit `5433f08` on 2026-11-20. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** on 2026-11-23 at engine release-branch commit `94b5882` (`release-v0.5.0`, not yet merged to `main` when read), where the status line says version 0.5.0 and the scripts row says to keep `scripts/kbengine/` beside the scripts. The rest of the status section is unchanged.
 
 The engine's front page. Folded from it: the repository's paths, getting started, the four-step use, the list of guardrail checks, and the status section. Not folded: the evaluation scores and the plan's section numbers in the status section, which belong with the evaluation records.
