@@ -4,7 +4,7 @@ description: How the retrieval agent decides where to look and what counts as an
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-26
+verified: 2026-11-09
 metadata:
   type: fact
   node_type: memory
@@ -25,7 +25,7 @@ The stated reason: "An answer taken from `.git/config` may be right, but it tell
 The rule was added after a sample found a retrieval agent answering a question the library cannot answer from an engine decision record, to which a library file only points. The routing grader passed that case at first; how it now grades such a read is in [[retrieval-eval-integrity]]. After the change, three fresh agents asked the failing question each answered `fact not found`, named the engine record as the place the caller could check, and did not open it; three trials of one question show the rule is followed for the question that failed, not that the failure cannot recur.
 
 Source: [[agent-kb-retrieve]] · [[script-grade-routing]] · [[eval-2026-10-23-section-reads]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## The agent reads the section that answers, not the whole file
 
@@ -40,14 +40,14 @@ A section read carries everything the contract needs, because a status marker ap
 A sample taken after the change found every answer that rested on a file read as a section, except that the disputed case also read the contradictions register whole, and a disputed section still refused, because the section read held its CONFLICTED marker. That sample could not measure the token saving: its libraries have small files, and the large-file library on which the saving was first measured was on another machine.
 
 Source: [[agent-kb-retrieve]] · [[eval-2026-10-23-section-reads]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A search is not a router
 
 The agent reads the routers first and searches only inside the library they sent it to. Every Grep takes a `path` of that library, never a folder holding several libraries and never the engine root, because a search across every library reads text from libraries the question does not need, which is what routing exists to prevent. If the routers point nowhere, the answer is `fact not found` and not a search of everything. A sample in which two agents searched across the libraries' parent folder before reading a router matched only the one library each needed, so neither case failed on it, and it is the pattern the owner had ruled a failure when the matches reached other libraries. After the off-KB change the pattern did not recur in the re-run, which was three trials of one question: that shows it did not repeat in those three, not that it cannot recur.
 
 Source: [[agent-kb-retrieve]] · [[eval-2026-10-23-section-reads]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## Neighboring libraries are separated by a scope line, and registration warns of an overlap
 
@@ -55,8 +55,8 @@ Routing fails at the boundary between neighboring libraries. When two or more li
 
 `kb-library add` helps an author find the neighbor before routing does. It compares the new library's root `keywords:` and `tags:` with every other registered library's, and warns when two libraries share at least 3 terms and those terms are at least a quarter of the smaller library's terms. Terms are normalized (lowercase, runs of space, underscore and hyphen read as one hyphen, a trailing plural `s` dropped), and each library's own domain name and a list of generic words are removed first. The test uses the overlap against the smaller set and not Jaccard, because Jaccard hides a small library sitting inside a big neighbor's vocabulary, which is the pair routing confuses, and the count of 3 stops two short lists matching on one word. The warning names the neighbor and the shared terms, suggests a `Not covered here` line in each root `INDEX.md` and a rerun of the routing sample, and never refuses. It never changes the exit status and writes nothing. `kb-create-domain` asks for the line when a library is created.
 
-Source: [[agent-kb-retrieve]] · [[script-kb-library]] · [[engine-changelog-v0.3.0]] · [[conventions-contract-versions]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Source: [[agent-kb-retrieve]] · [[script-kb-library]] · [[script-kb-libraries]] · [[engine-changelog-v0.3.0]] · [[conventions-contract-versions]]
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A retrieval subagent is given the engine and the library list by a hook
 
@@ -65,12 +65,12 @@ A subagent never sees the session-start context, and without the engine path a r
 A library listed as registered but not served is reported as unavailable, and never as `fact not found`, when the question needs it: the gap is a broken install and not missing knowledge. A library on an unsupported contract major is one such case; see [[releases-and-contract-versioning]].
 
 Source: [[script-kb-session-start]] · [[agent-kb-retrieve]] · [[script-kb-libraries]]
-Verified: 2026-10-28 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 The nudge for a library built to an older contract is left out with it. With 48 libraries registered, 42 of them behind the engine's contract, the session-start context named each behind library, and the `--subagent` context named none.
 
 Source: [[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]]
-Verified: 2026-10-26 · by: agent · method: manual
+Verified: 2026-11-23 · by: agent · method: manual
 
 ## A question goes to a triage desk, which sends it to one library's specialist
 
