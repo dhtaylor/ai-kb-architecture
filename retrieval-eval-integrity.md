@@ -4,7 +4,7 @@ description: Why a retrieval eval can pass or fail for reasons that have nothing
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-16
+verified: 2026-10-26
 metadata:
   type: fact
   node_type: memory
@@ -31,7 +31,7 @@ the arguments, "so every compliant agent that followed the instruction failed." 
 result is now judged by the paths in its result alone. After the fix the run scored 11/12.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.8, §9.14, §9.15, §9.16) · [[eval-2026-09-28-intelligence-analysis-bakeoff]] · [[eval-2026-10-12-routing-run]] · [[script-grade-routing]] · ai-kb@48467fd
-Verified: 2026-10-16 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## Contamination is what the contract forbids, no more and no less
 
@@ -72,7 +72,7 @@ The second library's eval went 9/16, 14/16, 11/16 and 15/16 across four runs, an
 - **The grader read the wrong message.** Grading a sub-agent from its transcript, "The obvious extractor reads the last text block, but a subagent's answer arrives in its `SubagentHandback` call, so that extractor grades the agent's preamble." `grade-eval --transcripts` reads the hand-back. In the change's live sample of 16 questions from one library, the first grading scored 13/16, and all three failures were notes the agent had added to its `Sources:` line; with the grader dropping those notes, it scored 16/16. That is one run, reported by the change's author.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14, §9.15) · [[pr-54-kb-retrieve-quotes]] · [[agent-kb-retrieve]] · [[script-grade-eval]] · ai-kb@510d09b · ai-kb@d978338 · ai-kb@43aee00
-Verified: 2026-10-16 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A file may state a fact twice, and an oracle that follows the agent measures nothing
 
@@ -92,7 +92,7 @@ A wrong corpus fails the same way. An agent not told where the engine is could f
 The enumeration was replaced when libraries became registered per machine (`ai-kb:CONVENTIONS.md` §3). The agent treats the libraries its context lists as the complete set: "If your context names the engine but lists no libraries, stop and answer `library list unknown — not searched`." It never globs the engine's `kb/` for them, because "it would find only the libraries that happen to sit there, and a partial set looks exactly like a complete one."
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§9.14) · [[agent-kb-retrieve]] · [[adr-0014-library-registry]] · ai-kb@48467fd
-Verified: 2026-10-16 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A result is about the protocol that held still
 
