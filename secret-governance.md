@@ -4,7 +4,7 @@ description: Secret and personal-identifier governance — why rotation is not r
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-16
+verified: 2026-10-28
 metadata:
   type: fact
   node_type: memory
@@ -114,7 +114,7 @@ Two exceptions in `check-secrets` cover such artifacts. A non-`.md` file under `
 What the exemption gives up, as the change states it: "a prefixless, unlabeled random literal inside an archived non-`.md` artifact is no longer caught." The contract's rule for archiving as UTF-8 is in `ai-kb:CONVENTIONS.md` §6 and is stated in [[contract-provenance-and-currency]], under "A security finding records where a secret is and what to do, never what it is".
 
 Source: [[script-check-secrets]] · [[pr-59-archived-artifacts]]
-Verified: 2026-10-16 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ### `--file` follows the enclosing library
 

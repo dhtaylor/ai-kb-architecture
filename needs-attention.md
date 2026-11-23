@@ -412,12 +412,12 @@ history. Re-stamping without re-verifying is not a fix.
 
 ## Open items
 
-The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate after the widening fold (PR #52). The mechanical checks (`check-kb` 121 files, `check-scope`, `check-golden` 246 records with 19 negative, `check-xlinks --installed`, `check-transient`) passed. No section has a `Source:` and no stamp, no file is listed by two routers, no router line points at the golden set, no routed leaf is empty, and no live `CONFLICTED` or `UNCORROBORATED` marker exists (every occurrence is a quoted example), so the golden set needs no unresolved or uncorroborated case; it states why no cross-root case applies. Decay found: 6 stale agent stamps dated 2026-10-16 with no Recheck assertion (`kb-verify` lists the same 6), and index bloat at 15 topic files. Nothing is held back by the cap. Not covered by any check: whether each folded fact matches its source (the fold's human gate) and the liveness of external `Source:` URLs.
+The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate after the widening fold (PR #52). The mechanical checks (`check-kb` 121 files, `check-scope`, `check-golden` 246 records with 19 negative, `check-xlinks --installed`, `check-transient`) passed. No section has a `Source:` and no stamp, no file is listed by two routers, no router line points at the golden set, no routed leaf is empty, and no live `CONFLICTED` or `UNCORROBORATED` marker exists (every occurrence is a quoted example), so the golden set needs no unresolved or uncorroborated case; it states why no cross-root case applies. Decay found: 6 stale agent stamps dated 2026-10-16 with no Recheck assertion (`kb-verify` lists the same 6), and index bloat at 15 topic files. The 6 were re-read the same day against their sources at engine main 5433f08, all held, and were re-stamped; index bloat stays open for the owner. Nothing is held back by the cap. Not covered by any check: whether each folded fact matches its source (the fold's human gate) and the liveness of external `Source:` URLs.
 
 ```yaml
 - id: 07cd5abd
   category: stale fact
-  status: open
+  status: resolved
   file: agent-lifecycle-roles.md
   section: "Orchestrator cost bounds"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -428,9 +428,10 @@ The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate aft
   escalate: true
   date: 2026-11-23
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-23 — every quoted string and value re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§5A, §6 Phase 4), ai-kb:documents/decisions/0011-no-orchestrator-until-routing-fails.md (unchanged since 720fcff; ADR-0018, which would supersede "no orchestrator is built", is still Proposed), 0014-library-registry.md, the kb-retrieve agent and documents/eval-2026-10-12-routing-run/README.md, at engine main 5433f08; all held, nothing changed but the stamp, re-stamped 2026-11-23, method doc-review"
 - id: 0d3f93c0
   category: stale fact
-  status: open
+  status: resolved
   file: retrieval-eval-integrity.md
   section: "The agent under test must not be able to reach the oracle"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -441,9 +442,10 @@ The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate aft
   escalate: true
   date: 2026-11-23
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-23 — every quoted string and value re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.8, §9.14–§9.16), ai-kb:documents/eval-2026-10-12-routing-run/README.md, the 2026-09-28 bakeoff README and scripts/grade-routing, at engine main 5433f08; all held, nothing changed but the stamp, re-stamped 2026-11-23, method doc-review"
 - id: 15a6d7db
   category: stale fact
-  status: open
+  status: resolved
   file: agent-lifecycle-roles.md
   section: "Mutation governance"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -454,9 +456,10 @@ The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate aft
   escalate: true
   date: 2026-11-23
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-23 — every quoted string and value re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§5A, §6, §9.18), ai-kb:scripts/check-blast, .github/workflows/guardrails.yml (the direct-push warning), documents/state-change-gates.md and ADR-0012; the items stated as not built are still found only in the plan, at engine main 5433f08; all held, nothing changed but the stamp, re-stamped 2026-11-23, method doc-review"
 - id: a6f10748
   category: stale fact
-  status: open
+  status: resolved
   file: retrieval-eval-integrity.md
   section: "A grader must resolve identity, and demand only what the contract requires"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -467,9 +470,10 @@ The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate aft
   escalate: true
   date: 2026-11-23
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-23 — every quoted string and value re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.14, §9.15), ai-kb#54, the kb-retrieve agent, scripts/grade-eval and commits 510d09b, d978338 and 43aee00, at engine main 5433f08; all held, nothing changed but the stamp, re-stamped 2026-11-23, method doc-review"
 - id: cd4aef98
   category: stale fact
-  status: open
+  status: resolved
   file: retrieval-eval-integrity.md
   section: "Library discovery must be exact, and checked from tool calls"
   source: "knowledge-agent-architecture-combination-plan-revised"
@@ -480,9 +484,10 @@ The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate aft
   escalate: true
   date: 2026-11-23
   finding: "The stamp under the Source: line citing [[knowledge-agent-architecture-combination-plan-revised]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-23 — every quoted string and value re-read against documents/knowledge-agent-architecture-combination-plan-revised.md (§9.14), ai-kb:plugins/knowledge-tools/agents/kb-retrieve.md (both refusal strings and the 25 of 25 sentence, verbatim), ADR-0014 and commit 48467fd, at engine main 5433f08; all held, nothing changed but the stamp, re-stamped 2026-11-23, method doc-review"
 - id: dcae130c
   category: stale fact
-  status: open
+  status: resolved
   file: secret-governance.md
   section: "Raw artifacts archived in a library"
   source: "script-check-secrets"
@@ -493,6 +498,7 @@ The kb-audit sweep of 2026-11-23 ran on main at 26b66d9, the acceptance gate aft
   escalate: true
   date: 2026-11-23
   finding: "The stamp under the Source: line citing [[script-check-secrets]] is an agent stamp dated 2026-10-16, 38 days old; the domain's agent_ttl is 30d, so it fell due on 2026-11-15. The section has no Recheck assertion. To close: re-read the cited source and re-stamp with the method used. Re-stamping without re-verifying is not a fix."
+  resolved: "2026-11-23 — every quoted string and value re-read against ai-kb:scripts/check-secrets (the two raw-artifact exceptions, verbatim) and ai-kb#59, at engine main 5433f08; all held, nothing changed but the stamp, re-stamped 2026-11-23, method doc-review"
 - id: ebc4bbd9
   category: index bloat
   status: open

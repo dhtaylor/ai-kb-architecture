@@ -4,7 +4,7 @@ description: The three librarian roles that keep a governed KB operating (Curato
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
-verified: 2026-10-16
+verified: 2026-10-28
 metadata:
   type: fact
   node_type: memory
@@ -290,7 +290,7 @@ nothing to enforce it against), or not built.
   what adding a collaborator reopens.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phases 4 and 5, §9.18) · [[knowledge-agent-architecture-combination-plan]] (§5A, §2) · [[adr-0002-governance-without-enforcement]] · [[adr-0012-phase-4-safety-scoped-to-one-maintainer]] · [[state-change-gates]] · [[script-check-blast]] · [[script-kb-owner]]
-Verified: 2026-10-16 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## A fact file holds current state, not a changelog
 
@@ -467,7 +467,7 @@ Reopen the no-orchestrator decision when any of these holds:
   cannot serve.
 
 Source: [[knowledge-agent-architecture-combination-plan-revised]] (§5A, §6 Phase 4) · [[knowledge-agent-architecture-combination-plan]] (§5A, superseded in part) · [[adr-0011-no-orchestrator-until-routing-fails]] (as amended 2026-10-12) · [[adr-0007-engine-content-separation]] · [[adr-0014-library-registry]] · [[agent-kb-retrieve]] · [[eval-2026-10-12-routing-run]]
-Verified: 2026-10-16 · by: agent · method: doc-review
+Verified: 2026-11-23 · by: agent · method: doc-review
 
 ### The reopen trigger was met, and triage is proposed
 
