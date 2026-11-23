@@ -120,7 +120,7 @@ Verified: 2026-11-23 · by: agent · method: doc-review
 
 `check-secrets --file` now resolves its path against the enclosing library, so a non-`.md` file under `documents/` gets the same raw-artifact exemption as `--worktree`; a file outside any library is still checked strictly (#183). `--file PATH --strict` switches the exemption off, and `kb-capture` uses it, so `--from` a library's `documents/` file cannot borrow the exemption for a note filed elsewhere.
 
-Source: [[engine-changelog-after-v0.4.0]] · [[script-check-secrets]]
+Source: [[engine-changelog-v0.5.0]] · [[script-check-secrets]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; s="$KB_ENGINE_ROOT/scripts/check-secrets"; git init -q "$t/lib"; mkdir -p "$t/lib/documents" "$t/out"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxs\nscope: general\n---\n# x\n' > "$t/lib/INDEX.md"; for f in "$t/lib/documents/dump.sql" "$t/out/dump.sql"; do printf 'CREATE TABLE %s%s (id int);\n' aB3dE5fG7hI9 jK1lM3nO5pQ7rS9 > "$f"; done; "$s" --file "$t/lib/documents/dump.sql" >/dev/null 2>&1 || r=1; "$s" --file "$t/lib/documents/dump.sql" --strict >/dev/null 2>&1 && r=1; "$s" --file "$t/out/dump.sql" >/dev/null 2>&1 && r=1; rm -rf "$t"; exit $r
 
@@ -128,7 +128,7 @@ Recheck: t=$(mktemp -d); r=0; s="$KB_ENGINE_ROOT/scripts/check-secrets"; git ini
 
 `check-secrets` no longer flags a plain slug in a frontmatter flow list (#183). The `]` closing `keywords: [a2a-setup-external]` was counted as a symbol, so a lowercase hyphenated slug with a digit looked like a mixed-class token. A trailing `]` on a lowercase slug is now ignored; a credential in `keywords:` or `tags:` is still caught. <!-- lint-allow: the #183 example slug, which an engine before the fix flags -->
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; s="$KB_ENGINE_ROOT/scripts/check-secrets"; git init -q "$t/lib"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxs\nscope: general\nkeywords: [a2a-setup-external]\n---\n# x\n' > "$t/lib/INDEX.md"; "$s" --file "$t/lib/INDEX.md" >/dev/null 2>&1 || r=1; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxs\nscope: general\nkeywords: [%s%s]\n---\n# x\n' aB3dE5fG7hI9 jK1lM3nO5pQ7rS9 > "$t/lib/INDEX.md"; "$s" --file "$t/lib/INDEX.md" >/dev/null 2>&1 && r=1; rm -rf "$t"; exit $r
 

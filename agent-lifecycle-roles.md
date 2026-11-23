@@ -102,7 +102,7 @@ Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mkdir "$t/l"; printf 
 - **A stamp that names no `by:` or `method:` is read** (#201). It "read only a stamp with both, so a bare `Verified: 2026-09-22` was invisible to it: never listed, never due, never rechecked." It now sees one, and a missing `by:` counts as an agent's, so the shorter agent TTL applies.
 - **It reads `Recheck:` lines in fact files only** (#201). A `Recheck:` in an episodic note, a source stub, an `INDEX.md` or another record is no longer listed or run under `--yes`.
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; d="$t/fxr"; mkdir -p "$d/episodic"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' fxr > "$d/INDEX.md"; { printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-01-01\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-01-01 · by: human · method: manual\n' fxr; printf '\n## Bare\n\nfact.\n\nSource: \133\133f]]\nVerified: %s\nRecheck: echo bare-cmd\n\n## Human\n\nfact.\n\nSource: \133\133f]]\nVerified: %s · by: human · method: manual\nRecheck: echo human-cmd\n\n## Fence\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-01-01 · by: human · method: manual\n\n```\nVerified: 2026-01-01 · by: human · method: manual\nRecheck: echo fenced-cmd\n```\n' "$(date -d '20 days ago' +%F)" "$(date -d '20 days ago' +%F)"; } > "$d/f.md"; printf -- '---\nname: n1\ndescription: d\nmemory_type: episodic\n---\n# n\n\nVerified: 2026-01-01 · by: human · method: manual\nRecheck: echo episodic-cmd\n' > "$d/episodic/n1.md"; o=$("$KB_ENGINE_ROOT/scripts/kb-verify" "$d" 2>&1); printf '%s\n' "$o" | grep -qF 'echo bare-cmd' || r=1; for c in human-cmd fenced-cmd episodic-cmd; do printf '%s\n' "$o" | grep -qF "echo $c" && r=1; done; rm -rf "$t"; exit $r
 
@@ -110,7 +110,7 @@ Recheck: t=$(mktemp -d); r=0; d="$t/fxr"; mkdir -p "$d/episodic"; printf -- '---
 
 `check-kb` fails a `Recheck:` or `Recheck (attended):` command that `/bin/sh` cannot parse (#182), naming the file, the line and the shell's error. A command with a quoted string split across lines stopped at an unterminated quote and never ran. It checks with `sh -n -c`, the shell `kb-verify` runs it under, using `kb-verify`'s own `RECHECK` pattern. It fails at every contract version, like an indented stamp: no contract bump, because such an assertion was broken under all of them.
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; d="$t/fxs"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' fxs > "$d/INDEX.md"; { printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-19\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-19 · by: human · method: manual\n' fxs; printf 'Recheck: echo '"'"'a\n'; } > "$d/f.md"; o=$("$KB_ENGINE_ROOT/scripts/check-kb" "$d" 2>&1); [ $? -eq 1 ] || r=1; printf '%s\n' "$o" | grep -qF 'does not parse under /bin/sh' || r=1; { printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-19\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-19 · by: human · method: manual\n' fxs; printf 'Recheck: echo a\n'; } > "$d/f.md"; "$KB_ENGINE_ROOT/scripts/check-kb" "$d" >/dev/null 2>&1 || r=1; rm -rf "$t"; exit $r
 
@@ -118,7 +118,7 @@ Recheck: t=$(mktemp -d); r=0; d="$t/fxs"; mkdir -p "$d"; printf -- '---\nname: x
 
 `kb-verify`'s `WEAK` check no longer judges an assertion that only contains a URL (#185). It judges one that fetches it: `curl`, `wget`, `http`, `xh`, or a python `urllib`, `requests` or `httpx` call. A fixture origin written into a temp library, with the grep run on a local script's output, is left alone. A fetch is still judged against the URL it fetches, not a fixture URL beside it.
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; d="$t/fxw"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxw\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' > "$d/INDEX.md"; { printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: fxw\nscope: general\nverified: 2026-01-01\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## Fetches\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-01-01 · by: human · method: manual\nRecheck: %s -s http://example.invalid/a | grep -q foo\n\n## Fixture\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-01-01 · by: human · method: manual\nRecheck: printf "http://example.invalid/b" > o.txt; grep -q foo o.txt\n' "cu""rl"; } > "$d/f.md"; o=$("$KB_ENGINE_ROOT/scripts/kb-verify" "$d" 2>&1); printf '%s\n' "$o" | grep -F 'WEAK' | grep -qF 'Fetches' || r=1; printf '%s\n' "$o" | grep -F 'WEAK' | grep -qF 'Fixture' && r=1; rm -rf "$t"; exit $r
 
@@ -181,7 +181,7 @@ Recheck: python3 -I -B -c 'import os, types, urllib.request as R, sys; sys.path.
 
 `kb-sources` no longer counts a fenced heading or `Source:` line when it lists a stub's dependants (#199).
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; d="$t/fxd"; mkdir -p "$d/sources"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxd\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n' > "$d/INDEX.md"; printf -- '---\nname: st\ndescription: d\nmemory_type: reference\n---\n# S\n\n- **Artifact location:** https://example.invalid/page\n' > "$d/sources/st.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\n---\n# f\n\n## Real\n\nx\n\nSource: \133\133st]]\n\n```\n## Fenced\n\nSource: \133\133st]]\n```\n' > "$d/f.md"; o=$("$KB_ENGINE_ROOT/scripts/kb-sources" "$d" 2>&1); printf '%s\n' "$o" | grep -qF 'dependants: f.md § Real' || r=1; printf '%s\n' "$o" | grep -qF 'Fenced' && r=1; rm -rf "$t"; exit $r
 
@@ -311,7 +311,7 @@ The skill change was tested with one trial per case, a headless session doing th
 Source: [[skill-kb-distill]] · [[script-check-transient]] · [[pr-145-distill-current-state]] · [[engine-changelog-v0.4.0]]
 Verified: 2026-11-09 · by: agent · method: doc-review
 
-Source: [[engine-changelog-after-v0.4.0]] (the paragraph on `.claude/` and `.claude-plugin/`)
+Source: [[engine-changelog-v0.5.0]] (the paragraph on `.claude/` and `.claude-plugin/`)
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; d="$t/fxt"; mkdir -p "$d/.claude" "$d/.claude-plugin"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' fxt > "$d/INDEX.md"; { printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-19\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-19 · by: human · method: manual\n' fxt; } > "$d/f.md"; printf '# s\n\n## 2026-11-01 notes\n\nx\n' > "$d/.claude/s.md"; cp "$d/.claude/s.md" "$d/.claude-plugin/s.md"; "$KB_ENGINE_ROOT/scripts/check-transient" "$d" >/dev/null 2>&1 || r=1; printf '\n## 2026-11-01 notes\n\nx\n\nSource: \133\133f]]\n' >> "$d/f.md"; "$KB_ENGINE_ROOT/scripts/check-transient" "$d" >/dev/null 2>&1 && r=1; rm -rf "$t"; exit $r
 
@@ -342,7 +342,7 @@ The category of stale facts with no assertion exists because of a measurement: t
 Source: [[adr-0013-steady-state-surfaced-not-scheduled]] · [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-due]] · [[script-kb-session-start]]
 Verified: 2026-10-28 · by: agent · method: doc-review
 
-Source: [[engine-changelog-after-v0.4.0]] · [[script-kb-due]] (the two bullets and the two paragraphs on the recheck count and on a pending packet)
+Source: [[engine-changelog-v0.5.0]] · [[script-kb-due]] (the two bullets and the two paragraphs on the recheck count and on a pending packet)
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; d="$t/fxn"; mkdir -p "$d/episodic" "$t/p/x"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxn\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 2\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' > "$d/INDEX.md"; { printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: fxn\nscope: general\nverified: 2026-01-01\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n'; for i in 1 2 3; do printf '\n## S%s\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-01-01 · by: human · method: manual\nRecheck: true\n' $i; done; } > "$d/f.md"; printf -- '---\nname: n1\ndescription: d\nmemory_type: episodic\n---\n# n\n' > "$d/episodic/n1.md"; nd() { KB_PACKETS="$t/p" "$KB_ENGINE_ROOT/scripts/kb-due" --nudge "$d" 2>&1 | grep -F 'fxn:'; }; pk() { rm -f "$t/p/x/"*; [ -z "$1" ] || printf -- '---\npacket: %s\nstatus: pending\nlibrary: fxn\nlibrary_path: %s\nprepared: 2026-11-20\n---\nb\n' "$1" "$(realpath "$d")" > "$t/p/x/p.md"; }; pk ""; nd | grep -qF '3 facts due for recheck, 2 a run' || r=1; nd | grep -qF 'sweep due' || r=1; nd | grep -qF 'episodic note' || r=1; pk kb-audit; nd | grep -qF 'sweep due' && r=1; nd | grep -qF 'episodic note' || r=1; pk kb-distill; nd | grep -qF 'sweep due' || r=1; nd | grep -qF 'episodic note' && r=1; rm -rf "$t"; exit $r
 
@@ -356,7 +356,7 @@ Recheck: t=$(mktemp -d); r=0; d="$t/fxn"; mkdir -p "$d/episodic" "$t/p/x"; print
 Source: [[script-kb-due]] · [[engine-changelog-v0.4.0]] · [[pr-162-unstamped-since-sweep]]
 Verified: 2026-11-09 · by: agent · method: doc-review
 
-Source: [[engine-changelog-after-v0.4.0]] (the bullet on an `INDEX.md` `Source:` line)
+Source: [[engine-changelog-v0.5.0]] (the bullet on an `INDEX.md` `Source:` line)
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; d="$t/fxi"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' fxi > "$d/INDEX.md"; printf 'Source: \133\133f]]\n' >> "$d/INDEX.md"; { printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-19\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-19 · by: human · method: manual\n' fxi; } > "$d/f.md"; KB_NUDGE= "$KB_ENGINE_ROOT/scripts/kb-due" --nudge "$d" 2>&1 | grep -F 'fxi:' | grep -qF 'unstamped source' && r=1; printf '\nSource: \133\133f]]\n' >> "$d/f.md"; "$KB_ENGINE_ROOT/scripts/kb-due" --nudge "$d" 2>&1 | grep -F 'fxi:' | grep -qF 'unstamped source' || r=1; rm -rf "$t"; exit $r
 
@@ -365,7 +365,7 @@ Recheck: t=$(mktemp -d); r=0; d="$t/fxi"; mkdir -p "$d"; printf -- '---\nname: x
 - **The person can choose how often session start shows the nudge** (#174). `kb.nudge` in `~/.config/ai-kb/libraries` (or `$KB_NUDGE` over it) is `always` (default, output unchanged), `weekly:<day>` or `off`. On the days it is not shown, the block and the `KB due —` line are replaced by one line to the model saying so, with the path of the latest `kb-report`. A value that is not one of these warns in the session-start message and acts as `always`. A library that is not served, an unreadable registry and an unmigrated machine are reported whatever the setting; `kb-due --nudge` by hand, `kb-schedule` and `kb-report` ignore it.
 - **`kb-due --nudge` goes on past a library whose `kb_contract:` is malformed** (#203). It stopped with a traceback; it now says the contract cannot be read and goes on to the next tree.
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: (t=$(mktemp -d); r=0; ss() { HOME="$t" KB_NUDGE="$1" "$KB_ENGINE_ROOT/scripts/kb-session-start" </dev/null 2>&1; }; ss off | grep -qF 'nudge is off on this machine (kb.nudge=off)' || r=1; ss weekly:$(date -d tomorrow +%a | tr A-Z a-z) | grep -qF 'is weekly (kb.nudge=weekly:' || r=1; ss always | grep -qF 'kb.nudge' && r=1; ss sometimes | grep -qF 'is not one of always, weekly:<day>, off' || r=1; rm -rf "$t"; exit $r) && (t=$(mktemp -d); r=0; mkdir -p "$t/fxm" "$t/fxn"; for n in fxm fxn; do printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n%b---\n# x\n' "$n" "$([ $n = fxm ] && printf 'kb_contract: bogus\\n')" > "$t/$n/INDEX.md"; done; o=$("$KB_ENGINE_ROOT/scripts/kb-due" --nudge "$t/fxm" "$t/fxn" 2>&1); [ $? -eq 0 ] || r=1; printf '%s\n' "$o" | grep -qF 'Traceback' && r=1; printf '%s\n' "$o" | grep -F 'fxm' | grep -qiF 'cannot be read' || r=1; printf '%s\n' "$o" | grep -qF 'fxn: sweep due' || r=1; rm -rf "$t"; exit $r)
 

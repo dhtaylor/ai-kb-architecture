@@ -139,7 +139,7 @@ A library may be a git repository with no remote, never pushed. Nothing in the e
 - **Its only gate is the commit hook.** There is no server to run `library-guardrails.yml` or `check-blast`'s `owner-approved` label, so a `--no-verify` commit is unchecked: run the hook by hand afterwards (`<engine>/library-hooks/pre-commit` from the library root, which checks the tree as committed when it is clean).
 - **A remote added later is recorded only by registering the library again** (`kb-library remove <name>`, then `kb-library add <path>`), since `kb-library add` reads the remote only when it registers a library.
 
-Source: [[conventions-contract-versions]] · [[engine-changelog-after-v0.4.0]]
+Source: [[conventions-contract-versions]] · [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; export HOME="$t/h" GIT_CONFIG_GLOBAL="$t/gc" GIT_CONFIG_NOSYSTEM=1; mkdir -p "$HOME" "$t/fxloc"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxloc\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n' > "$t/fxloc/INDEX.md"; git init -q "$t/fxloc"; k="$KB_ENGINE_ROOT/scripts/kb-library"; "$k" add "$t/fxloc" >/dev/null 2>&1 || r=1; "$k" export 2>&1 | grep '^# fxloc: no origin' >/dev/null || r=1; git -C "$t/fxloc" remote add origin https://example.invalid/fxloc.git; "$k" export 2>&1 | grep -qF 'origin = https://example.invalid/fxloc.git' && r=1; "$k" remove fxloc >/dev/null 2>&1; "$k" add "$t/fxloc" >/dev/null 2>&1; "$k" export 2>&1 | grep -qF 'origin = https://example.invalid/fxloc.git' || r=1; [ -x "$KB_ENGINE_ROOT/library-hooks/pre-commit" ] || r=1; rm -rf "$t"; exit $r
 
@@ -161,7 +161,7 @@ Three options were weighed: keep honouring XDG and tell people to set it everywh
 
 Git's own use of `XDG_CONFIG_HOME` is out of scope: `kb-bootstrap` looks for `$XDG_CONFIG_HOME/git/config` only to find the file `git config --global` writes when `~/.gitconfig` is absent. That is git's convention, and the engine is "predicting git, not choosing a location."
 
-Source: [[adr-0021-engine-state-at-fixed-paths]] · [[engine-changelog-after-v0.4.0]]
+Source: [[adr-0021-engine-state-at-fixed-paths]] · [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; p() { env -u KB_PACKETS -u KB_REPORTS HOME="$t" XDG_STATE_HOME="$t/x" XDG_CONFIG_HOME="$t/c" "$@" PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -m kbengine.env --path "$PATH_"; }; chk() { [ "$(PATH_=$1 env -u KB_PACKETS -u KB_REPORTS HOME="$t" XDG_STATE_HOME="$t/x" XDG_CONFIG_HOME="$t/c" PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -m kbengine.env --path "$1")" = "$2" ]; }; chk packets "$t/.local/state/ai-kb/packets" || r=1; chk reports "$t/.local/state/ai-kb/reports" || r=1; chk config "$t/.config" || r=1; chk registry "$t/.config/ai-kb/libraries" || r=1; [ "$(KB_PACKETS="$t/pk" HOME="$t" PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -m kbengine.env --path packets)" = "$t/pk" ] || r=1; rm -rf "$t"; exit $r
 
@@ -169,7 +169,7 @@ Recheck: t=$(mktemp -d); r=0; p() { env -u KB_PACKETS -u KB_REPORTS HOME="$t" XD
 
 If you had either variable set, the engine no longer reads the old folders: move your packets, reports, log and backups from `$XDG_STATE_HOME/ai-kb/` to `~/.local/state/ai-kb/`, and run `kb-schedule install` again (its conf and units were under `$XDG_CONFIG_HOME`). Nothing is deleted. The files under the old state folder and the old config folder are not found by the engine until they are moved.
 
-Source: [[engine-changelog-after-v0.4.0]] · [[adr-0021-engine-state-at-fixed-paths]]
+Source: [[engine-changelog-v0.5.0]] · [[adr-0021-engine-state-at-fixed-paths]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; mkdir -p "$t/x/ai-kb/packets/fx"; printf -- '---\npacket: kb-audit\nlibrary: fx\nstatus: pending\n---\n' > "$t/x/ai-kb/packets/fx/p.md"; e() { env -u KB_PACKETS -u KB_REPORTS HOME="$t" XDG_STATE_HOME="$t/x" XDG_CONFIG_HOME="$t/c" "$@"; }; e "$KB_ENGINE_ROOT/scripts/kb-apply" list > "$t/o" 2>&1; grep -qF "no packets waiting in $t/.local/state/ai-kb/packets" "$t/o" || r=1; e KB_PACKETS="$t/x/ai-kb/packets" "$KB_ENGINE_ROOT/scripts/kb-apply" list > "$t/k" 2>&1; grep -qF 'fx' "$t/k" && ! grep -qF 'no packets waiting' "$t/k" || r=1; [ -f "$t/x/ai-kb/packets/fx/p.md" ] || r=1; rm -rf "$t"; exit $r
 
@@ -177,7 +177,7 @@ Recheck: t=$(mktemp -d); r=0; mkdir -p "$t/x/ai-kb/packets/fx"; printf -- '---\n
 
 `kbengine.env` declares every variable the engine reads, with its default and effect, and resolves its locations in one place (#205). It replaces five copies of the state-folder rule and two of the `KB_CLAUDE` fallback. `python3 -m kbengine.env --names` lists the variables. Python readers call it. `kb-session-start` and `kb-bootstrap` are bash and resolve the reports folder, the backup folder and the registry themselves. Neither script reads `XDG_STATE_HOME` any longer.
 
-Source: [[adr-0021-engine-state-at-fixed-paths]] · [[engine-changelog-after-v0.4.0]]
+Source: [[adr-0021-engine-state-at-fixed-paths]] · [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: r=0; o=$(PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -m kbengine.env --names) || r=1; for v in KB_PACKETS KB_REPORTS KB_TODAY CLAUDE_CONFIG_DIR; do printf '%s\n' "$o" | grep -qx "$v" || r=1; done; printf '%s\n' "$o" | grep -q '^XDG' && r=1; exit $r
 
@@ -185,7 +185,7 @@ Recheck: r=0; o=$(PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -m kbengine.env -
 
 `kb-telemetry` and `kb-eval-sample` honour `CLAUDE_CONFIG_DIR` (#205). They read transcripts from `~/.claude/projects` only, though Claude Code writes them under that variable's folder when it is set, and `kb-bootstrap` already followed it. `kb-report`'s count of fact-not-found runs reads the same folder. `--projects` still wins. `kb-schedule install` now saves `CLAUDE_CONFIG_DIR` in `schedule.conf`, and `run` restores it, as it does PATH; reinstall to record it. The reason given for honouring this one: Claude Code owns the variable, and the engine follows where Claude Code puts its transcripts.
 
-Source: [[adr-0021-engine-state-at-fixed-paths]] · [[engine-changelog-after-v0.4.0]]
+Source: [[adr-0021-engine-state-at-fixed-paths]] · [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); [ "$(CLAUDE_CONFIG_DIR="$t/cc" HOME="$t" PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -m kbengine.env --path claude-projects)" = "$t/cc/projects" ]; r=$?; grep -qF 'claude_config_dir=' "$KB_ENGINE_ROOT/scripts/kb-schedule" || r=1; rm -rf "$t"; exit $r
 
@@ -197,7 +197,7 @@ Recheck: t=$(mktemp -d); [ "$(CLAUDE_CONFIG_DIR="$t/cc" HOME="$t" PYTHONPATH="$K
 - **On a repeated key the first occurrence wins.** `check-kb` and `kb-catalog` kept the last.
 - **`kb-libraries` treats a `domain:` value outside `[\w-]+` (such as `foo#bar`) as a name mismatch.**
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: python3 -I -B -c 'import sys; sys.path.insert(0, sys.argv[1]); from kbengine import library as L; fm = L.read("---\nname: a\nname: b\ndomain: \"widgets\"  # note\nscope: general  # c\nlast_swept: 2026-01-01\n---\nfreshness_horizon: 7d\n"); sys.exit(0 if (fm.get("name"), fm.get("domain"), fm.get("scope"), fm.get("last_swept"), fm.get("freshness_horizon")) == ("a", "widgets", "general", "2026-01-01", None) else 1)' "$KB_ENGINE_ROOT/scripts" && (t=$(mktemp -d); r=0; d="$t/fxb"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxb\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n---\n# x\n\nlast_swept: 2099-01-01\n' > "$d/INDEX.md"; "$KB_ENGINE_ROOT/scripts/kb-due" --quiet "$d" 2>&1 | grep -qF 'fxb' || r=1; rm -rf "$t"; exit $r)
 

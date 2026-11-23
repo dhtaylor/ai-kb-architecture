@@ -183,7 +183,7 @@ Verified: 2026-11-12 · by: agent · method: doc-review
 
 `tests/run-checks` no longer depends on the caller's environment for the engine's own variables (#181). It clears `KB_LIBRARY_HOME`, `KB_ENGINE_ROOT`, `KB_SYSTEMCTL`, `KB_CRONTAB` and git's `GIT_CONFIG_GLOBAL`/`SYSTEM`/`NOSYSTEM` and author and committer variables at start, as it clears git's repository environment (#127), and a case fails if one survives. With `KB_LIBRARY_HOME` exported, five `kb-library` cases had failed.
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: r=0; f="$KB_ENGINE_ROOT/tests/run-checks"; n=$(PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -m kbengine.env --names) || r=1; for v in KB_LIBRARY_HOME KB_ENGINE_ROOT KB_SYSTEMCTL KB_CRONTAB; do printf '%s\n' "$n" | grep -qx "$v" || r=1; done; c=$(grep '^SUITE_CLEARED_VARS=' "$f") || r=1; printf '%s' "$c" | grep -qF 'kbengine.env --names' || r=1; for v in GIT_CONFIG_GLOBAL GIT_CONFIG_SYSTEM GIT_CONFIG_NOSYSTEM GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL; do printf '%s' "$c" | grep -qw "$v" || r=1; done; grep -qxF 'unset $SUITE_CLEARED_VARS' "$f" || r=1; grep -qF 'is set"; exit 1' "$f" || r=1; exit $r
 
@@ -196,7 +196,7 @@ Recheck: r=0; f="$KB_ENGINE_ROOT/tests/run-checks"; n=$(PYTHONPATH="$KB_ENGINE_R
 - It is documented in CONTRIBUTING as an injection point.
 - Nothing changes when it is unset.
 
-Source: [[engine-changelog-after-v0.4.0]]
+Source: [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; d="$t/fxk"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxk\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: 2026-11-15\n---\n# x\n' > "$d/INDEX.md"; due() { KB_TODAY="$1" "$KB_ENGINE_ROOT/scripts/kb-due" --quiet "$d" 2>&1 | grep -c 'fxk'; }; [ "$(due 2026-11-16)" = 0 ] || r=1; [ "$(due 2027-01-01)" = 1 ] || r=1; KB_TODAY=2027-13-45 "$KB_ENGINE_ROOT/scripts/kb-due" --quiet "$d" >/dev/null 2>"$t/e"; [ $? -eq 2 ] || r=1; grep -qF 'KB_TODAY' "$t/e" || r=1; rm -rf "$t"; exit $r
 

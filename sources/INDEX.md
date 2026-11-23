@@ -33,7 +33,7 @@ keywords: [sources, citations, stubs, provenance]
 - [conventions-contract-versions](conventions-contract-versions.md) — engine contract text: what each contract version adds, the scope line, attended rechecks
 - [engine-changelog-v0.3.0](engine-changelog-v0.3.0.md) — engine change notes for v0.3.0, the changes after the first release, with issue numbers
 - [engine-changelog-v0.4.0](engine-changelog-v0.4.0.md) — engine change notes after v0.3.0, released as v0.4.0: the read-only role, contract 2.6 and `--ref` pinning as built
-- [engine-changelog-after-v0.4.0](engine-changelog-after-v0.4.0.md) — engine change notes after v0.4.0, as the Unreleased section read at commit 5433f08: fixed paths, KB_TODAY, the nudge and weekly report, kb-verify's reading of stamps
+- [engine-changelog-v0.5.0](engine-changelog-v0.5.0.md) — engine change notes for v0.5.0 (the changes after v0.4.0), at tag v0.5.0: fixed paths, KB_TODAY, the nudge and weekly report, kb-verify's reading of stamps
 - [engine-contributing-schedulable](engine-contributing-schedulable.md) — the engine's CONTRIBUTING.md, including its section on commands safe to schedule: setting up a machine, the daily loop, troubleshooting, working on the engine, adding a library
 - [engine-watcher-readme](engine-watcher-readme.md) — engine document: what the Watcher watches, and the allowlist as shipped
 - [state-change-gates](state-change-gates.md) — engine document: every state-changing entry point against the three automation bands

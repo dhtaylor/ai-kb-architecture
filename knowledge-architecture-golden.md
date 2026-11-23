@@ -1292,10 +1292,11 @@ contradiction lands.
   expected_file: secret-governance.md
   expected_excerpt: "looked like a mixed-class token"
 
-- case: negative
-  question: Which release number will the engine's changes after v0.4.0 ship under?
-  expected_file: ""
-  expected_excerpt: "fact not found — check KB"
+# Amended 2026-11-23: was a negative case; the changes after v0.4.0 shipped as v0.5.0 on 2026-11-23.
+- case: positive
+  question: When were the engine and this library released as v0.5.0?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "v0.4.0 on 2026-11-12 and v0.5.0 on 2026-11-23"
 
 - case: negative
   question: Who decided that the engine's state should live at fixed paths?

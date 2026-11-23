@@ -137,21 +137,21 @@ is due the source stubs marked `Liveness: manual`, a library behind the contract
 or on one the engine cannot serve, and the past week's `fact not found` runs. This library follows the script ([[unattended-preparation]]).
 The difference is flagged and not resolved: no source read says which is intended.
 
-Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-apply]] · [[script-kb-report]] · [[engine-changelog-after-v0.4.0]]
+Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-apply]] · [[script-kb-report]] · [[engine-changelog-v0.5.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 
 ## Which variables does the regression suite clear: the ones the change notes name, or every declared one?
 
 The change notes for #181 say `tests/run-checks` clears `KB_LIBRARY_HOME`, `KB_ENGINE_ROOT`, `KB_SYSTEMCTL`, `KB_CRONTAB` and some of git's variables. ADR-0021 says "the test suite can clear the declared list instead of learning each one from the bug that it caused", where the declared list is every variable `kbengine.env` declares. Neither says which the suite does; [[guardrail-verification]] records the change notes' list and no more.
 
-Source: [[engine-changelog-after-v0.4.0]] · [[adr-0021-engine-state-at-fixed-paths]]
+Source: [[engine-changelog-v0.5.0]] · [[adr-0021-engine-state-at-fixed-paths]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 
 ## What forms of the day does `kb.nudge` accept in `weekly:<day>`?
 
 [[agent-lifecycle-roles]] records the setting as `weekly:<day>` and that a value that is not one of `always`, `weekly:<day>` and `off` warns and acts as `always`. CONTRIBUTING says the day is `mon`..`sun`, 'or the full name, any case', and that the nudge shows 'on that local weekday'. The change notes do not say which timezone 'local' means beyond that; [[using-ai-kb]] records the day forms.
 
-Source: [[engine-changelog-after-v0.4.0]] · [[engine-contributing-schedulable]]
+Source: [[engine-changelog-v0.5.0]] · [[engine-contributing-schedulable]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 
 ## Does `check-xlinks` say the origin cannot be confirmed for a local-only library?
@@ -159,13 +159,6 @@ Verified: 2026-11-20 · by: agent · method: doc-review
 [[releases-and-contract-versioning]] records, for a library registered with no origin, that its links are resolved as before "plus a note that the origin cannot be confirmed", and, for a local-only library listed by its path, that `check-xlinks` "compares nothing and resolves the links as for any library". The sources read do not say whether the note is printed in the second case.
 
 Source: [[conventions-contract-versions]] · [[adr-0020-published-libraries-and-consumers]]
-Verified: 2026-11-20 · by: agent · method: doc-review
-
-## Which release will carry the changes after v0.4.0?
-
-The engine's change notes for these changes are headed `Unreleased` and carry no release number, so no fact in this library states one.
-
-Source: [[engine-changelog-after-v0.4.0]]
 Verified: 2026-11-20 · by: agent · method: doc-review
 
 ## Is a CHANGELOG entry required for every change to the engine, or only for a new contract version?
