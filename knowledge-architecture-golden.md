@@ -265,8 +265,8 @@ contradiction lands.
 
 - case: positive
   question: Where is the rule for recording a security finding stated, and is it repeated in this library?
-  expected_file: secret-governance.md
-  expected_excerpt: "is not restated here"
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: "never the literal value"
 
 - case: positive
   question: What did the blind trap test of the distill gate record in place of a pasted password?
@@ -714,8 +714,367 @@ contradiction lands.
   question: "When does a fix to the reference library alone get released?"
   expected_file: "releases-and-contract-versioning.md"
   expected_excerpt: "but it gets no tag of its own"
-```
 
+- case: positive
+  question: Why does a freshly cloned repository not run the commit checks until I run kb-init in it?
+  expected_file: using-ai-kb.md
+  expected_excerpt: "local config that git does not clone"
+
+- case: positive
+  question: What does running kb-bootstrap with no flag do on a machine?
+  expected_file: using-ai-kb.md
+  expected_excerpt: "reports drift, changes nothing, exits 1 if anything is out of step"
+
+- case: positive
+  question: What is the command to make session start show the nudge only on Mondays?
+  expected_file: using-ai-kb.md
+  expected_excerpt: "kb.nudge weekly:mon"
+
+- case: positive
+  question: What does a commit hook say when this machine has no engine registered?
+  expected_file: using-ai-kb.md
+  expected_excerpt: "engine not found — structural and secret checks skipped"
+
+- case: positive
+  question: Why does ai-kb keep the knowledge root in user-level settings and not in a project file?
+  expected_file: using-ai-kb.md
+  expected_excerpt: "A project file can be overwritten by the repo it lives in"
+
+- case: positive
+  question: How do I move my registered libraries to a second machine?
+  expected_file: using-ai-kb.md
+  expected_excerpt: "kb-library export > libraries.txt"
+
+- case: positive
+  question: What does the engine's own pre-commit hook need configured in each clone, and how long does the test suite take?
+  expected_file: using-ai-kb.md
+  expected_excerpt: "takes about a minute and must stay green"
+
+- case: negative
+  question: How do I install ai-kb through a package manager such as apt or npm?
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: negative
+  question: Which ai-kb command pushes a library to its remote automatically after each capture?
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: positive
+  question: Why does ai-kb register its plugin explicitly in a consumer's settings instead of relying on directory nesting?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: Explicit registration is the feature.
+- case: positive
+  question: After editing a skill in the plugin, what should I do before trusting it?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: edit a skill, restart before trusting it.
+- case: positive
+  question: Does a skill's allowed-tools list stop it from using other tools?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: only pre-approves the named tools for the turn that invokes it
+- case: positive
+  question: When does kb-update-domain refuse a fold because of its source?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: the source material is not actually available to you.
+- case: positive
+  question: What does kb-organize-domain do when making the structure nicer would change what a fact means?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: you would have to change a fact's meaning to make the structure nicer.
+- case: positive
+  question: Is kb-audit allowed to fix the problems it finds?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: Do NOT use it to fix what it finds.
+- case: positive
+  question: How does the /kb-capture command treat free text typed after the command?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: a hint for the title, not an argument
+- case: positive
+  question: What must the /kb-init command do when it cannot find the engine, and may it build the scaffold itself?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: Do not reconstruct the scaffold by hand
+- case: positive
+  question: In intelligence-analysis coach mode, what happens to the turn after the skill asks a question?
+  expected_file: skills-agents-and-commands.md
+  expected_excerpt: that question ends your turn.
+- case: negative
+  question: Which ai-kb skill translates a library's facts into another language?
+  expected_file:
+  expected_excerpt: fact not found — check KB
+- case: negative
+  question: How many tokens does one /kb-init run cost?
+  expected_file:
+  expected_excerpt: fact not found — check KB
+
+- case: positive
+  question: Which check refuses a commit that stamps by: human while its message carries a Claude co-authorship trailer, and can it be evaded?
+  expected_file: script-reference-checks.md
+  expected_excerpt: "It cannot stop a determined author: drop the trailer and the check sees nothing."
+
+- case: positive
+  question: Does check-embedded-facts catch an inlined table name or enum value?
+  expected_file: script-reference-checks.md
+  expected_excerpt: "identifier-level facts — a table name, a column, an enum value — are not reliably machine-detectable and are NOT caught here."
+
+- case: positive
+  question: Does a skill's allowed-tools frontmatter restrict which tools it can call, according to check-tool-scope?
+  expected_file: script-reference-checks.md
+  expected_excerpt: "is a declaration of intent, not a fence"
+
+- case: positive
+  question: What are check-xlinks' exit codes, and does a warning fail it?
+  expected_file: script-reference-checks.md
+  expected_excerpt: "Exit 0 when nothing is dead, 1 otherwise, 2 on a usage error. Warnings alone do not fail."
+
+- case: positive
+  question: What rule does check-exec-bits apply to decide a tracked file must be executable?
+  expected_file: script-reference-checks.md
+  expected_excerpt: "anything tracked that starts with a shebang must be recorded executable, wherever it lives"
+
+- case: positive
+  question: What is the exit code of grade-routing when a case fails?
+  expected_file: script-reference-checks.md
+  expected_excerpt: "Exit 0 if every graded case passes, 1 otherwise, 2 on a usage or format error."
+
+- case: positive
+  question: How does kb-owner choose between two matching CODEOWNERS patterns?
+  expected_file: script-reference-tools.md
+  expected_excerpt: "the LAST matching pattern wins, not the most specific."
+
+- case: positive
+  question: When does kb-catalog's output go stale?
+  expected_file: script-reference-tools.md
+  expected_excerpt: "the catalog is built when it is asked for, so it cannot go stale."
+
+- case: positive
+  question: What are kb-backup's exit codes?
+  expected_file: script-reference-tools.md
+  expected_excerpt: "Exit 0 all ok, 1 any FAIL, 2 could not run."
+
+- case: positive
+  question: What do kb-eval-sample's seed and sample size default to?
+  expected_file: script-reference-tools.md
+  expected_excerpt: "--seed today as YYYYMMDD, --n 5."
+
+- case: positive
+  question: What exit codes does kb-schedule status give?
+  expected_file: script-reference-tools.md
+  expected_excerpt: "status exits 0 installed, 1 not installed."
+
+- case: positive
+  question: Why is kb-init safe to run a second time?
+  expected_file: script-reference-tools.md
+  expected_excerpt: "a scaffolder that is destructive on its second run is one nobody runs twice."
+
+- case: positive
+  question: What are kb-verify's exit codes?
+  expected_file: script-reference-tools.md
+  expected_excerpt: "Exit 0 when nothing failed, 1 when an assertion failed, 2 on usage error."
+
+- case: positive
+  question: What is the kbengine package for, and does a script configure a path to find it?
+  expected_file: script-reference-tools.md
+  expected_excerpt: "a version means one thing in all of them"
+
+- case: negative
+  question: What flag does kb-backup take to upload its bundles to cloud storage?
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: negative
+  question: Which kb-owner option rewrites CODEOWNERS to assign a new owner?
+  expected_file: ""
+  expected_excerpt: "fact not found — check KB"
+
+- case: positive
+  question: How do I decide whether a fact is scoped product:<vendor> or general?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: Would this fact stop being true if you swapped the vendor or product?
+
+- case: positive
+  question: What makes a category valid for a comparative product library?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: A category is the alternatives a reader would compare for one job.
+
+- case: positive
+  question: Why is a repo-scoped fact filed in a general-tier library a problem?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: is a claim about every deployment inferred from one
+
+- case: positive
+  question: May a fact file share its name with a folder in the library?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: A folder name is still reserved: no file may share it, so a slug never reads as a folder
+
+- case: positive
+  question: Why does the contract treat a link into an uninstalled library differently from a dead slug?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: Collapsing the two would punish portability
+
+- case: positive
+  question: Why did ADR-0010 reject a credentialed integration CI job for checking cross-library links?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: A job that resolves cross-library links needs exactly the credential that design exists to avoid.
+
+- case: positive
+  question: In ADR-0003, what keeps a nested project and the general tier separate version-control roots?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: Neither can commit the other's files; neither appears in the other's history.
+
+- case: positive
+  question: What is the status of the CODEOWNER scope audit in ADR-0004?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: Row 7 (the CODEOWNER audit) stays dormant while there is one owner.
+
+- case: positive
+  question: Why should a small domain stay flat instead of using sub-folders?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: every sub-folder adds a routing hop
+
+- case: positive
+  question: How should anything cite the contract or an INDEX.md router?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: cite the contract by path, or cite the specific fact that restates its rule.
+
+- case: positive
+  question: What should the description line of a fact file say?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: description: <one line — what this file answers, disambiguating from siblings>
+
+- case: positive
+  question: How long does a root INDEX.md say a kb-audit sweep stays good for?
+  expected_file: contract-layout-and-naming.md
+  expected_excerpt: how long a kb-audit sweep stays good for. 30d for a library, 14d for
+
+- case: positive
+  question: What does a currency stamp look like?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: Verified: 2026-09-19 · by: agent · method: query
+
+- case: positive
+  question: What does the integration-test method of a currency stamp mean?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: a real transaction against staging — the only thing that catches a vendor changing runtime behavior without touching its docs
+
+- case: positive
+  question: When is a file verified floor unknown even though other sections are freshly stamped?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: the oldest stamp among the stamped sections says nothing about the one nobody checked
+
+- case: positive
+  question: What should I do when a disputed claim shares a section with sound facts?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: Collateral refusal is a bug, not an abundance of caution
+
+- case: positive
+  question: Does a status marker under a sub-heading withhold the enclosing section too?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: never to the headings enclosing it
+
+- case: positive
+  question: How does the contract tell an uncorroborated claim apart from a hedge?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: where the weakness is the source's authority, not the reasoning.
+
+- case: positive
+  question: What is the test for a high blast radius fact?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: The test is the consequence, not the subject matter
+
+- case: positive
+  question: Why must a source artifact containing a live credential be redacted before archiving?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: the archive is a copy, and a copy leaks
+
+- case: positive
+  question: Who may mark the dependants of a dead source as provenance BROKEN, and what does the sweep do with them?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: A person triaging a dead source may write
+
+- case: positive
+  question: Can another KB file be the evidence for promoting a fact to the general tier?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: One observation is not a general truth.
+
+- case: positive
+  question: What happens to the origin file when a fact is promoted to the general tier?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: that cannot answer queries: agents follow the link, never serve stub content
+
+- case: positive
+  question: How must a Recheck assertion name an engine script?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: never by a relative path out of the library
+
+- case: positive
+  question: Why can one fetched page line not defend twenty sections of a library?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: a page cannot state twenty different specific facts in one sentence
+
+- case: positive
+  question: How may an artifact in another repository be cited?
+  expected_file: contract-provenance-and-currency.md
+  expected_excerpt: Never a relative path across a repository boundary
+
+- case: positive
+  question: What case types can a golden record carry?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: case: positive | negative | unresolved | cross-root | uncorroborated
+
+- case: positive
+  question: Why must every domain carry at least two negative golden cases?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: a knowledge base that never refuses is one that guesses.
+
+- case: positive
+  question: What does check-golden verify for an unresolved case?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: No fact file contains that phrase
+
+- case: positive
+  question: When is a cross-root golden case required?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: cross-root case only where the domain actually links across libraries
+
+- case: positive
+  question: How long should a golden-set excerpt be?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: An excerpt is the one sentence, or the one clause, that carries the value
+
+- case: positive
+  question: Why may a golden excerpt not carry markdown emphasis?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: emphasis exists in the file and never in a spoken answer
+
+- case: positive
+  question: How many checks does the contract list for verifying a domain, and are they all built?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: All twenty-eight are built.
+
+- case: positive
+  question: What does the stamp honesty check refuse?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: a commit claiming agent co-authorship does not also add a
+
+- case: positive
+  question: What does the high-blast gate do with a diff that deletes a knowledge file?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: is flagged, for CI to hold until an owner labels it; detection only
+
+- case: negative
+  question: Which frontmatter field in a fact file records the person who owns or reviews it?
+  expected_file: 
+  expected_excerpt: fact not found — check KB
+
+- case: negative
+  question: What is the maximum length in characters of a fact file description line?
+  expected_file: 
+  expected_excerpt: fact not found — check KB
+
+- case: negative
+  question: What retention period does the contract set for episodic notes?
+  expected_file: 
+  expected_excerpt: fact not found — check KB
+```
 # Added 2026-11-09, engine-sync fold: contract 2.4 to 2.6 and ADR-0020.
 - case: positive
   question: From which contract version does check-kb fail a section in a fact file that has no Source line, and which sections are exempt?

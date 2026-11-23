@@ -34,7 +34,7 @@ keywords: [sources, citations, stubs, provenance]
 - [engine-changelog-v0.3.0](engine-changelog-v0.3.0.md) — engine change notes for v0.3.0, the changes after the first release, with issue numbers
 - [engine-changelog-v0.4.0](engine-changelog-v0.4.0.md) — engine change notes after v0.3.0, released as v0.4.0: the read-only role, contract 2.6 and `--ref` pinning as built
 - [engine-changelog-after-v0.4.0](engine-changelog-after-v0.4.0.md) — engine change notes after v0.4.0, as the Unreleased section read at commit 5433f08: fixed paths, KB_TODAY, the nudge and weekly report, kb-verify's reading of stamps
-- [engine-contributing-schedulable](engine-contributing-schedulable.md) — engine document: the property that makes a command safe to run unattended
+- [engine-contributing-schedulable](engine-contributing-schedulable.md) — the engine's CONTRIBUTING.md, including its section on commands safe to schedule: setting up a machine, the daily loop, troubleshooting, working on the engine, adding a library
 - [engine-watcher-readme](engine-watcher-readme.md) — engine document: what the Watcher watches, and the allowlist as shipped
 - [state-change-gates](state-change-gates.md) — engine document: every state-changing entry point against the three automation bands
 - [script-kb-verify](script-kb-verify.md) — header of the Verifier script
@@ -83,3 +83,30 @@ keywords: [sources, citations, stubs, provenance]
 - [eval-2026-09-28-routing-sample](eval-2026-09-28-routing-sample.md) — engine evidence: the 12-question routing sample behind ADR-0011
 - [eval-2026-10-12-routing-run](eval-2026-10-12-routing-run.md) — engine evidence: the second routing sample, graded from tool calls
 - [eval-2026-10-23-section-reads](eval-2026-10-23-section-reads.md) — engine evidence: the third routing sample, after section-targeted reads, and the off-KB answer it found
+- [engine-readme](engine-readme.md) — the engine's README: what the repository holds, getting started, how it is used, the guardrails, status
+- [adr-0001-kb-root-resolution](adr-0001-kb-root-resolution.md) — engine decision: how an agent resolves the knowledge root with no literal path; amended by ADR-0008
+- [plugin-manifests](plugin-manifests.md) — the engine's marketplace manifest and the two plugin manifests
+- [adr-0006-behaviour-distribution](adr-0006-behaviour-distribution.md) — engine decision: behavior travels as a plugin registered explicitly, from a directory source; amended by ADR-0007
+- [skill-kb-ask](skill-kb-ask.md) — the engine's kb-ask skill, the triage desk: what it is, its tier and tools
+- [skill-kb-update-domain](skill-kb-update-domain.md) — the engine's kb-update-domain skill: purpose, gate, refusals, checks
+- [skill-kb-create-domain](skill-kb-create-domain.md) — the engine's kb-create-domain skill: purpose, gates, refusals, scripts
+- [skill-kb-organize-domain](skill-kb-organize-domain.md) — the engine's kb-organize-domain skill: purpose, gate, refusals, checks
+- [skill-kb-audit](skill-kb-audit.md) — the engine's kb-audit skill: purpose, mutations, gate, refusals, scripts
+- [skill-intelligence-analysis](skill-intelligence-analysis.md) — the engine's intelligence-analysis skill in analysis-tools
+- [command-kb-capture](command-kb-capture.md) — the engine's /kb-capture command
+- [command-kb-init](command-kb-init.md) — the engine's /kb-init command
+- [script-check-tool-scope](script-check-tool-scope.md) — docstring of check-tool-scope: the tier table and what a declaration restricts (drop if another group writes the same stub)
+- [script-check-embedded-facts](script-check-embedded-facts.md) — header of the lint that scans agent and command files for embedded facts
+- [script-check-exec-bits](script-check-exec-bits.md) — comment block of the executable-bit guard
+- [script-check-golden](script-check-golden.md) — header of the golden-set oracle check
+- [script-check-scope](script-check-scope.md) — header of the scope-attribute check
+- [script-check-stamps](script-check-stamps.md) — comment block of the human-stamp guard
+- [script-check-xlinks](script-check-xlinks.md) — header of the cross-library link resolver
+- [script-kb-bootstrap](script-kb-bootstrap.md) — comment block of the per-machine registration script
+- [script-kb-catalog](script-kb-catalog.md) — header of the triage catalog script
+- [script-kb-init](script-kb-init.md) — comment block of the project-tree scaffolder
+- [scripts-kbengine-package](scripts-kbengine-package.md) — module docstrings of the shared kbengine package
+- [conventions-contract-rules](conventions-contract-rules.md) — engine contract: CONVENTIONS.md sections 1 to 13, the rules behind the three contract-* topic files
+- [adr-0003-scoping-topology](adr-0003-scoping-topology.md) — engine decision: the three homes for knowledge, and the nested test project
+- [adr-0004-scope-attribute](adr-0004-scope-attribute.md) — engine decision: scope as required frontmatter, the swap test, what check-scope enforces, and the comparative product library
+- [adr-0010-cross-library-links-checked-at-commit](adr-0010-cross-library-links-checked-at-commit.md) — engine decision: cross-library links resolved at every commit that can break one, not in CI

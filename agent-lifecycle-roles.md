@@ -278,7 +278,8 @@ nothing to enforce it against), or not built.
 - **Least privilege.** Every agent, command and skill declares a tier and a tool scope, and a lint
   fails a file with no tier, no scope, an unknown tier or a tool outside its tier; the lint checks
   that the declaration is present and consistent and enforces nothing more. Status: declared and
-  linted, built. There are no service accounts: every tool runs as the one local user, so
+  linted, built; the tier table, and what `tools:` versus `allowed-tools:` restrict, are in
+  [[skills-agents-and-commands]]. There are no service accounts: every tool runs as the one local user, so
   client-side scopes are the only control and a determined bypass beats them. Status: not built, an
   accepted limitation that the decision says must be revisited before any agent touches a shared or
   production system.

@@ -20,3 +20,4 @@ keywords: [check-transient, dated heading, ticket heading, changelog, snapshot, 
 - **Artifact location:** `ai-kb:scripts/check-transient` (docstring), read at engine commit `5fb833a` on 2026-11-09. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for the two heading shapes it reports, what it does not read, and why it is never a commit gate. Not folded: the regular expressions.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

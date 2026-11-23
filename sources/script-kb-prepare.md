@@ -20,3 +20,4 @@ keywords: [kb-prepare, review packet, headless, Read Grep Glob, claude -p, budge
 - **Artifact location:** `ai-kb:scripts/kb-prepare` (docstring), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for how preparation runs: only when due, with a read-only tool list and a dollar cap, the header written by the script and the body filtered by the redaction filter, the packet saved outside the library. Folded from it: those rules and the exit codes' meaning. Not folded: the prompt text and the packet layout.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

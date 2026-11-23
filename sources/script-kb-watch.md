@@ -20,3 +20,4 @@ keywords: [kb-watch, Watcher, snapshot, drift, unreachable, allowlist]
 - **Artifact location:** `ai-kb:scripts/kb-watch` (docstring and import line), read at engine commit `c9dc309` on 2026-10-28. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Corroboration for the Watcher as built: offline, compares two saved snapshots, no network module imported, no model in the loop, drift and unreachable findings written to a queue as escaped, truncated data. Re-read 2026-10-28 for the schedulable form: it exits 1 when a source drifted or was unreachable, shows old and new values only at a terminal or with `--dry-run`, and writes the queue and router by replacing the file in one rename.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

@@ -20,3 +20,4 @@ keywords: [kb-owner, CODEOWNERS, owner, advisory, dormant]
 - **Artifact location:** `ai-kb:scripts/kb-owner` (docstring), read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Corroboration that CODEOWNERS is advisory until branch protection makes owner review a required check, and that its present use is naming an owner on a queue item. The matching-rule details (last match wins) are hosting-platform behaviour and were not folded.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

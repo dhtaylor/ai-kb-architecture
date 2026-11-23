@@ -111,7 +111,7 @@ A library archives the evidence it was folded from under `documents/`, verbatim.
 
 Two exceptions in `check-secrets` cover such artifacts. A non-`.md` file under `documents/` in a library repository (one whose root `INDEX.md` declares `domain:`) skips the bare rule, "which flags its long identifiers on nearly every line. The patterns, the labelled rule and PII still run on every line of it." The engine's own `documents/` is not a library's, and keeps every rule; the earlier statement that in `--file` mode "no file is exempt" is superseded, see below. UTF-16 text "reads as binary to every pass and so would be skipped unseen. It is reported `UNSCANNED` and blocks until converted to UTF-8."
 
-What the exemption gives up, as the change states it: "a prefixless, unlabeled random literal inside an archived non-`.md` artifact is no longer caught." The contract's rule for archiving as UTF-8 is in `ai-kb:CONVENTIONS.md` §6 and is not restated here.
+What the exemption gives up, as the change states it: "a prefixless, unlabeled random literal inside an archived non-`.md` artifact is no longer caught." The contract's rule for archiving as UTF-8 is in `ai-kb:CONVENTIONS.md` §6 and is stated in [[contract-provenance-and-currency]], under "A security finding records where a secret is and what to do, never what it is".
 
 Source: [[script-check-secrets]] · [[pr-59-archived-artifacts]]
 Verified: 2026-10-16 · by: agent · method: doc-review
@@ -145,7 +145,7 @@ Verified: 2026-11-12 · by: agent · method: doc-review
 
 ## Why a finding is recorded by reference
 
-The rule — record a finding by reference, never by value; redact before archiving; name a role, not a person — is in `ai-kb:CONVENTIONS.md` §6 and is not restated here. What this library holds is why the rule is needed.
+The rule — record a finding by reference, never by value; redact before archiving; name a role, not a person — is in `ai-kb:CONVENTIONS.md` §6 and is stated in [[contract-provenance-and-currency]], under "A security finding records where a secret is and what to do, never what it is". What this section holds is why the rule is needed.
 
 Consolidating a security finding is the step where a literal is most likely to be pasted: when a model distills a note that says a system had a plaintext password, "the natural (wrong) move is to paste the literal value as evidence". A knowledge base that does so has leaked the secret "through the front door, as documentation". A fold's ethic of copying load-bearing values character for character is the same instinct, which is why `kb-update-domain` carries an explicit carve-out: "faithful copying stops at the secret". The scan is the net behind the rule, not a substitute for it, and it leaves names to the human gate.
 

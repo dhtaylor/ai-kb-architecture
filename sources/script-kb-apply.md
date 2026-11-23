@@ -22,3 +22,4 @@ keywords: [kb-apply, review packet, STALE, library_head, packets directory]
 Source for how a packet is listed, shown and closed, and when it is stale. Folded from it: that the script never writes to a library and that a stale packet is re-validated by the skill, not discarded. Not folded: the packets directory's layout beyond its being outside every library.
 
 - **Re-read:** on 2026-11-12 at tag `v0.4.0` (commit `a318c28`; the file's blob is `e7a3339`). Folded from it: `kb-apply done <packet> applied|rejected` rewrites the packet's status and moves it to a `done/` folder beside it, where it is kept. Every script at the tag was searched for a deletion; none removes a closed packet.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

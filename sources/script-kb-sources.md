@@ -26,3 +26,4 @@ Re-read at engine commit `5fb833a` on 2026-11-09 for the sign-in redirect rule a
 - **Re-read:** on 2026-11-12 at tag `v0.4.0` (commit `a318c28`; the file's blob is `90b6503`). Folded from it: each request has a 10-second timeout, and a timeout is `unreachable`, not `dead`.
 
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`: `TIMEOUT = 10` and the docstring's "10s timeout" are unchanged, and a timeout is classed `unreachable`. The request-timeout section was re-stamped from its `Recheck:`, which now runs.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

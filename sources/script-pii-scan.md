@@ -22,3 +22,4 @@ keywords: [pii-scan, pii-allowlist, personal identifier, email, account, home di
 - **Re-read:** at engine commit `d16b78c` on 2026-10-28, with the engine's `main` at that commit: it gained a `--redact` mode for the redaction filter, which prints only line numbers and lets `lint-allow` exempt nothing. The three rules, the exemptions and the stated limits folded from it are unchanged; the filter is folded from the `check-secrets` stub.
 
 Source for the third check-secrets pass: its three rules, its exemptions, the allowlist's purpose, and its stated limits. Folded: the three kinds of identifier, that names are not detectable, and the two stated misses. The allowlist's own entries are not folded.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

@@ -20,3 +20,4 @@ keywords: [kb-capture, capture, refuse, working tree, draft, 0600, retrieval]
 - **Artifact location:** `ai-kb:scripts/kb-capture` (docstring and body comments), read at engine commit `35f0e95` on 2026-10-02. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 
 Source for the capture boundary: what is refused, why, and where a refused draft goes (the private-file mode is stated in a body comment, not the docstring). Folded: the refusal, its reason, and the draft handling. Not folded: capture's other behaviour (routing, filing, the editor template), which is not part of secret governance.
+- **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.

@@ -65,7 +65,7 @@ the behaviour layer:
 
 - **Engine** — behaviour only, no domains, no facts. It holds the contract every library conforms
   to, the checking scripts, the plugins (skills, agents, commands — registered by consumers, never
-  inherited by directory accident) and the decision records. Its `kb/` directory is created by the
+  inherited by directory accident; see [[skills-agents-and-commands]]) and the decision records. Its `kb/` directory is created by the
   engine and never tracked by it.
 - **Domain library** — content only, one repository per domain, portable. `INDEX.md` is the
   repository root and the domain router, with no tier chain above it. It holds gestalt-sized topic
@@ -81,8 +81,7 @@ operations.
 The rule that makes it hold: the engine holds no facts, a library holds no behaviour, and a library
 is self-contained enough to be cloned onto a machine with neither an engine nor a sibling library
 beside it. Anything reaching across a repository boundary uses a repo-qualified reference
-(`ai-kb:CONVENTIONS.md`), never a relative path; the contract states the citation rule at
-`ai-kb:CONVENTIONS.md` section 6.
+(`ai-kb:CONVENTIONS.md`), never a relative path; the contract states the citation rule at `ai-kb:CONVENTIONS.md` section 6, restated in [[contract-provenance-and-currency]] under "Citing an artifact: inside the library, a stable outside page, or another repository".
 
 Why the engine does not hold the facts: an engine that held both would assert the separation
 principle in its own contract and violate it in its own layout, in the one place where the
