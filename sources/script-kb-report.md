@@ -25,3 +25,4 @@ Re-read at engine commit `5fb833a` on 2026-11-09 for the `Liveness: manual` stub
 
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`, the docstring and `main`. Folded from it, beside the change notes ([[engine-changelog-v0.5.0]]): the report lists a library ahead of the engine's contract and leaves out an archived library that is not registered. Nothing folded earlier changed.
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.
+- **Re-read:** on 2026-11-24 at engine commit `303082a`, the docstring. Folded from it: the report opens with assertion coverage per library, listed for every library, those with nothing to decide too. The exit codes and the folder are unchanged.
