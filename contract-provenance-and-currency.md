@@ -185,7 +185,7 @@ Recheck: grep -qF '(external source re-read), or `manual`.' "$KB_ENGINE_ROOT/CON
   (ADR-0022): the lease follows
   the stamp's evidence, not its `by:`, so a false `by: human` buys nothing.
 
-Superseded: until engine v0.5.0 this bullet said that what `check-stamps` enforced was "narrower and real", a commit that announces agent co-authorship may not also add a `by: human` stamp, and that "The stakes are why it is worth having: a human stamp suppresses re-checking for **ten times** as long as an agent one." The ten-times lease is gone with the identity tiers (see the section Evidence tiers below). The script's own account is in [[script-reference-checks]] § check-stamps.
+Superseded: until engine v0.5.0 this bullet said `check-stamps` enforced a narrow guard and a human stamp bought "**ten times**" an agent stamp's lease; ADR-0022 retired both (the retirement is in [[script-reference-checks]] § check-stamps).
 
 Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (the `check-stamps` entry)
 Verified: 2026-11-24 · by: agent · method: doc-review
@@ -268,7 +268,7 @@ Recheck: grep -qF 'a page cannot state twenty different specific facts in one' "
   nobody reads twice. Both first sweeps read it that way and filed 11 such items; the category was
   underspecified, and this paragraph is the repair.
 
-Superseded: until engine v0.5.0 this bullet was headed "Trust tiers" and said "Agent-verified TTL is materially shorter than human-verified: **1/10th** of the horizon, unless the domain declares `agent_ttl` (§3)", and that high-blast-radius facts "require **human** re-verification regardless of any agent stamp". ADR-0022 replaces both: the tier is the evidence, not the writer, and a high-blast-radius fact is gated by an attended decision, not by who stamped it. The glossary's terms are **Asserted stamp**, **Evidence tier**, **Horizon** and **Arbiter**; it says to avoid "trust tier", "human tier" and "agent tier" for the first, and "TTL" where a domain's rate of change is meant (the Horizon). Contract 2.7 renames the field `agent_ttl:` to `unasserted_ttl:`: see [[releases-and-contract-versioning]]. How the Verifier applies the lease is in [[agent-lifecycle-roles]].
+Superseded: until engine v0.5.0 this bullet was "Trust tiers" (agent TTL "**1/10th**" of the horizon, `agent_ttl` to change it, human re-verification for a high-blast-radius fact); ADR-0022 replaced it with evidence tiers, and contract 2.7 renames the field (see [[releases-and-contract-versioning]]).
 
 Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[adr-0005-currency-cadence]] (its trust tiers, superseded)
 Verified: 2026-11-24 · by: agent · method: doc-review

@@ -466,7 +466,7 @@ links_to:                     # every library a [[library:slug]] link names, and
                               # libraries; check-kb fails one missing.
 ```
 
-Superseded: until engine v0.5.0 the block had `agent_ttl: <N>d` here, "optional: how long an agent stamp stays fresh. Default a tenth of the horizon; check-kb fails one not shorter than the horizon (§7)." Contract 2.7 renames the field and ties it to the evidence, not the writer (ADR-0022); the versions are in [[releases-and-contract-versioning]].
+Superseded: until engine v0.5.0 the block had `agent_ttl: <N>d` here ("optional: how long an agent stamp stays fresh"); contract 2.7 renames it (see [[releases-and-contract-versioning]]).
 
 Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]]
 Verified: 2026-11-24 · by: agent · method: doc-review

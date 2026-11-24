@@ -126,7 +126,7 @@ The contract's own retrieval rule still reads "Surface the `verified:` date on f
 
 Source: [[agent-kb-retrieve]] · [[skill-kb-ask]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#237)
 Verified: 2026-11-24 · by: agent · method: doc-review
-Recheck: f="$KB_ENGINE_ROOT/plugins/knowledge-tools/agents/kb-retrieve.md"; grep -qF '`carries a check, last passed <date>`' "$f" && grep -qF 'Evidence: <carries a check, last passed <date> | someone'"'"'s word, <date> | unstamped>' "$f" && grep -qF '**Never present `by:` or `method:` as a sign of trust, and do not report them.**' "$f" && ! grep -qF 'Verified: <date> · by: <agent|human> · method: <…>' "$f"
+Recheck: f="$KB_ENGINE_ROOT/plugins/knowledge-tools/agents/kb-retrieve.md"; grep -qF '`carries a check, last passed <date>`' "$f" && grep -qF 'Evidence: <carries a check, last passed <date> | someone'"'"'s word, <date> | unstamped>' "$f" && grep -qF '**Never present `by:` or `method:` as a sign of trust, and do not report them.**' "$f" && grep -qF 'never refuse, withhold or soften a fact for lacking a check.' "$f" && ! grep -qF 'Verified: <date> · by: <agent|human> · method: <…>' "$f"
 
 ## A search lists files before lines, and stops when it stops paying
 

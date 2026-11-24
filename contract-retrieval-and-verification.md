@@ -1,6 +1,6 @@
 ---
 name: contract-retrieval-and-verification
-description: The contract rules for retrieval and for verifying a domain — what every retrieval agent is held to, the golden set (where it lives, the record fields including the optional expected_evidence, the five case types and when each is required, alt_excerpt, what an excerpt is), the two test tiers, and the section 13 list of the twenty-eight checks with what each proves.
+description: The contract rules for retrieval and for verifying a domain — what every retrieval agent is held to, the golden set (where it lives, the record fields including the optional expected_evidence, the five case types and when each is required, alt_excerpt, what an excerpt is), the two test tiers, and the section 13 tables of checks with what each proves.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -86,19 +86,11 @@ refusal the agent must produce.
 
 Every domain carries **≥2 negative cases** — a knowledge base that never refuses is one that guesses.
 
-**`expected_evidence` tests how retrieval states what backs a fact** (ADR-0022). `check` means the
-section holding the excerpt carries a `Recheck:`, and the answer must say it "carries a check";
-`word` means it carries none, and the answer must say "someone's word" before it gives the fact.
-`check-golden` fails a record whose value disagrees with the file. Retrieval cannot run the
-weak-assertion lint, so it says "carries a check", never "asserted". The field is optional and
-positive cases only. A fact without a check is still served: only a `CONFLICTED` fact is refused.
-The field is not a contract version: an optional golden-set field is "not a contract change, because no existing library can break" (§14).
+**`expected_evidence` tests how retrieval states what backs a fact** (ADR-0022). `check` means the section holding the excerpt carries a `Recheck:`, and the answer must say it "carries a check". `word` means the section is stamped and carries no `Recheck:`, and the answer must say "someone's word" before it gives the fact. A section with no stamp is a separate tier, `unstamped`, which retrieval reports as unstamped and not as someone's word, so `check-golden` fails `word` against it. `check-golden` fails a record whose value disagrees with the file, by reading the section that holds the excerpt (`kbengine.golden.evidence_of`). Retrieval cannot run the weak-assertion lint, so it says "carries a check", never "asserted". The field is optional and positive cases only. A fact without a check is still served: only a `CONFLICTED` fact is refused. The field is not a contract version: an optional golden-set field is "not a contract change, because no existing library can break" (§14).
 
-How the engine's code reads `word` is narrower than the sentence above, and the two are recorded here side by side, not reconciled. `kbengine.golden.evidence_of` returns `check` for a section whose stamp carries a `Recheck:`, `word` for one that is stamped without one, and `unstamped` for one with no stamp at all, so `word` on an unstamped section fails `check-golden`; the engine's CONTRIBUTING.md says the same ("including `word` on an unstamped section, which retrieval reports as unstamped"). CONVENTIONS §10 says only that `word` means the section "carries none" of a `Recheck:`.
-
-Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#237) · [[script-check-golden]]
+Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#237) · [[script-check-golden]] · [[scripts-kbengine-package]] (`golden.evidence_of`)
 Verified: 2026-11-24 · by: agent · method: doc-review
-Recheck: grep -qF 'expected_evidence: <optional, positive cases only: check | word>' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF '`word` means it carries none, and the answer must say "someone'"'"'s word" before it gives the fact.' "$KB_ENGINE_ROOT/CONVENTIONS.md" && (t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' "$1" > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nThe sky is blue.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\nRecheck: true\n' "$1" > "$d/f.md"; printf -- '---\nname: %s-golden\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nmetadata:\n  type: reference\n  node_type: golden-set\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# g\n\nUnresolved case: not applicable.\n\n```yaml\n- case: positive\n  question: q\n  expected_file: f.md\n  expected_excerpt: The sky is blue.\n  expected_evidence: %s\n- case: negative\n  question: n1\n  expected_file:\n  expected_excerpt: fact not found — check KB\n- case: negative\n  question: n2\n  expected_file:\n  expected_excerpt: fact not found — check KB\n```\n' "$1" "$1" "$2" > "$d/$1-golden.md"; }; mk fxg check; mk fxh word; "$KB_ENGINE_ROOT/scripts/check-golden" "$t/fxg" >/dev/null 2>&1 || r=1; "$KB_ENGINE_ROOT/scripts/check-golden" "$t/fxh" > "$t/o" 2>&1; [ $? -eq 1 ] && grep -qF "expected_evidence 'word' but the section" "$t/o" || r=1; rm -rf "$t"; exit $r)
+Recheck: grep -qF 'expected_evidence: <optional, positive cases only: check | word>' "$KB_ENGINE_ROOT/CONVENTIONS.md" && (t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' "$1" > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nThe sky is blue.\n\nSource: \133\133f]]\n%b' "$1" "$3" > "$d/f.md"; printf -- '---\nname: %s-golden\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nmetadata:\n  type: reference\n  node_type: golden-set\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# g\n\nUnresolved case: not applicable.\n\n```yaml\n- case: positive\n  question: q\n  expected_file: f.md\n  expected_excerpt: The sky is blue.\n  expected_evidence: %s\n- case: negative\n  question: n1\n  expected_file:\n  expected_excerpt: fact not found — check KB\n- case: negative\n  question: n2\n  expected_file:\n  expected_excerpt: fact not found — check KB\n```\n' "$1" "$1" "$2" > "$d/$1-golden.md"; }; V='Verified: 2026-11-20 · by: agent · method: manual\n'; mk fxg check "${V}Recheck: true\n"; mk fxh word "${V}Recheck: true\n"; mk fxs word "$V"; mk fxu word ''; g="$KB_ENGINE_ROOT/scripts/check-golden"; "$g" "$t/fxg" >/dev/null 2>&1 || r=1; "$g" "$t/fxs" >/dev/null 2>&1 || r=1; "$g" "$t/fxh" > "$t/h" 2>&1; [ $? -eq 1 ] && grep -qF "expected_evidence 'word' but the section holding the excerpt in f.md carries a Recheck:" "$t/h" || r=1; "$g" "$t/fxu" > "$t/u" 2>&1; [ $? -eq 1 ] && grep -qF 'has no Verified: stamp, so retrieval reports it unstamped, not as someone' "$t/u" || r=1; rm -rf "$t"; exit $r)
 
 Source: [[conventions-contract-rules]]
 Verified: 2026-11-24 · by: agent · method: doc-review
@@ -210,15 +202,15 @@ Recheck: grep -qF 'The golden set is a fire alarm on fixed questions.' "$KB_ENGI
 A domain is not "done" until these pass clean. The full rule set `check-scope` owes, marked built or
 to-build, is in [[adr-0004-scope-attribute]].
 
-All twenty-eight are built. A library passing the built checks is **structurally sound within itself**
+The tables below list twenty-seven checks, and every one is marked built. A library passing the built checks is **structurally sound within itself**
 — it is not verified. Whether an agent retrieves rather than answering from memory is what the
 routing check and the answer-grounding eval are for: both are built, and routing is graded from the agent's tool calls rather than its own account of them.
 
-The engine's sentence and its table no longer agree on the count. Section 13 still says "All twenty-eight are built." and the table beneath it lists twenty-seven checks since the stamp-honesty row was removed with `check-stamps` (ADR-0022). Both are recorded here and neither is chosen; the difference is raised in [[knowledge-architecture-open-questions]].
+The count is the table's: it lost the stamp-honesty row when `check-stamps` was retired (ADR-0022).
 
 Source: [[conventions-contract-rules]] · [[adr-0004-scope-attribute]] · [[adr-0022-evidence-not-identity-sets-the-lease]]
 Verified: 2026-11-24 · by: agent · method: doc-review
-Recheck: grep -qF 'All twenty-eight are built.' "$KB_ENGINE_ROOT/CONVENTIONS.md" && [ "$(awk '/^## 13\. /,/^## 14\. /' "$KB_ENGINE_ROOT/CONVENTIONS.md" | grep -c '^| .*\*\*built\*\*')" -eq 27 ]
+Recheck: t=$(awk '/^## 13\. /,/^## 14\. /' "$KB_ENGINE_ROOT/CONVENTIONS.md"); n=$(printf '%s\n' "$t" | grep -c '^| .*\*\*built\*\*'); rows=$(printf '%s\n' "$t" | grep -c '^| '); [ "$n" -eq 27 ] && [ "$rows" -eq 28 ]
 
 ### Structural checks: frontmatter, links, slugs, orphans, sources, contract version, stamps and sections
 

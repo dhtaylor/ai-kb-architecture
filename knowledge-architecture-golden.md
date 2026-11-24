@@ -808,9 +808,9 @@ contradiction lands.
   expected_excerpt: fact not found — check KB
 
 - case: positive
-  question: Which check refuses a commit that stamps by: human while its message carries a Claude co-authorship trailer, and can it be evaded?
+  question: Is the check that refused a commit stamping by: human under an agent co-authorship trailer still in the engine?
   expected_file: script-reference-checks.md
-  expected_excerpt: "It cannot stop a determined author: drop the trailer and the check sees nothing."
+  expected_excerpt: "is retired after v0.5.0 (#240, ADR-0022)"
 
 - case: positive
   question: Does check-embedded-facts catch an inlined table name or enum value?
@@ -1050,7 +1050,7 @@ contradiction lands.
 - case: positive
   question: How many checks does the contract list for verifying a domain, and are they all built?
   expected_file: contract-retrieval-and-verification.md
-  expected_excerpt: All twenty-eight are built.
+  expected_excerpt: list twenty-seven checks, and every one is marked built
 
 - case: positive
   question: What does the stamp honesty check refuse?
@@ -1321,12 +1321,14 @@ contradiction lands.
 - case: positive
   question: Can a library that declares contract 2.7 still name its short lease agent_ttl?
   expected_file: releases-and-contract-versioning.md
-  expected_excerpt: "from this version, and the message names"
+  expected_excerpt: "A 2.7 library that still declares agent_ttl fails check-kb."
+  expected_evidence: check
 
 - case: positive
   question: What must a library that copied the guardrails template do before it moves its engine pin past v0.5.0?
   expected_file: script-reference-checks.md
   expected_excerpt: "A library that copied the template must delete its \"Stamp honesty\" step before it moves its engine pin"
+  expected_evidence: check
 
 - case: positive
   question: Does kb-retrieve refuse a fact because its section has a stamp but no check behind it?
@@ -1338,8 +1340,10 @@ contradiction lands.
   question: Why does retrieval say a fact carries a check and not that it is asserted?
   expected_file: contract-retrieval-and-verification.md
   expected_excerpt: "Retrieval cannot run the weak-assertion lint, so it says"
+  expected_evidence: check
 
 - case: positive
   question: What does session start say when kb-due fails?
   expected_file: agent-lifecycle-roles.md
   expected_excerpt: "kb-due failed (exit N), so the knowledge-base nudge is unavailable this session."
+  expected_evidence: check

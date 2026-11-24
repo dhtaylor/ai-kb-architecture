@@ -158,7 +158,7 @@ Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## What stays attended whatever the schedule does
 
-Resolving a `CONFLICTED` section, deleting knowledge, promoting scope, writing a human stamp, applying the `owner-approved` label, and any fact edit without a person's approval are never automated. `check-blast` still gates the first three. The schedule stores no credentials. "A human stamp" is ADR-0017's wording: since ADR-0022 a person's stamp buys no longer lease than an agent's, and what stays attended for a high-blast-radius fact is any change to it and any restamp after a failed check ([[contract-provenance-and-currency]] § Evidence tiers).
+Resolving a `CONFLICTED` section, deleting knowledge, promoting scope, writing a human stamp, applying the `owner-approved` label, and any fact edit without a person's approval are never automated. `check-blast` still gates the first three. The schedule stores no credentials. "A human stamp" is ADR-0017's wording; since ADR-0022 a person's stamp buys no longer lease than an agent's ([[contract-provenance-and-currency]] § Evidence tiers).
 
 The decision names its own review triggers: a packet is applied that a reviewer later finds wrong, the weekly report goes unread for a month, or a cloud schedule can run without stored credentials.
 
