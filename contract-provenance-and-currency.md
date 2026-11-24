@@ -1,6 +1,6 @@
 ---
 name: contract-provenance-and-currency
-description: The contract rules for where a fact came from and whether it is still true — per-section Source lines, sources versus documents, citing an artifact, recording a secret by reference, the Verified stamp and its four methods, Recheck assertions, trust tiers and high blast radius, the verified floor, CONFLICTED and UNCORROBORATED status markers, blocking contradictions, and promotion from repo tier to general tier.
+description: The contract rules for where a fact came from and whether it is still true — per-section Source lines, sources versus documents, citing an artifact, recording a secret by reference, the Verified stamp and its four methods, Recheck assertions, evidence tiers (what sets a stamp's lease) and high blast radius, the verified floor, CONFLICTED and UNCORROBORATED status markers, blocking contradictions, and promotion from repo tier to general tier.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-11-20
 tags: [knowledge-architecture, contract]
-keywords: [contract, CONVENTIONS, provenance, Source, section, backlink, sources, documents, source stub, citing an artifact, repo-qualified reference, secret by reference, redact, Verified, currency stamp, method, query, integration-test, doc-review, manual, by: agent, Recheck, kb-verify, trust tier, agent TTL, high blast radius, absent is not fresh, verified floor, unknown, CONFLICTED, UNCORROBORATED, since, narrowest unit, contradictions register, blocking, promotion, circular promotion, atomic promotion]
+keywords: [contract, CONVENTIONS, provenance, Source, section, backlink, sources, documents, source stub, citing an artifact, repo-qualified reference, secret by reference, redact, Verified, currency stamp, method, query, integration-test, doc-review, manual, by: agent, Recheck, kb-verify, evidence tier, asserted stamp, unasserted stamp, unasserted_ttl, check-stamps retired, trust tier, agent TTL, high blast radius, absent is not fresh, verified floor, unknown, CONFLICTED, UNCORROBORATED, since, narrowest unit, contradictions register, blocking, promotion, circular promotion, atomic promotion]
 ---
 # Contract: provenance, currency, contradictions and promotion
 
@@ -180,15 +180,16 @@ Recheck: grep -qF '(external source re-read), or `manual`.' "$KB_ENGINE_ROOT/CON
 - **`by:` is a claim, and only partly checkable.** The original rule here said it was derived from the
   git committer identity and that CI rejected `by: human` from an agent identity. That is
   unimplementable, and the reason is worth stating rather than hiding: **an agent commits under the
-  human's own git identity**, so there are not two identities to tell apart. What `check-stamps` does
-  enforce is narrower and real — a commit that announces agent co-authorship in its message may not
-  also add a `by: human` stamp. It catches the accident, not the determined author, and nothing here
-  can catch the latter. The stakes are why it is worth having: a human stamp suppresses re-checking
-  for **ten times** as long as an agent one.
+  human's own git identity**, so there are not two identities to tell apart. `check-stamps`, which
+  refused a commit announcing agent co-authorship that also added a `by: human` stamp, is retired
+  (ADR-0022): the lease follows
+  the stamp's evidence, not its `by:`, so a false `by: human` buys nothing.
 
-Source: [[conventions-contract-rules]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF 'No evidence, no re-stamp.' "$KB_ENGINE_ROOT/CONVENTIONS.md"
+Superseded: until engine v0.5.0 this bullet said that what `check-stamps` enforced was "narrower and real", a commit that announces agent co-authorship may not also add a `by: human` stamp, and that "The stakes are why it is worth having: a human stamp suppresses re-checking for **ten times** as long as an agent one." The ten-times lease is gone with the identity tiers (see the section Evidence tiers below). The script's own account is in [[script-reference-checks]] § check-stamps.
+
+Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (the `check-stamps` entry)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'refused a commit announcing agent co-authorship that also added a `by: human` stamp, is retired' "$KB_ENGINE_ROOT/CONVENTIONS.md" && [ ! -e "$KB_ENGINE_ROOT/scripts/check-stamps" ]
 
 ## A Recheck assertion: what it is, where it runs and how it must parse
 
@@ -238,14 +239,24 @@ Source: [[conventions-contract-rules]]
 Verified: 2026-11-21 · by: agent · method: doc-review
 Recheck: grep -qF 'a page cannot state twenty different specific facts in one' "$KB_ENGINE_ROOT/CONVENTIONS.md"
 
-## Trust tiers: agent TTL, and what makes a fact high blast radius
+## Evidence tiers: what sets a stamp's lease, and what makes a fact high blast radius
 
-- **Trust tiers.** Agent-verified TTL is materially shorter than human-verified: **1/10th** of the
-  horizon, unless the domain declares `agent_ttl` (§3), which must stay shorter than the horizon.
-  Declare it when agent stamps would otherwise expire before the next sweep. Do not stretch the
-  horizon instead: that stretches the human TTL with it.
-  **High-blast-radius** facts require **human** re-verification regardless of any agent stamp:
-  deploy targets, environment routing, credential references. **The test is the consequence, not the
+- **Evidence tiers.** The evidence behind a stamp sets its lease; who wrote it does not
+  (ADR-0022). An **asserted
+  stamp**, one backed by a passing `Recheck:` that the assertion lint above does not flag, attended
+  or not, stays fresh for the full `freshness_horizon`. Every other stamp is an **unasserted
+  stamp**, someone's word, and stays fresh for a tenth of the horizon, whether `by:` says `human` or
+  `agent`. The lint costs tier: an assertion it flags is demoted to unasserted, which stays a warning
+  for the sweep and now has a consequence. A domain may set the short lease with `unasserted_ttl`
+  (§3), which must stay shorter than the horizon; declare it when unasserted stamps would otherwise
+  expire before the next sweep. Do not stretch the horizon instead: that stretches the asserted
+  lease with it. The Arbiter's work is to approve the checks, decide failed checks and contradictions
+  (§8), and own attended decisions, not to re-stamp facts. `by:` and `method:` stay on the stamp as a
+  record and are never weighed.
+  **High-blast-radius** facts follow the same evidence rules, and are gated by consequence: **an
+  attended decision is required on any change to one, and on any restamp after a failed check.**
+  Deploy targets, environment routing and credential references are the usual cases.
+  **The test is the consequence, not the
   subject matter — if this fact is wrong, what happens?** Damage that is expensive or impossible to
   undo (shipped to the wrong place, written to the wrong environment, a wrong credential used) is
   high blast radius. A skipped check, a confused reader or a wasted afternoon is not.
@@ -257,11 +268,11 @@ Recheck: grep -qF 'a page cannot state twenty different specific facts in one' "
   nobody reads twice. Both first sweeps read it that way and filed 11 such items; the category was
   underspecified, and this paragraph is the repair.
 
-How the Verifier uses the agent TTL is in [[agent-lifecycle-roles]].
+Superseded: until engine v0.5.0 this bullet was headed "Trust tiers" and said "Agent-verified TTL is materially shorter than human-verified: **1/10th** of the horizon, unless the domain declares `agent_ttl` (§3)", and that high-blast-radius facts "require **human** re-verification regardless of any agent stamp". ADR-0022 replaces both: the tier is the evidence, not the writer, and a high-blast-radius fact is gated by an attended decision, not by who stamped it. The glossary's terms are **Asserted stamp**, **Evidence tier**, **Horizon** and **Arbiter**; it says to avoid "trust tier", "human tier" and "agent tier" for the first, and "TTL" where a domain's rate of change is meant (the Horizon). Contract 2.7 renames the field `agent_ttl:` to `unasserted_ttl:`: see [[releases-and-contract-versioning]]. How the Verifier applies the lease is in [[agent-lifecycle-roles]].
 
-Source: [[conventions-contract-rules]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF 'deploy targets, environment routing, credential references.' "$KB_ENGINE_ROOT/CONVENTIONS.md"
+Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[adr-0005-currency-cadence]] (its trust tiers, superseded)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'stamp**, someone'"'"'s word, and stays fresh for a tenth of the horizon, whether `by:` says `human` or' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF '**High-blast-radius** facts follow the same evidence rules, and are gated by consequence: **an' "$KB_ENGINE_ROOT/CONVENTIONS.md" && ! grep -qF 'Agent-verified TTL is materially shorter' "$KB_ENGINE_ROOT/CONVENTIONS.md"
 
 ## Absent is not fresh, and the verified floor over nothing or over a gap
 

@@ -129,6 +129,16 @@ Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkd
 Source: [[conventions-contract-versions]] (the migration note under 2.6, as at 5433f08)
 Verified: 2026-11-20 · by: agent · method: doc-review
 
+### Version 2.7
+
+- **2.7** names the short lease `unasserted_ttl:` in a root `INDEX.md` (§3), where it was `agent_ttl:`: how long an unasserted stamp stays fresh, "a tenth of the horizon by default, and shorter than the horizon (ADR-0022)." `check-kb` fails an `agent_ttl:` from this version, and the message names `unasserted_ttl:`; below it `agent_ttl:` is still read, and a declared `unasserted_ttl:` is a warning. Migrating from 2.6: rename `agent_ttl:` to `unasserted_ttl:`, keeping its value, and declare `kb_contract: "2.7"`; "A library that declares no `agent_ttl:` changes only the declaration." `kb-init` writes 2.7 into a new library.
+- **The lease change itself is not a contract version.** What an asserted stamp's lease is, and what an unasserted one's is, applies to every library whatever `kb_contract:` it declares (ADR-0022, "What changed at implementation"): a stamp line holds what it always did, and only the engine's reading of it changed. The contract's own rule for what is not a version: "an optional golden-set field, or a record rule that rejects only records carrying it, is not a contract change, because no existing library can break. `alt_excerpt`, `uncorroborated` and `expected_evidence` are examples (§10)."
+- **A library on 2.6 or below that declares both fields** gets a warning that `agent_ttl:` is used and `unasserted_ttl:` is never checked.
+
+Source: [[conventions-contract-versions]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] · [[script-check-kb]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: s="$KB_ENGINE_ROOT/scripts"; t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\n%b\nlast_swept: never\n---\n# x\n' "$1" "$2" > "$d/INDEX.md"; }; mk old 'kb_contract: "2.7"\nagent_ttl: 30d'; mk new 'kb_contract: "2.7"\nunasserted_ttl: 30d'; mk low 'kb_contract: "2.6"\nunasserted_ttl: 30d'; "$s/check-kb" "$t/old" > "$t/a" 2>&1; [ $? -eq 1 ] && grep -qF 'rename it unasserted_ttl:' "$t/a" || r=1; "$s/check-kb" "$t/new" > /dev/null 2>&1 || r=1; "$s/check-kb" "$t/low" > "$t/c" 2>&1 && grep -qF 'unasserted_ttl: is the short lease from contract 2.7' "$t/c" || r=1; rm -rf "$t"; exit $r
+
 ## What the design costs
 
 The decision states its own costs. Every new rejection carries a version check, and the engine keeps two majors' rules, which dropping the older major when a new one ships bounds. A library whose owner ignores two majors' warnings stops being served, which falls only on a library nobody has updated across two contract majors. The checks can no longer simply apply "the rules": each rule needs the version that introduced it, and the tests cover each rule both below and at its version. A library behind the contract is reminded at every session start until it moves, deliberately, and that may be noisy for an owner who has decided to stay.

@@ -1,6 +1,6 @@
 ---
 name: contract-retrieval-and-verification
-description: The contract rules for retrieval and for verifying a domain — what every retrieval agent is held to, the golden set (where it lives, the record fields, the five case types and when each is required, alt_excerpt, what an excerpt is), the two test tiers, and the section 13 list of the twenty-eight checks with what each proves.
+description: The contract rules for retrieval and for verifying a domain — what every retrieval agent is held to, the golden set (where it lives, the record fields including the optional expected_evidence, the five case types and when each is required, alt_excerpt, what an excerpt is), the two test tiers, and the section 13 list of the twenty-eight checks with what each proves.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -77,6 +77,7 @@ set: never opened, and excluded from every search. Each record carries:
   expected_file: <the file that must answer it; a cross-root case may write <library>:<path>>
   expected_excerpt: <text that must appear, grep-verifiable against expected_file>
   alt_excerpt: <optional, repeatable: another sentence in expected_file stating the same fact>
+  expected_evidence: <optional, positive cases only: check | word>
 ```
 
 `case:` is required — a minimum of "≥2 negative cases" is unenforceable if nothing marks a case as
@@ -85,8 +86,22 @@ refusal the agent must produce.
 
 Every domain carries **≥2 negative cases** — a knowledge base that never refuses is one that guesses.
 
+**`expected_evidence` tests how retrieval states what backs a fact** (ADR-0022). `check` means the
+section holding the excerpt carries a `Recheck:`, and the answer must say it "carries a check";
+`word` means it carries none, and the answer must say "someone's word" before it gives the fact.
+`check-golden` fails a record whose value disagrees with the file. Retrieval cannot run the
+weak-assertion lint, so it says "carries a check", never "asserted". The field is optional and
+positive cases only. A fact without a check is still served: only a `CONFLICTED` fact is refused.
+The field is not a contract version: an optional golden-set field is "not a contract change, because no existing library can break" (§14).
+
+How the engine's code reads `word` is narrower than the sentence above, and the two are recorded here side by side, not reconciled. `kbengine.golden.evidence_of` returns `check` for a section whose stamp carries a `Recheck:`, `word` for one that is stamped without one, and `unstamped` for one with no stamp at all, so `word` on an unstamped section fails `check-golden`; the engine's CONTRIBUTING.md says the same ("including `word` on an unstamped section, which retrieval reports as unstamped"). CONVENTIONS §10 says only that `word` means the section "carries none" of a `Recheck:`.
+
+Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#237) · [[script-check-golden]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'expected_evidence: <optional, positive cases only: check | word>' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF '`word` means it carries none, and the answer must say "someone'"'"'s word" before it gives the fact.' "$KB_ENGINE_ROOT/CONVENTIONS.md" && (t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' "$1" > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nThe sky is blue.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\nRecheck: true\n' "$1" > "$d/f.md"; printf -- '---\nname: %s-golden\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nmetadata:\n  type: reference\n  node_type: golden-set\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# g\n\nUnresolved case: not applicable.\n\n```yaml\n- case: positive\n  question: q\n  expected_file: f.md\n  expected_excerpt: The sky is blue.\n  expected_evidence: %s\n- case: negative\n  question: n1\n  expected_file:\n  expected_excerpt: fact not found — check KB\n- case: negative\n  question: n2\n  expected_file:\n  expected_excerpt: fact not found — check KB\n```\n' "$1" "$1" "$2" > "$d/$1-golden.md"; }; mk fxg check; mk fxh word; "$KB_ENGINE_ROOT/scripts/check-golden" "$t/fxg" >/dev/null 2>&1 || r=1; "$KB_ENGINE_ROOT/scripts/check-golden" "$t/fxh" > "$t/o" 2>&1; [ $? -eq 1 ] && grep -qF "expected_evidence 'word' but the section" "$t/o" || r=1; rm -rf "$t"; exit $r)
+
 Source: [[conventions-contract-rules]]
-Verified: 2026-11-21 · by: agent · method: doc-review
+Verified: 2026-11-24 · by: agent · method: doc-review
 Recheck: grep -qF 'an agent that can descend to the oracle can read the answers, and its' "$KB_ENGINE_ROOT/CONVENTIONS.md"
 
 ## Unresolved and uncorroborated cases: what each names and what check-golden and grade-eval require
@@ -199,9 +214,11 @@ All twenty-eight are built. A library passing the built checks is **structurally
 — it is not verified. Whether an agent retrieves rather than answering from memory is what the
 routing check and the answer-grounding eval are for: both are built, and routing is graded from the agent's tool calls rather than its own account of them.
 
-Source: [[conventions-contract-rules]] · [[adr-0004-scope-attribute]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF 'All twenty-eight are built.' "$KB_ENGINE_ROOT/CONVENTIONS.md"
+The engine's sentence and its table no longer agree on the count. Section 13 still says "All twenty-eight are built." and the table beneath it lists twenty-seven checks since the stamp-honesty row was removed with `check-stamps` (ADR-0022). Both are recorded here and neither is chosen; the difference is raised in [[knowledge-architecture-open-questions]].
+
+Source: [[conventions-contract-rules]] · [[adr-0004-scope-attribute]] · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'All twenty-eight are built.' "$KB_ENGINE_ROOT/CONVENTIONS.md" && [ "$(awk '/^## 13\. /,/^## 14\. /' "$KB_ENGINE_ROOT/CONVENTIONS.md" | grep -c '^| .*\*\*built\*\*')" -eq 27 ]
 
 ### Structural checks: frontmatter, links, slugs, orphans, sources, contract version, stamps and sections
 
@@ -246,7 +263,6 @@ Recheck: grep -qF '| executable bits |' "$KB_ENGINE_ROOT/CONVENTIONS.md"
 | re-check assertions | a stale section's `Recheck:` still exits 0; failures reported, never applied | **built** — `kb-verify` |
 | assertions that cannot fail | a fetched fragment of ≤4 words, or one (url, fragment) backing >2 sections or several files; reported every run, never a failure (§7) | **built** — `kb-verify` |
 | ownership resolution | who a finding belongs to, by CODEOWNERS' last-match-wins rule | **built** — `kb-owner` |
-| stamp honesty | a commit claiming agent co-authorship does not also add a `by: human` stamp | **built** — `check-stamps` |
 | high-blast gate | a diff that deletes a knowledge file, drops a `status: CONFLICTED` or `status: UNCORROBORATED` marker, or promotes a fact's scope toward `general` is flagged, for CI to hold until an owner labels it; detection only | **built** — `check-blast` |
 | tool-scope declaration | each agent, skill and command declares a tool tier and is consistent with it; proves the declaration, not that a skill cannot use an undeclared tool | **built** — `check-tool-scope` |
 | sweep and re-check due | which trees are due for a sweep, and how many facts, open queue items and episodic notes await a librarian; a reminder, exit 0 always | **built** — `kb-due` |
@@ -254,6 +270,8 @@ Recheck: grep -qF '| executable bits |' "$KB_ENGINE_ROOT/CONVENTIONS.md"
 | guardrail regression suite | each check still fails on the defect it was written to catch | **built** — `tests/run-checks`, in CI and in the engine hook |
 | external `Source:` liveness | the URLs source stubs cite still resolve (HEAD, then GET on any HTTP error but 429; GET decides); a 404/410 is queued as `source-dead` and an undecidable one, or a redirect to a sign-in page, as `source-unreachable`, each with its dependants; a `Liveness: manual` stub is counted, never fetched; fetches only with `--yes`, never edits or marks a fact | **built** — `kb-sources` |
 
-Source: [[conventions-contract-rules]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF '| stamp honesty |' "$KB_ENGINE_ROOT/CONVENTIONS.md"
+Superseded: until engine v0.5.0 this table had a row `| stamp honesty | a commit claiming agent co-authorship does not also add a `by: human` stamp | **built** — `check-stamps` |`. `check-stamps` is retired (ADR-0022): the lease follows a stamp's evidence, so there is nothing for the check to refuse. The assertion lint row's "reported every run, never a failure" now sits beside a consequence, which is that a flagged assertion is demoted to an unasserted stamp ([[agent-lifecycle-roles]] § A stamp's lease follows its evidence, not its author).
+
+Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: ! grep -qF '| stamp honesty |' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF '| re-check assertions | a stale section' "$KB_ENGINE_ROOT/CONVENTIONS.md" && [ ! -e "$KB_ENGINE_ROOT/scripts/check-stamps" ]

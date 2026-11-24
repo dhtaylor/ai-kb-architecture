@@ -1,6 +1,6 @@
 ---
 name: retrieval-agent-behavior
-description: How the retrieval agent decides where to look and what counts as an answer's source — what the knowledge base is and why the engine repository is not part of it, why it reads the section that answers and not the whole file, why a search is scoped to the routed library, how it picks between neighboring libraries with the scope line, why registration warns of an overlap, how a subagent is given the engine and library list, how a question goes through a triage desk to one library's specialist and why that was adopted (ADR-0018, Proposed), and how a search lists files before lines and stops when it stops paying.
+description: How the retrieval agent decides where to look and what counts as an answer's source — what the knowledge base is and why the engine repository is not part of it, why it reads the section that answers and not the whole file, why a search is scoped to the routed library, how it picks between neighboring libraries with the scope line, why registration warns of an overlap, how a subagent is given the engine and library list, what an answer says backs each fact it cites and why a fact resting on someone's word is flagged and never refused, how a question goes through a triage desk to one library's specialist and why that was adopted (ADR-0018, Proposed), and how a search lists files before lines and stops when it stops paying.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,7 +10,7 @@ metadata:
   node_type: memory
   created: 2026-10-28
 tags: [knowledge-architecture, retrieval, routing, kb-retrieve]
-keywords: [kb-retrieve, rule 3, off-KB, section read, outline, Grep scope, search is not a router, Not covered here, scope line, neighboring libraries, overlap warning, kb-library add, keywords, tags, SubagentStart, kb-session-start, library list, unsupported-contract, routers, triage, kb-ask, kb-catalog, specialist, SPECIALIST, not mine, Referred to, ADR-0018, files_with_matches, stop rule, search limit, 8 reads, 5 searches, tally]
+keywords: [kb-retrieve, rule 3, off-KB, section read, outline, Grep scope, search is not a router, Not covered here, scope line, neighboring libraries, overlap warning, kb-library add, keywords, tags, SubagentStart, kb-session-start, library list, unsupported-contract, routers, triage, kb-ask, kb-catalog, specialist, SPECIALIST, not mine, Referred to, ADR-0018, files_with_matches, stop rule, search limit, 8 reads, 5 searches, tally, Evidence line, carries a check, someone's word, unstamped, expected_evidence]
 ---
 # Retrieval agent behavior
 
@@ -109,6 +109,24 @@ The stated costs: router topics in the catalog cut both ways, fixing a question 
 
 Source: [[adr-0018-triage-and-specialists]]
 Verified: 2026-11-09 · by: agent · method: doc-review
+
+## An answer states what backs each fact it cites, and flags a fact that rests on someone's word
+
+For each fact the answer rests on, the agent reads its section for a `Recheck:` line under the `Verified:` stamp and says which of three it is (rule 6; ADR-0022 decision 7, #237):
+
+- **`carries a check, last passed <date>`**: the section has a `Recheck:` line, and `<date>` is the stamp's date. The agent "cannot run the check, and cannot see the lint that may judge it too weak, so never call such a fact "asserted" or "verified": say it carries a check, no more."
+- **`someone's word, <date>`**: the section has a stamp and no `Recheck:` line. "Nothing in the file lets a reader rerun it."
+- **`unstamped`**: the section has no `Verified:` stamp. The agent says so "rather than implying it is current."
+
+**A fact that is someone's word, or unstamped, is flagged before the answer**: the answer opens with a line naming the fact and its evidence (`Resting on someone's word, 2026-09-22: <the fact>`), so that "A reader who stops at the first line must know." The flag is not a refusal: "never refuse, withhold or soften a fact for lacking a check." Refusing it "sends the caller to their own recall, which is worse evidence still", and "Only a disputed fact is refused (rule 5)." An answer that rests on a mix flags only the unchecked facts, and an uncorroborated fact keeps its own lead, with its evidence in the same sentence.
+
+**The agent never presents `by:` or `method:` as a sign of trust and does not report them**, because `by:` says who committed the stamp and "an agent commits under a person's own identity, so it proves nothing about what backs the fact." The answer's closing `Verified: <date> · by: <agent|human> · method: <…>` line becomes an `Evidence:` line, one per fact cited, repeating each fact's evidence beside its source; the `Sources:` line still holds paths and nothing else, and `kb-ask` passes the specialist's evidence flag, `Evidence:` line and `Sources:` line back unchanged. The golden set can grade this with `expected_evidence:` ([[contract-retrieval-and-verification]] § The golden set); the evidence words are the ones `grade-eval` and `check-golden` use, and retrieval says "carries a check", never "asserted", because it cannot run the assertion lint.
+
+The contract's own retrieval rule still reads "Surface the `verified:` date on freshness-sensitive facts" (§10); the agent's rule 6 puts the stamp's date inside the evidence words, and does not state the `by:` or `method:`.
+
+Source: [[agent-kb-retrieve]] · [[skill-kb-ask]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#237)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: f="$KB_ENGINE_ROOT/plugins/knowledge-tools/agents/kb-retrieve.md"; grep -qF '`carries a check, last passed <date>`' "$f" && grep -qF 'Evidence: <carries a check, last passed <date> | someone'"'"'s word, <date> | unstamped>' "$f" && grep -qF '**Never present `by:` or `method:` as a sign of trust, and do not report them.**' "$f" && ! grep -qF 'Verified: <date> · by: <agent|human> · method: <…>' "$f"
 
 ## A search lists files before lines, and stops when it stops paying
 
