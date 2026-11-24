@@ -18,5 +18,6 @@ keywords: [kb-bootstrap, --apply, --check, --library-home, settings.json, machin
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-11-20
 - **Artifact location:** `ai-kb:scripts/kb-bootstrap` (comment block), read at engine commit `5433f08` on 2026-11-20. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** on 2026-11-24 at engine commit `303082a`, the `--check` path only: `kb-libraries` is read before its loop, a failure is reported as `FAILED kb-libraries`, `(none registered)` is not printed, and the closing note says `--apply` cannot fix it (#229). Folded into [[script-reference-tools]]. Nothing else folded changed.
 
 Source for the script reference ([[script-reference-tools]]). Folded from it: its purpose, the four places it writes, the usage line, the default report mode and the exit-1 rule. An unknown option exiting 2 was observed. Not folded: implementation detail beyond the header.
