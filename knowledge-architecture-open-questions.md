@@ -177,10 +177,10 @@ Verified: 2026-11-21 · by: agent · method: doc-review
 
 ## Which ADRs does the README's "ADRs 1 to 17" mean?
 
-README's status section lists as built and tested "the contract (version 2.6), ADRs 1 to 17", while its table of paths says `documents/decisions/` holds ADR-0001 to ADR-0021. It does not say whether ADRs 18 to 21 are not yet built and tested, or the line is out of date.
+README's status section lists as built and tested "the contract (version 2.7), ADRs 1 to 17", while its table of paths says `documents/decisions/` holds ADR-0001 to ADR-0021, and ADR-0022 exists beside them. It does not say whether ADRs 18 to 22 are not yet built and tested, or the line is out of date. (The contract version in that line read 2.6 until contract 2.7; the ADR range is unchanged.)
 
 Source: [[engine-readme]]
-Verified: 2026-11-21 · by: agent · method: doc-review
+Verified: 2026-11-24 · by: agent · method: doc-review
 
 ## Does `kb-bootstrap` with no flag exit 0 when nothing is out of step?
 
@@ -268,7 +268,35 @@ Verified: 2026-11-21 · by: agent · method: doc-review
 
 ## Does anything fail a Recheck that greps a bare title or subject longer than four words?
 
-The contract says `kb-verify` reports a fetched fragment of four words or fewer, and a (url, fragment) pair backing more than two sections or sections in more than one file, and that "a stamp the assertion backs is no stronger than the assertion". Nothing read says whether any check fails, rather than reports, an assertion that greps a title or subject longer than four words.
+The contract says `kb-verify` reports a fetched fragment of four words or fewer, and a (url, fragment) pair backing more than two sections or sections in more than one file, and that "a stamp the assertion backs is no stronger than the assertion". Nothing read says whether any check fails, rather than reports, an assertion that greps a title or subject longer than four words. Since ADR-0022 the reported findings have a consequence: a flagged assertion is demoted to an unasserted stamp ([[agent-lifecycle-roles]] § A stamp's lease follows its evidence, not its author). The lint still flags only the three kinds it names, so a title or subject longer than four words is not flagged, and so is not demoted.
 
-Source: [[conventions-contract-rules]] (§7)
-Verified: 2026-11-21 · by: agent · method: doc-review
+Source: [[conventions-contract-rules]] (§7) · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+
+## Does `word` in a golden record's `expected_evidence` cover a section with no stamp?
+
+CONVENTIONS §10 says `word` means the section "carries none" of a `Recheck:`, and an unstamped section carries none. The engine's `kbengine.golden.evidence_of` returns `unstamped` for a section with no stamp, and `check-golden` fails `word` against it; CONTRIBUTING says the same ("including `word` on an unstamped section, which retrieval reports as unstamped"). Whether the contract's sentence is meant to cover an unstamped section is not stated. [[contract-retrieval-and-verification]] records both readings.
+
+Source: [[conventions-contract-rules]] (§10) · [[script-check-golden]] · [[engine-changelog-v0.6.0]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+
+## Does an asserted stamp need the check to have passed, or only to exist and not be flagged?
+
+ADR-0022 and CONVENTIONS §7 say an asserted stamp is one "backed by a passing `Recheck:` that the assertion lint above does not flag". `kbengine.lease` marks a stamp asserted when it carries a `Recheck:` the lint does not flag, whatever the last run found, and assertion coverage counts a section "however old" its stamp. What a failed check does to the stamp's tier before a person acts on the queue item is not stated in the sources read.
+
+Source: [[adr-0022-evidence-not-identity-sets-the-lease]] · [[conventions-contract-rules]] (§7) · [[scripts-kbengine-package]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+
+## Does section 13 list twenty-eight checks or twenty-seven?
+
+CONVENTIONS §13 still says "All twenty-eight are built." and its table lists twenty-seven checks since the stamp-honesty row was removed with `check-stamps`. Which of the two the next edit of the contract changes is not stated.
+
+Source: [[conventions-contract-rules]] (§13) · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+
+## Is `kb-due`'s header still right that it has six nudge categories?
+
+`kb-due`'s docstring numbers six categories and says a tree with "nothing due in any of the six" contributes no line, while `Attention.items` now has more kinds (coverage, review packets, the contract state and an archived library among them). Its opening "SILENCE IS THE POINT" paragraph also carries a stray "(and, in --nudge, every sourced section asserted, #239): a" clause. The behaviour is in the change notes and the module docstring; the header was not rewritten to match.
+
+Source: [[script-kb-due]] · [[engine-changelog-v0.6.0]]
+Verified: 2026-11-24 · by: agent · method: doc-review

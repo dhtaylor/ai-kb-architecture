@@ -1304,3 +1304,42 @@ contradiction lands.
   question: Who decided that the engine's state should live at fixed paths?
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
+
+# Added 2026-11-24, fold of the engine's Unreleased change notes (v0.6.0) and ADR-0022: the lease follows the evidence, contract 2.7, check-stamps retired, coverage in the nudge, what retrieval says backs a fact, expected_evidence.
+- case: positive
+  question: Does a stamp that says by human get a longer lease than one an agent wrote?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "a person's stamp buys no longer lease than an agent's"
+  expected_evidence: check
+
+- case: positive
+  question: Is a library below full assertion coverage named in the session-start nudge when nothing else is due?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "Coverage is a measure, not something due, but a library below full coverage is named in the nudge even when nothing is due"
+  expected_evidence: check
+
+- case: positive
+  question: Can a library that declares contract 2.7 still name its short lease agent_ttl?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "from this version, and the message names"
+
+- case: positive
+  question: What must a library that copied the guardrails template do before it moves its engine pin past v0.5.0?
+  expected_file: script-reference-checks.md
+  expected_excerpt: "A library that copied the template must delete its \"Stamp honesty\" step before it moves its engine pin"
+
+- case: positive
+  question: Does kb-retrieve refuse a fact because its section has a stamp but no check behind it?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "never refuse, withhold or soften a fact for lacking a check"
+  expected_evidence: check
+
+- case: positive
+  question: Why does retrieval say a fact carries a check and not that it is asserted?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: "Retrieval cannot run the weak-assertion lint, so it says"
+
+- case: positive
+  question: What does session start say when kb-due fails?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "kb-due failed (exit N), so the knowledge-base nudge is unavailable this session."
