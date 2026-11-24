@@ -184,14 +184,13 @@ README: "Every rule in the contract that can be checked is checked by a script. 
 - credential-shaped strings, across full history (`check-secrets`)
 - facts pasted into agent prompts instead of retrieved (`check-embedded-facts`, engine only)
 - a declared tool tier for every agent, skill and command (`check-tool-scope`, engine only)
-- verification stamps that claim more than the commit supports (`check-stamps`, CI only)
 - a pull request that deletes a fact file, drops a `CONFLICTED` or `UNCORROBORATED` marker or widens a scope, or that changes the contract or an ADR in this repository, fails unless it carries the `owner-approved` label (`check-blast`, CI only)
 
-CONTRIBUTING: the hooks "catch structure, never meaning". `kb-verify` and `kb-sources` are not in the hooks: "one executes commands and the other opens network connections, neither of which is something a commit should do on your behalf." `grade-routing` is not in the hooks either. `check-blast` "(CI only, on a pull request)"; "A direct push only warns."What a clean run does and does not mean is in [[guardrail-verification]].
+`check-stamps`, the check that refused a verification stamp claiming more than the commit supports (CI only), is retired after v0.5.0: "the lease follows a stamp's evidence, not its `by:`, so there is nothing for it to refuse" (ADR-0022). CONTRIBUTING: the hooks "catch structure, never meaning". `kb-verify` and `kb-sources` are not in the hooks: "one executes commands and the other opens network connections, neither of which is something a commit should do on your behalf." `grade-routing` is not in the hooks either. `check-blast` "(CI only, on a pull request)"; "A direct push only warns."What a clean run does and does not mean is in [[guardrail-verification]].
 
-Source: [[engine-readme]] · [[engine-contributing-schedulable]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF 'Every rule in the contract that can be checked is checked by a script. Git hooks run most of them' "$KB_ENGINE_ROOT/README.md"
+Source: [[engine-readme]] · [[engine-contributing-schedulable]] · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'Every rule in the contract that can be checked is checked by a script. Git hooks run most of them' "$KB_ENGINE_ROOT/README.md" && ! grep -qF 'check-stamps' "$KB_ENGINE_ROOT/README.md" && grep -qF '`check-stamps` is retired' "$KB_ENGINE_ROOT/CONTRIBUTING.md"
 
 ## How do I run the engine's test suite?
 
@@ -211,11 +210,11 @@ The engine's own hook is `.githooks/pre-commit`, "and git does not clone the set
 git config core.hooksPath .githooks
 ```
 
-It runs `check-exec-bits`, `check-secrets`, `check-embedded-facts` and `check-tool-scope`, then `check-xlinks --installed` and `check-scope` over the libraries registered on your machine, and `tests/run-checks` whenever the commit touches `scripts/` or `tests/`. CI runs `check-exec-bits`, `check-secrets --all`, `check-embedded-facts`, `check-tool-scope`, `check-stamps`, `check-blast` and `tests/run-checks`.
+It runs `check-exec-bits`, `check-secrets`, `check-embedded-facts` and `check-tool-scope`, then `check-xlinks --installed` and `check-scope` over the libraries registered on your machine, and `tests/run-checks` whenever the commit touches `scripts/` or `tests/`. CI runs `check-exec-bits`, `check-secrets --all`, `check-embedded-facts`, `check-tool-scope`, `check-blast` and `tests/run-checks`.
 
 Source: [[engine-contributing-schedulable]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF 'It runs `check-exec-bits`, `check-secrets`, `check-embedded-facts` and `check-tool-scope`, then' "$KB_ENGINE_ROOT/CONTRIBUTING.md"
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'It runs `check-exec-bits`, `check-secrets`, `check-embedded-facts` and `check-tool-scope`, then' "$KB_ENGINE_ROOT/CONTRIBUTING.md" && ! grep -qF '`check-tool-scope`, `check-stamps`' "$KB_ENGINE_ROOT/CONTRIBUTING.md"
 
 ## How do I contribute a change?
 
@@ -247,9 +246,9 @@ Recheck: grep -qF 'still holds for Claude sessions, with two changes: the variab
 
 ## What is the engine's status?
 
-README: "This is early, working software, version 0.5.0, with one author so far." (Supersedes "version 0.4.0", which the README said until the v0.5.0 release on 2026-11-23.) Releases are tagged and described in `CHANGELOG.md`; what a version number means is ADR-0015, how a library states which contract version it was built to is ADR-0016, and "The reference library, ai-kb-architecture, is released with the engine under the same tag" (ADR-0019) — see [[releases-and-contract-versioning]].
+README: "This is early, working software, version 0.5.0, with one author so far." (Supersedes "version 0.4.0", which the README said until the v0.5.0 release on 2026-11-23.) The contract version the README lists was 2.6 until ADR-0022's contract 2.7. Releases are tagged and described in `CHANGELOG.md`; what a version number means is ADR-0015, how a library states which contract version it was built to is ADR-0016, and "The reference library, ai-kb-architecture, is released with the engine under the same tag" (ADR-0019) — see [[releases-and-contract-versioning]].
 
-- **Built and tested**, as README lists it: "the contract (version 2.6), ADRs 1 to 17, the five skills, the retrieval agent, both halves of the retrieval eval, the guardrails above, and the weekly job." The same README says elsewhere that the repository holds ADR-0001 to ADR-0021.
+- **Built and tested**, as README lists it: "the contract (version 2.7), ADRs 1 to 17, the five skills, the retrieval agent, both halves of the retrieval eval, the guardrails above, and the weekly job." The same README says elsewhere that the repository holds ADR-0001 to ADR-0021.
 - **Evidenced, not guaranteed**: "that an agent retrieves rather than recalls has been tested on five libraries by agents that never saw the answer key", with "The protocol changed between runs as defects in the eval itself were found". The eval's defects are in [[retrieval-eval-integrity]].
 - **Next**: rolling out further domains. "No orchestrator across domain agents will be built until `kb-retrieve`'s own routing is shown to fall short (ADR-0011)." The triage step built as `kb-ask` "delivers cited answers far more often, but does not yet meet the 95% routing target at 48 libraries" ([[retrieval-agent-behavior]], [[agent-lifecycle-roles]]).
 - **Known gaps** are "recorded, not hidden": review waits for a second contributor (above), and "Cross-library links are checked at commit time rather than in CI (ADR-0010)."
@@ -257,5 +256,5 @@ README: "This is early, working software, version 0.5.0, with one author so far.
 The license is MIT and "covers this engine only. Each domain library is its own repository, with its own terms."
 
 Source: [[engine-readme]]
-Verified: 2026-11-23 · by: agent · method: doc-review
-Recheck: grep -qF 'This is early, working software, version 0.5.0, with one author so far.' "$KB_ENGINE_ROOT/README.md"
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'This is early, working software, version 0.5.0, with one author so far.' "$KB_ENGINE_ROOT/README.md" && grep -qF 'the contract (version 2.7), ADRs 1 to 17,' "$KB_ENGINE_ROOT/README.md"

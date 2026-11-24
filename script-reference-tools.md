@@ -1,6 +1,6 @@
 ---
 name: script-reference-tools
-description: Reference for ai-kb's kb-* scripts and the kbengine package at engine commit 5433f08 — for each kb-* script, what it is for, its usage as written, its defaults, its exit codes and what it never does, and what the kbengine modules are; where the design is explained, it links the section rather than restating it.
+description: Reference for ai-kb's kb-* scripts and the kbengine package at engine commit 303082a — for each kb-* script, what it is for, its usage as written, its defaults, its exit codes and what it never does, and what the kbengine modules are; where the design is explained, it links the section rather than restating it.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -72,13 +72,15 @@ Usage: `kb-bootstrap [--check | --apply] [--library-home DIR]`
 - `--library-home DIR` is where `kb-library` clones new libraries (`kb.libraryHome` in the registry). "Recorded as <engine>/kb when never set; a home already set is kept unless this names another. KB_LIBRARY_HOME overrides it."
 - It writes four places: `~/.claude/settings.json` (`KB_ENGINE_ROOT`, the marketplace and plugin, the SessionStart hook and the same hook on SubagentStart), global git config `kb.engineRoot`, a managed block in the shell rc (PATH), and `core.hooksPath` in installed libraries.
 - Exit codes: "Exit 1 if anything would change" in the default report mode. Observed: an unknown option exits 2, as does a folder that does not look like an engine.
+- `--check` exits 1 when `kb-libraries` fails, where it exited 0 (#229). With `scripts/kbengine/` missing, as in a partial copy of the engine, `kb-libraries` failed at import and `--check` printed the traceback and read as no drift. It now reports `FAILED kb-libraries`, does not print `(none registered)`, and says that `--apply` cannot fix it: restore the engine, then run it again.
 - Never: existing settings "are merged, never replaced"; a file is backed up before its first change, into `~/.local/state/ai-kb/backups/` and never beside it. Projects are wired per clone by `kb-init`, not from here. A linked target is named every run and "nothing is refused".
 
 Why the engine registers itself once per machine: already covered, [[design-thesis]] § A library is installed on a machine by being registered there and § The engine's own files are at fixed paths, whatever XDG says.
 
-Source: [[script-kb-bootstrap]]
-Verified: 2026-11-21 · by: agent · method: doc-review
+Source: [[script-kb-bootstrap]] · [[engine-changelog-v0.6.0]] (#229)
+Verified: 2026-11-24 · by: agent · method: doc-review
 Recheck: "$KB_ENGINE_ROOT/scripts/kb-bootstrap" --bogus >/dev/null 2>&1; [ $? -eq 2 ] && grep -qF 'change nothing. Exit 1 if anything would change.' "$KB_ENGINE_ROOT/scripts/kb-bootstrap"
+Recheck: t=$(mktemp -d); r=0; mkdir -p "$t/e/scripts" "$t/e/.claude-plugin" "$t/h"; cp "$KB_ENGINE_ROOT/CONVENTIONS.md" "$t/e/"; cp "$KB_ENGINE_ROOT/.claude-plugin/marketplace.json" "$t/e/.claude-plugin/"; for s in kb-bootstrap kb-libraries kb-library kb-session-start; do cp "$KB_ENGINE_ROOT/scripts/$s" "$t/e/scripts/"; done; o=$(HOME="$t/h" "$t/e/scripts/kb-bootstrap" --check 2>&1); [ $? -eq 1 ] || r=1; printf '%s\n' "$o" | grep -qF 'FAILED   kb-libraries' || r=1; printf '%s\n' "$o" | grep -qF 'so this report is incomplete. --apply cannot fix that' || r=1; printf '%s\n' "$o" | grep -qF '(none registered)' && r=1; rm -rf "$t"; exit $r
 
 ## kb-capture
 
@@ -116,19 +118,20 @@ Recheck: t=$(mktemp -d); r=0; HOME="$t" "$KB_ENGINE_ROOT/scripts/kb-catalog" >/d
 
 Purpose: "which knowledge trees are due for a hygiene sweep, and (with --nudge) everything else a librarian should act on."
 
-Usage: `kb-due [tree ...] [--quiet|--nudge [--summary]]`
+Usage: `kb-due [tree ...] [--quiet|--nudge [--summary] [--summary-out FILE] [--session]]`
 
 - It scans every library registered on this machine plus any further trees given (a project `knowledge/` tree).
-- `--quiet` prints only overdue trees, "and nothing at all when none are (sweep only)". `--nudge` prints the full librarian nudge and "nothing at all when nothing in any category is due". `--summary`, with `--nudge`, also prints as the last line the nudge condensed to one line beginning "KB due — ".
+- `--quiet` prints only overdue trees, "and nothing at all when none are (sweep only)". `--nudge` prints the full librarian nudge and "nothing at all when nothing in any category is due". `--summary`, with `--nudge`, also prints as the last line the nudge condensed to one line beginning "KB due — ". `--summary-out FILE` writes what the person is shown to FILE: the summary line, after the warning when the `kb.nudge` setting is one it does not understand, and empty when there is nothing to show; the nudge body still goes to stdout, "so the caller needs no text matching". `--session` is for the session-start hook: it decides from `kb.nudge` (the registry's, or `$KB_NUDGE` over it: `always`, `weekly:<day>` or `off`) and today whether to show the nudge, before computing anything, and its stdout is what the hook adds to the model's context; "It is the schedule's one home (#253)".
+- Each library's line leads with its assertion coverage (#239): asserted sections over sourced ones, "0 of N" when none is asserted, never a warning; a library below full coverage is named even when nothing is due, and only one with nothing due and every sourced section asserted (or none sourced) prints nothing. Which items a line holds, and in what order, is decided by `Attention.items` in `kbengine.attention` (#253), and `kb-due` words them. It no longer loads the `kb-report` script, and reads where the reports live from `kbengine.reports`.
 - Defaults: `sweep_interval:` absent means 30d. It reads `last_swept:` and `sweep_interval:` from each tree's `INDEX.md`.
 - Exit codes: "Exit 0 always: being due is a nudge, never a failure."
 - Never: no assertion is ever run or even read; only a count and the command (`kb-verify <path> --yes`) are printed. A failure computing one category for one tree is a one-line warning to stderr and that category is skipped for that tree only: "This hook must never crash a session."
 
-What each of the six nudge categories counts, the archived and read-only rules and the nudge setting: already covered, [[agent-lifecycle-roles]] § Cadence is surfaced at session start, and may be prepared on a schedule and the sections beneath it.
+What each item counts, the archived and read-only rules and the nudge setting: already covered, [[agent-lifecycle-roles]] § Cadence is surfaced at session start, and may be prepared on a schedule and the sections beneath it. The header of the script still calls them "the six" categories and numbers six in its list, where `Attention.items` now has more kinds (coverage, review packets, the contract state and an archived library among them); the difference is raised in [[knowledge-architecture-open-questions]].
 
-Source: [[script-kb-due]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: t=$(mktemp -d); r=0; HOME="$t" "$KB_ENGINE_ROOT/scripts/kb-due" --nudge "$t/none" >/dev/null 2>&1 || r=1; grep -qF 'Exit 0 always: being due is a nudge, never a failure.' "$KB_ENGINE_ROOT/scripts/kb-due" || r=1; rm -rf "$t"; exit $r
+Source: [[script-kb-due]] · [[engine-changelog-v0.6.0]] (#239, #253)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; HOME="$t" "$KB_ENGINE_ROOT/scripts/kb-due" --nudge "$t/none" >/dev/null 2>&1 || r=1; grep -qF 'Exit 0 always: being due is a nudge, never a failure.' "$KB_ENGINE_ROOT/scripts/kb-due" || r=1; grep -qF 'Usage: kb-due [tree ...] [--quiet|--nudge [--summary] [--summary-out FILE] [--session]]' "$KB_ENGINE_ROOT/scripts/kb-due" || r=1; rm -rf "$t"; exit $r
 
 ## kb-eval-sample
 
@@ -160,14 +163,14 @@ Usage: `kb-init [--name NAME] [DIR]`
 - `DIR` is any directory inside the target project (default: current directory). "The project root is the enclosing git repository, not DIR itself."
 - `--name` is the project name (default: the repository's directory name), kebab-cased.
 - Exit codes: the header states none. Observed: 0 on a first run and on a re-run; 2 when `DIR` is not a directory or no name can be derived.
-- What it creates, observed in a fixture run: `knowledge/INDEX.md` (scope `repo:<name>`, `freshness_horizon: 14d`), `.claude/`, `CLAUDE.md` and `.githooks/pre-commit`. Each line of its output is `created`, `kept` or `note`. A second run reports `kept` for each.
+- What it creates, observed in a fixture run: `knowledge/INDEX.md` (scope `repo:<name>`, `freshness_horizon: 14d`, and since #236 `kb_contract: "2.7"`), `.claude/`, `CLAUDE.md` and `.githooks/pre-commit`. Each line of its output is `created`, `kept` or `note`. A second run reports `kept` for each.
 - Never destructive: "a scaffolder that is destructive on its second run is one nobody runs twice."
 
 The project-tree hook and why a clone needs `kb-init`: already covered in part, [[guardrail-verification]] § A guardrail can be skipped without anyone being told.
 
-Source: [[script-kb-init]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: t=$(mktemp -d); r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; git init -q "$t/p"; "$KB_ENGINE_ROOT/scripts/kb-init" "$t/p" >/dev/null 2>&1 || r=1; grep -qx 'scope: repo:p' "$t/p/knowledge/INDEX.md" || r=1; "$KB_ENGINE_ROOT/scripts/kb-init" "$t/p" 2>&1 | grep -qF 'kept      knowledge/INDEX.md' || r=1; "$KB_ENGINE_ROOT/scripts/kb-init" "$t/none" >/dev/null 2>&1; [ $? -eq 2 ] || r=1; rm -rf "$t"; exit $r
+Source: [[script-kb-init]] · [[engine-changelog-v0.6.0]] (#236, the `kb-init` sentence)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1; git init -q "$t/p"; "$KB_ENGINE_ROOT/scripts/kb-init" "$t/p" >/dev/null 2>&1 || r=1; grep -qx 'scope: repo:p' "$t/p/knowledge/INDEX.md" || r=1; grep -qx 'kb_contract: "2.7"' "$t/p/knowledge/INDEX.md" || r=1; "$KB_ENGINE_ROOT/scripts/kb-init" "$t/p" 2>&1 | grep -qF 'kept      knowledge/INDEX.md' || r=1; "$KB_ENGINE_ROOT/scripts/kb-init" "$t/none" >/dev/null 2>&1; [ $? -eq 2 ] || r=1; rm -rf "$t"; exit $r
 
 ## kb-libraries
 
@@ -264,11 +267,14 @@ Usage: `kb-report [tree ...] [--out DIR]`
 - Exit codes: "Schedulable (#95): exit 0 nothing to decide, 1 decisions written, 2 could not run (the engine's readers would not load, or the report's own folder is inside a library). A library that cannot be read is an item under its name, not a failure."
 - Never: "It never holds a fact's, a source's or a packet's text: paths, counts, headings and ids only." The file is written even when there is nothing to decide, "so a quiet week can be told from a week the job did not run".
 
+The report opens with assertion coverage per library (#239): "listed for every library, those with nothing to decide too", and it "never counts toward the decisions waiting". `kb-report` filters on `shelved` as `kb-due` does, before anything else about the library is read, and takes where the reports live from `kbengine.reports` (#253).
+
 What the report lists: already covered, [[unattended-preparation]] § The weekly report lists decisions and holds no knowledge and the sections beneath it.
 
-Source: [[script-kb-report]]
-Verified: 2026-11-21 · by: agent · method: doc-review
+Source: [[script-kb-report]] · [[engine-changelog-v0.6.0]] (#239, #253)
+Verified: 2026-11-24 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; HOME="$t" KB_REPORTS="$t/rep" "$KB_ENGINE_ROOT/scripts/kb-report" >/dev/null 2>&1 || r=1; ls "$t/rep" | grep -qE '^[0-9]{4}-W[0-9]{2}\.md$' || r=1; grep -qF 'exit 0 nothing to decide, 1 decisions' "$KB_ENGINE_ROOT/scripts/kb-report" || r=1; rm -rf "$t"; exit $r
+Recheck: t=$(mktemp -d); r=0; d="$t/fxr"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxr\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nkb_contract: "2.7"\nlast_swept: 2026-11-20\n---\n# x\n\n- \133f](f.md) — f\n' > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: fxr\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\nRecheck: true\n\n## B\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\n' > "$d/f.md"; HOME="$t" KB_TODAY=2026-11-24 "$KB_ENGINE_ROOT/scripts/kb-report" "$d" --out "$t/rep" >/dev/null 2>&1; [ $? -eq 0 ] || r=1; grep -qF 'assertion coverage 1 of 2 sourced sections' "$t/rep/"*.md || r=1; rm -rf "$t"; exit $r
 
 ## kb-schedule
 
@@ -300,15 +306,15 @@ Purpose: "SessionStart hook: resolve the knowledge engine and its libraries." It
 Usage: the header gives no usage line. Its one option is `--subagent`: "the same context as a SubagentStart event, for kb-retrieve", with the librarian's nudge left out.
 
 - Output: a JSON object with `additionalContext` and, when there is something for the person, a `systemMessage`. Agents receive resolved absolute paths.
-- Defaults: the nudge is shown `always` unless `kb.nudge` in the registry, or `$KB_NUDGE` over it, says `weekly:<day>` or `off`.
+- Defaults: the nudge is shown `always` unless `kb.nudge` in the registry, or `$KB_NUDGE` over it, says `weekly:<day>` or `off`. The hook no longer decides that itself (#253): it calls `kb-due <project tree> --nudge --session --summary-out FILE` and prints what comes back, so it matches no `KB due — ` text and works out no reports folder. If `kb-due` fails it says so in one line, with its exit code: "kb-due failed (exit N), so the knowledge-base nudge is unavailable this session." That line goes to the model and to the person, where a failed `kb-due` showed no nudge before.
 - Exit codes: the header states none. Observed: 0 on a normal start. The header says: "Absence is graceful at every level."
 - Never: "No engine, no libraries, or neither — the session still starts, and says so."
 
 How the nudge is gated and what a subagent is given: already covered, [[agent-lifecycle-roles]] § When the nudge is shown, and a contract it cannot read and [[retrieval-agent-behavior]] § A retrieval subagent is given the engine and the library list by a hook.
 
-Source: [[script-kb-session-start]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: t=$(mktemp -d); r=0; o=$(HOME="$t" "$KB_ENGINE_ROOT/scripts/kb-session-start" </dev/null); [ $? -eq 0 ] || r=1; printf '%s' "$o" | grep -qF '"hookEventName":"SessionStart"' || r=1; HOME="$t" "$KB_ENGINE_ROOT/scripts/kb-session-start" --subagent </dev/null | grep -qF '"hookEventName":"SubagentStart"' || r=1; rm -rf "$t"; exit $r
+Source: [[script-kb-session-start]] · [[engine-changelog-v0.6.0]] (#253)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; o=$(HOME="$t" "$KB_ENGINE_ROOT/scripts/kb-session-start" </dev/null); [ $? -eq 0 ] || r=1; printf '%s' "$o" | grep -qF '"hookEventName":"SessionStart"' || r=1; HOME="$t" "$KB_ENGINE_ROOT/scripts/kb-session-start" --subagent </dev/null | grep -qF '"hookEventName":"SubagentStart"' || r=1; grep -qF -- '--nudge --session --summary-out' "$KB_ENGINE_ROOT/scripts/kb-session-start" || r=1; rm -rf "$t"; exit $r
 
 ## kb-sources
 
@@ -356,14 +362,16 @@ Usage: `kb-verify <library-or-tree> [--yes] [--apply] [--all] [--budget N] [--un
 
 - `--yes` runs the commands; without it they are printed and nothing runs, "and nothing is queued either". `--apply` restamps sections whose assertion passed (today, `by: agent`, `method: query`). `--all` is every section with an assertion, not only the stale ones. `--budget N` overrides the domain's `verifier_budget`. `--unattended` skips `Recheck (attended):` assertions and runs the rest with an empty HOME, and "Refuses --apply".
 - Defaults: report only. The default budget when none is declared is in [[agent-lifecycle-roles]] § The default budget.
+- Selection is by the lease the evidence sets, not by `by:` (ADR-0022): "An asserted stamp (its Recheck is one the lint above does not flag) is due once older than the domain's freshness_horizon; any other is due once older than the short lease (unasserted_ttl)". `kbengine.lease` (#250) makes that judgement and the script prints it: the header reads `short lease Nd` where it read `agent TTL Nd`, and each command and each stale fact names its lease and the lint finding behind a short one. The assertion lint is `kbengine.lint` (#249). `--apply` still restamps "today, `by: agent`, `method: query`".
 - Exit codes: "Exit 0 when nothing failed, 1 when an assertion failed, 2 on usage error."
 - Never: "A FAILURE is never applied, with or without --apply." A pass refreshes nothing unless `--apply` is passed.
 
 The three rules, selection by staleness and what is read: already covered, [[agent-lifecycle-roles]] § The Verifier as built and the sub-sections beneath it.
 
-Source: [[script-kb-verify]]
-Verified: 2026-11-21 · by: agent · method: doc-review
+Source: [[script-kb-verify]] · [[engine-changelog-v0.6.0]] (#236, #238, #249, #250)
+Verified: 2026-11-24 · by: agent · method: doc-review
 Recheck: "$KB_ENGINE_ROOT/scripts/kb-verify" >/dev/null 2>&1; [ $? -eq 2 ] && grep -qF 'Exit 0 when nothing failed, 1 when an assertion failed, 2 on usage error.' "$KB_ENGINE_ROOT/scripts/kb-verify"
+Recheck: t=$(mktemp -d); r=0; mkdir "$t/l"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: x\nscope: general\nfreshness_horizon: 90d\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n' > "$t/l/INDEX.md"; o=$("$KB_ENGINE_ROOT/scripts/kb-verify" "$t/l" 2>&1); printf '%s\n' "$o" | grep -qF 'short lease 9d' || r=1; printf '%s\n' "$o" | grep -qF 'agent TTL' && r=1; rm -rf "$t"; exit $r
 
 ## kb-watch
 
@@ -389,21 +397,27 @@ Recheck: "$KB_ENGINE_ROOT/scripts/kb-watch" >/dev/null 2>&1; [ $? -eq 2 ] && gre
 
 ## The kbengine package
 
-`scripts/kbengine/` is a Python package of readers the scripts share, so that "a version means one thing in all of them". The scripts import it as `from kbengine import …`, and no script edits `sys.path`; the package sits in the folder beside them. Every module is "Stdlib only". It is not a command. The one command-line use is `python3 -m kbengine.env`, which prints the variable table, `--names` one name per line, and `--path NAME` one resolved location.
+`scripts/kbengine/` is a Python package of readers the scripts share, so that "a version means one thing in all of them". The scripts import it as `from kbengine import …`, and no script edits `sys.path` but one: `check-golden` inserts its own folder, "found beside it", because a regression case loads that script bare. The package sits in the folder beside them. Every module is "Stdlib only". It is not a command. The one command-line use is `python3 -m kbengine.env`, which prints the variable table, `--names` one name per line, and `--path NAME` one resolved location.
 
 Each module's purpose, from its docstring:
 
-- `attention`: "What needs a person's attention in one library: the one reading of every category kb-due, kb-report and kb-prepare each used to compute for themselves (#204)."
+- `attention`: "What needs a person's attention in one library: the one reading of every category kb-due, kb-report and kb-prepare each used to compute for themselves (#204)." Since #253 it also holds the policy: `Attention.items` is a frozen, ordered list per library (coverage first), each item saying whether it is a decision, a field that failed being an item; `kb-due` and `kb-report` word the items and test no condition to find them. `manual_stubs` is a kind only the weekly report says.
+- `citations`: "Citation resolution: which file a cited path names, across the libraries registered on this machine (#252)."
 - `clock`: "What day it is, for the engine's staleness and sweep logic (#205)." `today()` is `$KB_TODAY` when set, else the real date; a malformed `$KB_TODAY` raises rather than falling back.
 - `contract`: "The contract versions (CONVENTIONS §14, ADR-0016): which this engine knows, what a library's declared `kb_contract:` means against them, and how a version is written."
 - `env`: "What the engine reads from the environment, declared once, and where its files are (ADR-0021, #205)."
-- `factfiles`: "The fact-file reader: which files of a library are knowledge, what kind each is, and what the sections of one say."
-- `library`: "A library's root INDEX.md, read once and the same way by every script that needs it." Frontmatter only.
+- `factfiles`: "The fact-file reader: which files of a library are knowledge, what kind each is, and what the sections of one say." Since #251 `tree(root)` returns the library's files, each read and parsed the first time it is asked for and never again, and `tree_from(blobs)` builds the same value from git blobs; `check-kb`'s `kb_files`, `unsourced`, `unstamped_keys`, `marked_sections` and `reachable` live here, and so does the "not CONFLICTED" rule, named `served`, beside `in_scope`. `factfiles.FENCE` is the one fence definition (#257) and `factfiles.EXCLUDED_DIRS` the one rule naming the folders that are not the knowledge base, used by `check-xlinks`, `check-scope`, `check-blast` and `kb-library`.
+- `golden`: "The golden set: a library's own answer key, its record format, its rules and its grading (#252, CONVENTIONS §10)."
+- `lease`: "The lease of every stamp in a library (#250, ADR-0022): the one place that says whether a stamp is asserted, what lease it is on, whether it is due or stale, and how much of the library is asserted."
+- `library`: "A library's root INDEX.md, read once and the same way by every script that needs it." Frontmatter only. It exposes one short-lease value, `unasserted_ttl`, whichever field supplied it (`unasserted_ttl:` from contract 2.7, `agent_ttl:` below it).
+- `lint`: "The assertion lint (#249, from kb-verify; ADR-0022): which Recheck: assertions cannot fail, and which reach outside the library, as structured findings and as the warnings kb-verify prints."
 - `queue`: "The needs-attention queue: how a finding is written to a library's needs-attention.md, and how the queue is read back."
 - `registry`: "The per-machine library registry, read once and the same way by every script that needs it (ADR-0014, ADR-0020, #210)."
+- `reports`: "Where the weekly reports live, which is the latest, and whether it is current (ADR-0017, ADR-0021, #253)."
+- `transcripts`: "What an agent answered, read from its subagent transcript (#252)."
 
 `__init__.py` is empty. What each module replaced and why: already covered in part, [[design-thesis]] § One module declares every variable the engine reads and § One reader serves a library's root INDEX.md, and [[guardrail-verification]] § The engine's date can be injected, so a test does not wait on the calendar.
 
-Source: [[scripts-kbengine-package]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: t=$(mktemp -d); r=0; for m in attention clock contract env factfiles library queue registry; do grep -q '"""' "$KB_ENGINE_ROOT/scripts/kbengine/$m.py" || r=1; done; [ ! -s "$KB_ENGINE_ROOT/scripts/kbengine/__init__.py" ] || r=1; PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -I -c 'import sys; sys.path.insert(0, sys.argv[1]); from kbengine import clock, contract, env, factfiles, library, queue, registry, attention' "$KB_ENGINE_ROOT/scripts" || r=1; rm -rf "$t"; exit $r
+Source: [[scripts-kbengine-package]] · [[engine-changelog-v0.6.0]] (#249 to #253, #257)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; [ "$(cd "$KB_ENGINE_ROOT/scripts" && grep -l 'sys\.path' * 2>/dev/null | tr '\n' ' ')" = 'check-golden ' ] || r=1; for m in attention citations clock contract env factfiles golden lease library lint queue registry reports transcripts; do grep -q '"""' "$KB_ENGINE_ROOT/scripts/kbengine/$m.py" || r=1; done; [ ! -s "$KB_ENGINE_ROOT/scripts/kbengine/__init__.py" ] || r=1; PYTHONPATH="$KB_ENGINE_ROOT/scripts" python3 -I -c 'import sys; sys.path.insert(0, sys.argv[1]); from kbengine import attention, citations, clock, contract, env, factfiles, golden, lease, library, lint, queue, registry, reports, transcripts' "$KB_ENGINE_ROOT/scripts" || r=1; rm -rf "$t"; exit $r

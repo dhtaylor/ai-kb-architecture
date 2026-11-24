@@ -68,12 +68,14 @@ regression suite was added, failed six times with the same error:
 The fix removed the dependency rather than installing it in three workflows: every script in
 `scripts/` now parses frontmatter with the standard library only.
 
-The engine's CI has grown since: its workflow now also runs tool-scope, stamp-honesty and
+The engine's CI has grown since: its workflow also ran tool-scope, stamp-honesty and
 high-blast-radius steps and the regression suite, as read from the workflow file on 2026-10-02. The
+stamp-honesty step is gone after v0.5.0, with `check-stamps` (ADR-0022); the workflow now has the executable-bits, secret-scan, embedded-fact, tool-scope, high-blast-radius and regression-suite steps. The
 reason `check-kb` was never among them is unchanged, since the engine still holds no knowledge for it to read.
 
-Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@13d81cf · ai-kb@3050ef8
-Verified: 2026-11-12 · by: agent · method: doc-review
+Source: [[2026-09-22-two-guardrail-defects-reached-the-remote-scripts-committed]] · ai-kb@13d81cf · ai-kb@3050ef8 · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#240)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: f="$KB_ENGINE_ROOT/.github/workflows/guardrails.yml"; grep -qF 'name: Tool-scope lint' "$f" && grep -qF 'name: High-blast-radius scan' "$f" && grep -qF 'name: Guardrail regression suite' "$f" && ! grep -qF 'Stamp honesty' "$f"
 
 ## A regression suite inherits the blind spot of the bug it was built to catch, one case at a time
 

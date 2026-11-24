@@ -75,10 +75,13 @@ Recheck: grep -qF 'TOOLS = "Read,Grep,Glob"' "$KB_ENGINE_ROOT/scripts/kb-prepare
 - a sweep that is due, or notes awaiting distillation, that no packet covers yet;
 - a library behind the contract, ahead of the engine's, or on one the engine cannot serve.
 
+The report opens with assertion coverage for every library (#239, ADR-0022): the sections with an asserted stamp over the sections that cite a source, "0 of N" when none is asserted, listed even for a library with nothing to decide. It is a measure, not a decision, so it never counts toward the decisions waiting. Which items a library has, and which of them are decisions, is decided in one place, `Attention.items` ([[agent-lifecycle-roles]] § Cadence is surfaced at session start), and `kb-report` words them imperatively where `kb-due` words them tersely (#253).
+
 A library with nothing to decide gets no section, and a week with nothing to decide gets one line. The file is written either way, so a quiet week can be told from a week the job did not run. It never holds a fact's, a source's or a packet's text: paths, counts, headings and ids only. The session-start nudge points the person at the latest report; see [[agent-lifecycle-roles]].
 
-Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]]
-Verified: 2026-11-23 · by: agent · method: doc-review
+Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]] · [[engine-changelog-v0.6.0]] (#239, #253)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; d="$t/fxr"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxr\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nkb_contract: "2.7"\nlast_swept: 2026-11-20\n---\n# x\n\n- \133f](f.md) — f\n' > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: fxr\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\nRecheck: true\n\n## B\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\n' > "$d/f.md"; HOME="$t" KB_TODAY=2026-11-24 "$KB_ENGINE_ROOT/scripts/kb-report" "$d" --out "$t/rep" >/dev/null 2>&1; [ $? -eq 0 ] || r=1; grep -qF 'assertion coverage 1 of 2 sourced sections' "$t/rep/"*.md || r=1; rm -rf "$t"; exit $r
 
 ### A library ahead of the engine's contract, and an archived one
 
@@ -155,9 +158,9 @@ Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## What stays attended whatever the schedule does
 
-Resolving a `CONFLICTED` section, deleting knowledge, promoting scope, writing a human stamp, applying the `owner-approved` label, and any fact edit without a person's approval are never automated. `check-blast` still gates the first three. The schedule stores no credentials.
+Resolving a `CONFLICTED` section, deleting knowledge, promoting scope, writing a human stamp, applying the `owner-approved` label, and any fact edit without a person's approval are never automated. `check-blast` still gates the first three. The schedule stores no credentials. "A human stamp" is ADR-0017's wording: since ADR-0022 a person's stamp buys no longer lease than an agent's, and what stays attended for a high-blast-radius fact is any change to it and any restamp after a failed check ([[contract-provenance-and-currency]] § Evidence tiers).
 
 The decision names its own review triggers: a packet is applied that a reviewer later finds wrong, the weekly report goes unread for a month, or a cloud schedule can run without stored credentials.
 
-Source: [[adr-0017-unattended-preparation-attended-decisions]]
-Verified: 2026-11-23 · by: agent · method: doc-review
+Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review
