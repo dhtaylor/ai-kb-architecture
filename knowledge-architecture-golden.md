@@ -51,6 +51,7 @@ contradiction lands.
   question: What is the core design rule for combining a governed KB with an agent layer?
   expected_file: design-thesis.md
   expected_excerpt: "separate knowledge from behavior, and let the behavior layer keep the knowledge layer honest"
+  expected_evidence: word
 
 # Amended 2026-10-28, after the retrieval run and the audit: the excerpt was a two-word label, which an answer can match without having read the file. It is now the sentence that says which role splits.
 - case: positive
@@ -68,6 +69,7 @@ contradiction lands.
   question: Does rotating a leaked secret remove it from git history?
   expected_file: secret-governance.md
   expected_excerpt: "does not erase it from git"
+  expected_evidence: check
 
 - case: negative
   question: What is the production database's deploy target for this workspace?
