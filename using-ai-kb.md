@@ -27,14 +27,14 @@ The engine repository holds "the contract, the tooling and the behavior, and **n
 | `plugins/knowledge-tools/` | The Claude Code plugin: five curation skills, the `kb-retrieve` agent, the `kb-ask` triage skill, and the `/kb-capture` and `/kb-init` commands. |
 | `plugins/analysis-tools/` | A second plugin: a skill that reviews a work product for analytic rigor and coaches intelligence-analysis tradecraft. It reads its tradecraft from a library and holds none. |
 | `scripts/` | Setup commands (`kb-bootstrap`, `kb-library`, `kb-init`, `kb-capture`), the upkeep commands (`kb-verify`, `kb-sources`, `kb-watch`, `kb-due`), the opt-in weekly job (`kb-schedule`, with `kb-prepare`, `kb-apply` and `kb-report`), `kb-backup`, the retrieval-cost tools (`kb-telemetry`, `kb-eval-sample`), and the checks that guard the contract. |
-| `documents/decisions/` | Architecture decision records (ADR-0001 to ADR-0021). Each one explains why a rule exists. |
+| `documents/decisions/` | Architecture decision records, numbered from ADR-0001. Each one explains why a rule exists. |
 | `tests/run-checks` | A regression suite that breaks each check on purpose and requires it to notice. |
 
 The facts live in two kinds of home. **Domain libraries**: each is its own git repository, one per subject domain, "cloned anywhere and registered on the machine with `kb-library add` (the engine's `kb/` is the default place)"; a library holds facts true wherever its subject appears, plus their sources and a golden set of test questions, and "Libraries may be private or public: the engine is public, and the knowledge doesn't have to be." **Project trees**: a `knowledge/` directory inside an ordinary project repository holds facts that are true only of that deployment. The separation is in [[design-thesis]].
 
 Source: [[engine-readme]] · [[engine-contributing-schedulable]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF 'Each library is its own git repository, one per subject domain, cloned' "$KB_ENGINE_ROOT/README.md"
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'Each library is its own git repository, one per subject domain, cloned' "$KB_ENGINE_ROOT/README.md" && grep -qF 'Architecture decision records, numbered from ADR-0001.' "$KB_ENGINE_ROOT/README.md"
 
 ## How do I set up a new machine?
 
@@ -248,7 +248,7 @@ Recheck: grep -qF 'still holds for Claude sessions, with two changes: the variab
 
 README: "This is early, working software, version 0.5.0, with one author so far." (Supersedes "version 0.4.0", which the README said until the v0.5.0 release on 2026-11-23; the README moves the number with each release.) The contract version the README lists was 2.6 until ADR-0022's contract 2.7. Releases are tagged and described in `CHANGELOG.md`; what a version number means is ADR-0015, how a library states which contract version it was built to is ADR-0016, and "The reference library, ai-kb-architecture, is released with the engine under the same tag" (ADR-0019) — see [[releases-and-contract-versioning]].
 
-- **Built and tested**, as README lists it: "the contract (version 2.7), ADRs 1 to 17, the five skills, the retrieval agent, both halves of the retrieval eval, the guardrails above, and the weekly job." The same README says elsewhere that the repository holds ADR-0001 to ADR-0021.
+- **Built and tested**, as README lists it: "the contract (version 2.7), the ADRs, the five skills, the retrieval agent, both halves of the retrieval eval, the guardrails above, and the weekly job."
 - **Evidenced, not guaranteed**: "that an agent retrieves rather than recalls has been tested on five libraries by agents that never saw the answer key", with "The protocol changed between runs as defects in the eval itself were found". The eval's defects are in [[retrieval-eval-integrity]].
 - **Next**: rolling out further domains. "No orchestrator across domain agents will be built until `kb-retrieve`'s own routing is shown to fall short (ADR-0011)." The triage step built as `kb-ask` "delivers cited answers far more often, but does not yet meet the 95% routing target at 48 libraries" ([[retrieval-agent-behavior]], [[agent-lifecycle-roles]]).
 - **Known gaps** are "recorded, not hidden": review waits for a second contributor (above), and "Cross-library links are checked at commit time rather than in CI (ADR-0010)."
@@ -257,4 +257,4 @@ The license is MIT and "covers this engine only. Each domain library is its own 
 
 Source: [[engine-readme]] · [[conventions-contract-versions]] (contract 2.7)
 Verified: 2026-11-24 · by: agent · method: doc-review
-Recheck: grep -qE 'This is early, working software, version 0\.[0-9]+\.[0-9]+, with one author so far\.' "$KB_ENGINE_ROOT/README.md" && grep -qF 'the contract (version 2.7), ADRs 1 to 17,' "$KB_ENGINE_ROOT/README.md"
+Recheck: grep -qE 'This is early, working software, version 0\.[0-9]+\.[0-9]+, with one author so far\.' "$KB_ENGINE_ROOT/README.md" && grep -qF 'the contract (version 2.7), the ADRs,' "$KB_ENGINE_ROOT/README.md"

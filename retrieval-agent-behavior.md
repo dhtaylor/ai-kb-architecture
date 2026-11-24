@@ -67,10 +67,11 @@ A library listed as registered but not served is reported as unavailable, and ne
 Source: [[script-kb-session-start]] · [[agent-kb-retrieve]] · [[script-kb-libraries]]
 Verified: 2026-11-23 · by: agent · method: doc-review
 
-The nudge for a library built to an older contract is left out with it. With 48 libraries registered, 42 of them behind the engine's contract, the session-start context named each behind library, and the `--subagent` context named none.
+The nudge for a library built to an older contract is left out with it. With 48 libraries registered, 42 of them behind the engine's contract, the session-start context named each behind library, and the `--subagent` context named none. Superseded in part: since #263 the nudge names no library that is merely behind, in either context.
 
-Source: [[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]]
-Verified: 2026-11-23 · by: agent · method: manual
+Source: [[2026-10-26-kb-retrieve-routing-retest-after-grader-and-scope-fixes]] · [[engine-changelog-v0.6.0]] (#263)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nkb_contract: "%s"\nlast_swept: 2026-11-20\n---\n# x\n\n- \133f](f.md) — f\n' "$1" "$2" > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\nRecheck: true\n' "$1" > "$d/f.md"; }; mk fxb 2.6; mk fxc 2.9; export HOME="$t" KB_TODAY=2026-11-24; k="$KB_ENGINE_ROOT/scripts"; o=$("$k/kb-due" --nudge "$t/fxb" "$t/fxc" 2>&1); printf '%s\n' "$o" | grep -qF 'fxb:' && r=1; printf '%s\n' "$o" | grep -F 'fxc:' | grep -qF 'newer than this engine' || r=1; "$k/kb-report" "$t/fxb" --out "$t/rb" >/dev/null 2>&1; [ $? -eq 0 ] || r=1; "$k/kb-report" "$t/fxc" --out "$t/rc" >/dev/null 2>&1; [ $? -eq 1 ] || r=1; rm -rf "$t"; exit $r
 
 ## A question goes to a triage desk, which sends it to one library's specialist
 

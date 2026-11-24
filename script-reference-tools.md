@@ -1,6 +1,6 @@
 ---
 name: script-reference-tools
-description: Reference for ai-kb's kb-* scripts and the kbengine package at engine commit 303082a — for each kb-* script, what it is for, its usage as written, its defaults, its exit codes and what it never does, and what the kbengine modules are; where the design is explained, it links the section rather than restating it.
+description: Reference for ai-kb's kb-* scripts and the kbengine package at engine commit 324e2ce — for each kb-* script, what it is for, its usage as written, its defaults, its exit codes and what it never does, and what the kbengine modules are; where the design is explained, it links the section rather than restating it.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general

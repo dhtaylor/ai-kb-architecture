@@ -1,6 +1,6 @@
 ---
 name: script-reference-checks
-description: Reference for ai-kb's check scripts at engine commit 303082a (check-stamps as read at v0.5.0, before it was retired) — for each check-* script, grade-eval, grade-routing, pii-scan and secret-entropy, what it is for, its usage as written, its defaults, its exit codes and what it never does; where the design is explained, it links the section rather than restating it.
+description: Reference for ai-kb's check scripts at engine commit 324e2ce (check-stamps as read at v0.5.0, before it was retired) — for each check-* script, grade-eval, grade-routing, pii-scan and secret-entropy, what it is for, its usage as written, its defaults, its exit codes and what it never does; where the design is explained, it links the section rather than restating it.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general

@@ -1050,7 +1050,7 @@ contradiction lands.
 - case: positive
   question: How many checks does the contract list for verifying a domain, and are they all built?
   expected_file: contract-retrieval-and-verification.md
-  expected_excerpt: list twenty-seven checks, and every one is marked built
+  expected_excerpt: All twenty-seven are built.
 
 - case: positive
   question: What does the stamp honesty check refuse?
@@ -1160,7 +1160,7 @@ contradiction lands.
 - case: positive
   question: Does a kb-retrieve subagent's context carry the nudge that a library is behind the engine's contract?
   expected_file: retrieval-agent-behavior.md
-  expected_excerpt: "the session-start context named each behind library, and the `--subagent` context named none"
+  expected_excerpt: "the nudge names no library that is merely behind, in either context"
 
 - case: positive
   question: Can a sampled retrieval run be graded while it is still running?
@@ -1346,4 +1346,11 @@ contradiction lands.
   question: What does session start say when kb-due fails?
   expected_file: agent-lifecycle-roles.md
   expected_excerpt: "kb-due failed (exit N), so the knowledge-base nudge is unavailable this session."
+  expected_evidence: check
+
+# Added 2026-11-24, refresh after ai-kb #263 (a library behind on a supported contract is not a decision).
+- case: positive
+  question: Is a library built to contract 2.6, on an engine that knows 2.7, a decision in the weekly report or a clause in the nudge?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "Since #263 it is not told by the session-start nudge and is not a decision in the weekly report"
   expected_evidence: check
