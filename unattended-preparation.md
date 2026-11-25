@@ -73,20 +73,24 @@ Recheck: grep -qF 'TOOLS = "Read,Grep,Glob"' "$KB_ENGINE_ROOT/scripts/kb-prepare
 - each open queue item, by category and location;
 - rechecks that are due but marked `Recheck (attended):`, which a scheduled run skips (see [[agent-lifecycle-roles]]);
 - a sweep that is due, or notes awaiting distillation, that no packet covers yet;
-- a library behind the contract, ahead of the engine's, or on one the engine cannot serve.
+- a library ahead of the engine's contract, or on one the engine cannot serve; one merely behind on a supported contract is not a decision (#263). Superseded: until #263 this bullet also listed "a library behind the contract".
+
+The report opens with assertion coverage for every library (#239, ADR-0022): the sections with an asserted stamp over the sections that cite a source, "0 of N" when none is asserted, listed even for a library with nothing to decide. It is a measure, not a decision, so it never counts toward the decisions waiting. Which items a library has, and which of them are decisions, is decided in one place, `Attention.items` ([[agent-lifecycle-roles]] § Cadence is surfaced at session start), and `kb-report` words them imperatively where `kb-due` words them tersely (#253).
 
 A library with nothing to decide gets no section, and a week with nothing to decide gets one line. The file is written either way, so a quiet week can be told from a week the job did not run. It never holds a fact's, a source's or a packet's text: paths, counts, headings and ids only. The session-start nudge points the person at the latest report; see [[agent-lifecycle-roles]].
 
-Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]]
-Verified: 2026-11-23 · by: agent · method: doc-review
+Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-report]] · [[script-kb-due]] · [[engine-changelog-v0.6.0]] (#239, #253, #263)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nkb_contract: "%s"\nlast_swept: 2026-11-20\n---\n# x\n\n- \133f](f.md) — f\n' "$1" "$2" > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\nRecheck: true\n' "$1" > "$d/f.md"; }; mk fxb 2.6; mk fxc 2.9; export HOME="$t" KB_TODAY=2026-11-24; k="$KB_ENGINE_ROOT/scripts"; o=$("$k/kb-due" --nudge "$t/fxb" "$t/fxc" 2>&1); printf '%s\n' "$o" | grep -qF 'fxb:' && r=1; printf '%s\n' "$o" | grep -F 'fxc:' | grep -qF 'newer than this engine' || r=1; "$k/kb-report" "$t/fxb" --out "$t/rb" >/dev/null 2>&1; [ $? -eq 0 ] || r=1; "$k/kb-report" "$t/fxc" --out "$t/rc" >/dev/null 2>&1; [ $? -eq 1 ] || r=1; rm -rf "$t"; exit $r
+Recheck: t=$(mktemp -d); r=0; d="$t/fxr"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxr\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nkb_contract: "2.7"\nlast_swept: 2026-11-20\n---\n# x\n\n- \133f](f.md) — f\n' > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: fxr\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\nRecheck: true\n\n## B\n\nfact.\n\nSource: \133\133f]]\nVerified: 2026-11-20 · by: agent · method: manual\n' > "$d/f.md"; HOME="$t" KB_TODAY=2026-11-24 "$KB_ENGINE_ROOT/scripts/kb-report" "$d" --out "$t/rep" >/dev/null 2>&1; [ $? -eq 0 ] || r=1; grep -qF 'assertion coverage 1 of 2 sourced sections' "$t/rep/"*.md || r=1; rm -rf "$t"; exit $r
 
 ### A library ahead of the engine's contract, and an archived one
 
-- **`kb-report` lists a library whose contract is newer than the engine's** (#204). It named a library behind the contract, or on one the engine cannot serve, but said nothing about one ahead, which `kb-due` already told to upgrade the engine.
+- **`kb-report` lists a library whose contract is newer than the engine's** (#204). It named a library behind the contract, or on one the engine cannot serve, but said nothing about one ahead, which `kb-due` already told to upgrade the engine. Superseded in part: since #263 `kb-report` no longer lists a library behind on a supported contract.
 - **`kb-report` leaves out a library that declares `archived:` and is not registered** (#204), as `kb-due` already did (#141). It listed that library's sweep and anything else due, though a read-only archive cannot act on a decision. A registered library is still reported: it is served whatever it declares.
 
-Source: [[engine-changelog-v0.5.0]] · [[script-kb-report]]
-Verified: 2026-11-20 · by: agent · method: doc-review
+Source: [[engine-changelog-v0.5.0]] · [[script-kb-report]] · [[engine-changelog-v0.6.0]] (#263)
+Verified: 2026-11-24 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; mkdir -p "$t/h" "$t/lib-a" "$t/lib-b" "$t/lib-c"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n%b---\n# x\n\n- \133f](f.md) — f\n' fxa 'kb_contract: "2.99"\n' > "$t/lib-a/INDEX.md"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n%s---\n# x\n\n- \133f](f.md) — f\n' fxb 'archived: gone\n' > "$t/lib-b/INDEX.md"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n%s---\n# x\n\n- \133f](f.md) — f\n' fxc '' > "$t/lib-c/INDEX.md"; HOME="$t/h" KB_REPORTS="$t/o" "$KB_ENGINE_ROOT/scripts/kb-report" "$t/lib-a" "$t/lib-b" "$t/lib-c" >/dev/null 2>&1; cat "$t/o/"*.md > "$t/rep"; grep -qF 'newer than this engine' "$t/rep" || r=1; grep -qF '## lib-c' "$t/rep" || r=1; grep -qF '## lib-b' "$t/rep" && r=1; rm -rf "$t"; exit $r
 
 ### What the report does when it cannot read something
@@ -155,9 +159,10 @@ Verified: 2026-11-23 · by: agent · method: doc-review
 
 ## What stays attended whatever the schedule does
 
-Resolving a `CONFLICTED` section, deleting knowledge, promoting scope, writing a human stamp, applying the `owner-approved` label, and any fact edit without a person's approval are never automated. `check-blast` still gates the first three. The schedule stores no credentials.
+Resolving a `CONFLICTED` section, deleting knowledge, promoting scope, writing a human stamp, applying the `owner-approved` label, and any fact edit without a person's approval are never automated. `check-blast` still gates the first three. The schedule stores no credentials. ADR-0017 now carries a dated note (2026-11-24, by ADR-0022): "writing a human stamp" no longer names a distinct act, and what stands is that attended decisions are never automated.
 
 The decision names its own review triggers: a packet is applied that a reviewer later finds wrong, the weekly report goes unread for a month, or a cloud schedule can run without stored credentials.
 
-Source: [[adr-0017-unattended-preparation-attended-decisions]]
-Verified: 2026-11-23 · by: agent · method: doc-review
+Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'no longer names a distinct act' "$KB_ENGINE_ROOT/documents/decisions/0017-unattended-preparation-attended-decisions.md"

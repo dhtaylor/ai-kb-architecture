@@ -18,5 +18,6 @@ keywords: [kb-init, scaffold, project knowledge tree, hooksPath, --name]
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-11-20
 - **Artifact location:** `ai-kb:scripts/kb-init` (comment block), read at engine commit `5433f08` on 2026-11-20. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** on 2026-11-24 at engine commit `303082a`, the template line only: a new project tree's `INDEX.md` declares `kb_contract: "2.7"` (it was 2.6). Folded into [[script-reference-tools]]. Nothing else folded changed.
 
 Source for the script reference ([[script-reference-tools]]). Folded from it: its purpose, the governing rule, the already-initialised behavior, the usage line and defaults. The header states no exit codes; they and the scaffolded files were observed by a fixture run. Not folded: implementation detail beyond the header.

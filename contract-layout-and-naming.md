@@ -450,8 +450,10 @@ sweep_interval: <N>d          # how long a kb-audit sweep stays good for. 30d fo
                               # from the horizon: a 90d horizon would imply a 9d nag.
 vendors: [<vendor>, ...]      # a comparative product library only (§1): the vendors its
                               # product:<category> compares. At least two; check-scope checks it.
-agent_ttl: <N>d               # optional: how long an agent stamp stays fresh. Default a tenth of
-                              # the horizon; check-kb fails one not shorter than the horizon (§7).
+unasserted_ttl: <N>d          # optional, contract 2.7: the short lease of an unasserted stamp, one
+                              # with no passing Recheck: behind it, whoever wrote it. Default a
+                              # tenth of the horizon, at least 1d; check-kb fails one not shorter
+                              # than the horizon (§7). Below 2.7 the field is agent_ttl: (§14).
 kb_contract: "<MAJOR.MINOR>"  # optional: the contract version (§14) this library was built to.
                               # Absent is read as 2.0. Quoted, always: a YAML reader turns a bare
                               # 2.10 into the number 2.1. check-kb fails a bare or malformed one.
@@ -464,9 +466,11 @@ links_to:                     # every library a [[library:slug]] link names, and
                               # libraries; check-kb fails one missing.
 ```
 
-Source: [[conventions-contract-rules]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: grep -qF 'how long a kb-audit sweep stays good for. 30d for a library, 14d for' "$KB_ENGINE_ROOT/CONVENTIONS.md"
+Superseded: until engine v0.5.0 the block had `agent_ttl: <N>d` here ("optional: how long an agent stamp stays fresh"); contract 2.7 renames it (see [[releases-and-contract-versioning]]).
+
+Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF 'unasserted_ttl: <N>d          # optional, contract 2.7: the short lease of an unasserted stamp, one' "$KB_ENGINE_ROOT/CONVENTIONS.md" && ! grep -qF 'agent_ttl: <N>d               # optional' "$KB_ENGINE_ROOT/CONVENTIONS.md"
 
 ## The Not covered here line: its form and what it may name
 

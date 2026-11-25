@@ -30,10 +30,12 @@ keywords: [sources, citations, stubs, provenance]
 - [adr-0019-engine-and-reference-library-release-together](adr-0019-engine-and-reference-library-release-together.md) — engine decision: this library takes the engine's release tag; the release-day steps for both repositories
 - [adr-0020-published-libraries-and-consumers](adr-0020-published-libraries-and-consumers.md) — engine decision: links_to names each linked library's origin, a same-named library from elsewhere is a dependency mismatch, a consumer's copy is read-only
 - [adr-0021-engine-state-at-fixed-paths](adr-0021-engine-state-at-fixed-paths.md) — engine decision: the engine's state and config are at fixed paths, XDG_STATE_HOME and XDG_CONFIG_HOME are not read, KB_PACKETS and KB_REPORTS override
+- [adr-0022-evidence-not-identity-sets-the-lease](adr-0022-evidence-not-identity-sets-the-lease.md) — engine decision: the evidence behind a stamp, not who wrote it, sets its lease; unasserted_ttl at contract 2.7; check-stamps retired
 - [conventions-contract-versions](conventions-contract-versions.md) — engine contract text: what each contract version adds, the scope line, attended rechecks
 - [engine-changelog-v0.3.0](engine-changelog-v0.3.0.md) — engine change notes for v0.3.0, the changes after the first release, with issue numbers
 - [engine-changelog-v0.4.0](engine-changelog-v0.4.0.md) — engine change notes after v0.3.0, released as v0.4.0: the read-only role, contract 2.6 and `--ref` pinning as built
 - [engine-changelog-v0.5.0](engine-changelog-v0.5.0.md) — engine change notes for v0.5.0 (the changes after v0.4.0), at tag v0.5.0: fixed paths, KB_TODAY, the nudge and weekly report, kb-verify's reading of stamps
+- [engine-changelog-v0.6.0](engine-changelog-v0.6.0.md) — engine change notes after v0.5.0 (Unreleased, read at a9d98b0): evidence sets the lease, contract 2.7, check-stamps retired, coverage in the nudge, the Attention policy and the kbengine modules
 - [engine-contributing-schedulable](engine-contributing-schedulable.md) — the engine's CONTRIBUTING.md, including its section on commands safe to schedule: setting up a machine, the daily loop, troubleshooting, working on the engine, adding a library
 - [engine-watcher-readme](engine-watcher-readme.md) — engine document: what the Watcher watches, and the allowlist as shipped
 - [state-change-gates](state-change-gates.md) — engine document: every state-changing entry point against the three automation bands
@@ -100,7 +102,7 @@ keywords: [sources, citations, stubs, provenance]
 - [script-check-exec-bits](script-check-exec-bits.md) — comment block of the executable-bit guard
 - [script-check-golden](script-check-golden.md) — header of the golden-set oracle check
 - [script-check-scope](script-check-scope.md) — header of the scope-attribute check
-- [script-check-stamps](script-check-stamps.md) — comment block of the human-stamp guard
+- [script-check-stamps](script-check-stamps.md) — comment block of the human-stamp guard, retired in the engine after v0.5.0 (read at v0.5.0)
 - [script-check-xlinks](script-check-xlinks.md) — header of the cross-library link resolver
 - [script-kb-bootstrap](script-kb-bootstrap.md) — comment block of the per-machine registration script
 - [script-kb-catalog](script-kb-catalog.md) — header of the triage catalog script

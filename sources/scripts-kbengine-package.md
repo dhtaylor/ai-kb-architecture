@@ -18,5 +18,8 @@ keywords: [kbengine, attention, clock, contract, env, factfiles, library, queue,
 - **Date:** undated in the artifact
 - **Date ingested:** 2026-11-20
 - **Artifact location:** `ai-kb:scripts/kbengine/` (module docstrings), read at engine commit `5433f08` on 2026-11-20. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
+- **Re-read:** on 2026-11-24 at engine commit `303082a`, the module docstrings. The package gained `lease`, `lint`, `golden`, `citations`, `transcripts` and `reports`; `attention` gained `items`; `factfiles` gained `tree`, `tree_from`, `FENCE`, `EXCLUDED_DIRS` and `served`; `library` reads `unasserted_ttl`; `contract` gained `rules_version`; `env` gained `nudge_override`.
+- **Re-read:** on 2026-11-24 at engine commit `324e2ce` (main after #263 and #265), `attention.py`'s docstring after #263: three contract states (ahead, unsupported, malformed) make one item and behind is not one. Folded into [[agent-lifecycle-roles]].
+- **Re-read:** on 2026-11-24 at engine commit `a9d98b0` (main after #264), `lease.py` (`Stamp.failed`, `stamp_text`, `record_file`, the queue read once) and `queue.py` (`read`, `stored`) after #264. Folded into [[script-reference-tools]] and [[agent-lifecycle-roles]].
 
 Source for the script reference ([[script-reference-tools]]). Folded from it: each module's docstring purpose and the fact that scripts import the package as a sibling. The function lists inside docstrings were not folded. Not folded: implementation detail beyond the header.

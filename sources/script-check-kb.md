@@ -21,3 +21,4 @@ keywords: [check-kb, kb_contract, contract_status, behind, ahead, unsupported, N
 
 Source for how rules apply by declared contract version, what a library behind or ahead is told, and which majors are supported. Folded from it: the gating rules as the engine implements them, which agree with the contract's section 14. Not folded: the other checks the script makes.
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.
+- **Re-read:** on 2026-11-24 at engine commit `303082a`, the docstring and the diff since v0.5.0. Folded from it: the short-lease check reads `unasserted_ttl:` from contract 2.7 (and fails `agent_ttl:` there), and a fenced `[[slug]]` is not a dead link (#257). The usage line and exit codes are unchanged.

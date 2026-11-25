@@ -21,3 +21,4 @@ keywords: [kb-session-start, SessionStart, SubagentStart, systemMessage, additio
 
 Source for what the hook injects at session start and for a retrieval subagent, and how the nudge reaches the person. Folded from it: the subagent form and why it exists, and the one-line message. Not folded: the shape of the hook's output.
 - **Re-read:** on 2026-11-20 at engine commit `5433f08`, the usage line, defaults and exit codes. Nothing already folded changed.
+- **Re-read:** on 2026-11-24 at engine commit `303082a`, the header and the nudge block. Folded from it: the hook calls `kb-due --nudge --session --summary-out FILE`, no longer decides the `kb.nudge` schedule itself, matches no `KB due — ` text and works out no reports folder, and says in one line when `kb-due` fails.

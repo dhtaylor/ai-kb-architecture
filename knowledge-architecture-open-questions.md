@@ -133,12 +133,12 @@ report. The decision names packets waiting, failed rechecks, drifted or dead sou
 the last report, and a library behind the contract. The script lists a packet waiting, each open queue item,
 how many queue records it cannot read (with the note that `check-kb` names the lines; #204),
 attended rechecks that are due, a sweep or notes awaiting distillation that no packet covers yet, while a sweep
-is due the source stubs marked `Liveness: manual`, a library behind the contract, ahead of the engine's (#204),
-or on one the engine cannot serve, and the past week's `fact not found` runs. This library follows the script ([[unattended-preparation]]).
+is due the source stubs marked `Liveness: manual`, ahead of the engine's contract (#204),
+or on one the engine cannot serve (a library behind no longer is, #263), and the past week's `fact not found` runs. This library follows the script ([[unattended-preparation]]).
 The difference is flagged and not resolved: no source read says which is intended.
 
-Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-apply]] · [[script-kb-report]] · [[engine-changelog-v0.5.0]]
-Verified: 2026-11-20 · by: agent · method: doc-review
+Source: [[adr-0017-unattended-preparation-attended-decisions]] · [[script-kb-apply]] · [[script-kb-report]] · [[engine-changelog-v0.5.0]] · [[engine-changelog-v0.6.0]] (#263)
+Verified: 2026-11-24 · by: agent · method: doc-review
 
 ## Which variables does the regression suite clear: the ones the change notes name, or every declared one?
 
@@ -173,13 +173,6 @@ Verified: 2026-11-21 · by: agent · method: doc-review
 ADR-0001 lists three, dated 2026-09-19 and before its amendment: the commit-SHA divergence warning for the root is not implemented; the bootstrap command does not exist; and two failure branches of the session hook were verified only by pipe test. The bootstrap command exists since ADR-0008. Neither source says whether the divergence warning was built or the failure branches were since observed.
 
 Source: [[adr-0001-kb-root-resolution]] · [[adr-0008-machine-bootstrap]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-
-## Which ADRs does the README's "ADRs 1 to 17" mean?
-
-README's status section lists as built and tested "the contract (version 2.6), ADRs 1 to 17", while its table of paths says `documents/decisions/` holds ADR-0001 to ADR-0021. It does not say whether ADRs 18 to 21 are not yet built and tested, or the line is out of date.
-
-Source: [[engine-readme]]
 Verified: 2026-11-21 · by: agent · method: doc-review
 
 ## Does `kb-bootstrap` with no flag exit 0 when nothing is out of step?
@@ -268,7 +261,7 @@ Verified: 2026-11-21 · by: agent · method: doc-review
 
 ## Does anything fail a Recheck that greps a bare title or subject longer than four words?
 
-The contract says `kb-verify` reports a fetched fragment of four words or fewer, and a (url, fragment) pair backing more than two sections or sections in more than one file, and that "a stamp the assertion backs is no stronger than the assertion". Nothing read says whether any check fails, rather than reports, an assertion that greps a title or subject longer than four words.
+The contract says `kb-verify` reports a fetched fragment of four words or fewer, and a (url, fragment) pair backing more than two sections or sections in more than one file, and that "a stamp the assertion backs is no stronger than the assertion". Nothing read says whether any check fails, rather than reports, an assertion that greps a title or subject longer than four words. Since ADR-0022 the reported findings have a consequence: a flagged assertion is demoted to an unasserted stamp ([[agent-lifecycle-roles]] § A stamp's lease follows its evidence, not its author). The lint still flags only the three kinds it names, so a title or subject longer than four words is not flagged, and so is not demoted.
 
-Source: [[conventions-contract-rules]] (§7)
-Verified: 2026-11-21 · by: agent · method: doc-review
+Source: [[conventions-contract-rules]] (§7) · [[adr-0022-evidence-not-identity-sets-the-lease]]
+Verified: 2026-11-24 · by: agent · method: doc-review

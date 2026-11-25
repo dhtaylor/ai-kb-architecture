@@ -1,6 +1,6 @@
 ---
 name: script-reference-checks
-description: Reference for ai-kb's check scripts at engine commit 5433f08 — for each check-* script, grade-eval, grade-routing, pii-scan and secret-entropy, what it is for, its usage as written, its defaults, its exit codes and what it never does; where the design is explained, it links the section rather than restating it.
+description: Reference for ai-kb's check scripts at engine commit a9d98b0 (check-stamps as read at v0.5.0, before it was retired) — for each check-* script, grade-eval, grade-routing, pii-scan and secret-entropy, what it is for, its usage as written, its defaults, its exit codes and what it never does; where the design is explained, it links the section rather than restating it.
 memory_type: semantic
 domain: knowledge-architecture
 scope: general
@@ -10,11 +10,11 @@ metadata:
   node_type: memory
   created: 2026-11-20
 tags: [knowledge-architecture, scripts, reference, checks]
-keywords: [script reference, exit codes, usage, check-blast, check-embedded-facts, check-exec-bits, check-golden, check-kb, check-scope, check-secrets, check-stamps, check-tool-scope, check-transient, check-xlinks, grade-eval, grade-routing, pii-scan, secret-entropy, --installed, --file, --strict, --redact, --worktree, --transcripts, --labels, owner-approved, lint-allow, default path, usage error]
+keywords: [script reference, exit codes, usage, check-blast, check-embedded-facts, check-exec-bits, check-golden, check-kb, check-scope, check-secrets, check-stamps (retired), check-tool-scope, check-transient, check-xlinks, grade-eval, grade-routing, pii-scan, secret-entropy, --installed, --file, --strict, --redact, --worktree, --transcripts, --labels, owner-approved, lint-allow, default path, usage error]
 ---
 # Script reference: the checks
 
-One section per script in the engine's `scripts/` folder, read at engine commit `5433f08`. Each gives the purpose in the header's own words, the usage line as written, defaults, exit codes and what the script never does. Why a check exists and what it found is in the design files linked from each section; this file does not repeat it. The data files `secret-patterns.txt` and `pii-allowlist.txt` are read by the scans below and are not documented here. The `kb-*` scripts and the `kbengine` package are in [[script-reference-tools]].
+One section per script in the engine's `scripts/` folder, last re-read at engine commit `a9d98b0` (each stub records the commit it was read at). Each gives the purpose in the header's own words, the usage line as written, defaults, exit codes and what the script never does. Why a check exists and what it found is in the design files linked from each section; this file does not repeat it. The data files `secret-patterns.txt` and `pii-allowlist.txt` are read by the scans below and are not documented here. The `kb-*` scripts and the `kbengine` package are in [[script-reference-tools]].
 
 Where a header states no exit code, the section says so. A line marked "Observed" was seen by running the script at that commit, and is not in the header.
 
@@ -76,15 +76,18 @@ Usage: `check-golden <library-root>`
 - Exit codes: "Exit 0 clean, 1 on any defect." Observed: no argument prints `usage: check-golden <library-root>` and exits 2; a folder with no golden set exits 1.
 - Never: "No LLM, no agent, no network." It "cannot tell whether an agent answers from the file or from its own memory"; that is [[retrieval-eval-integrity]]'s answer-grounding half, run by `grade-eval`.
 
+In v0.6.0 the record rules, the grading and the citation resolution live in engine modules, `kbengine.golden`, `kbengine.citations` and `kbengine.transcripts` (#252), which ended the load cycle in which `check-golden` and `grade-eval` each loaded the other; the five scripts print the same reports and exit with the same codes. A record's optional `expected_evidence:` is checked against the file by `check-golden` and graded by `grade-eval` (#237, [[contract-retrieval-and-verification]] § The golden set). `check-golden` reads reachability through `factfiles` (#251) and no longer loads `check-kb`.
+
 The oracle's role and its integrity rules: already covered, [[retrieval-eval-integrity]] § An oracle must have one reader.
 
-Source: [[script-check-golden]]
-Verified: 2026-11-21 · by: agent · method: doc-review
+Source: [[script-check-golden]] · [[engine-changelog-v0.6.0]] (#237, #251, #252)
+Verified: 2026-11-24 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; "$KB_ENGINE_ROOT/scripts/check-golden" >/dev/null 2>&1; [ $? -eq 2 ] || r=1; "$KB_ENGINE_ROOT/scripts/check-golden" "$t" >/dev/null 2>&1; [ $? -eq 1 ] || r=1; grep -qF 'Exit 0 clean, 1 on any defect.' "$KB_ENGINE_ROOT/scripts/check-golden" || r=1; rm -rf "$t"; exit $r
+Recheck: t=$(mktemp -d); r=0; mk() { d="$t/$1"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' "$1" > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: %s\nscope: general\nverified: 2026-11-20\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nThe sky is blue.\n\nSource: \133\133f]]\n%b' "$1" "$3" > "$d/f.md"; printf -- '---\nname: %s-golden\ndescription: d\nmemory_type: reference\ndomain: %s\nscope: general\nmetadata:\n  type: reference\n  node_type: golden-set\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# g\n\nUnresolved case: not applicable.\n\n```yaml\n- case: positive\n  question: q\n  expected_file: f.md\n  expected_excerpt: The sky is blue.\n  expected_evidence: %s\n- case: negative\n  question: n1\n  expected_file:\n  expected_excerpt: fact not found — check KB\n- case: negative\n  question: n2\n  expected_file:\n  expected_excerpt: fact not found — check KB\n```\n' "$1" "$1" "$2" > "$d/$1-golden.md"; }; V='Verified: 2026-11-20 · by: agent · method: manual\n'; mk fxg check "${V}Recheck: true\n"; mk fxh word "${V}Recheck: true\n"; mk fxs word "$V"; mk fxu word ''; g="$KB_ENGINE_ROOT/scripts/check-golden"; "$g" "$t/fxg" >/dev/null 2>&1 || r=1; "$g" "$t/fxs" >/dev/null 2>&1 || r=1; "$g" "$t/fxh" > "$t/h" 2>&1; [ $? -eq 1 ] && grep -qF "expected_evidence 'word' but the section holding the excerpt in f.md carries a Recheck:" "$t/h" || r=1; "$g" "$t/fxu" > "$t/u" 2>&1; [ $? -eq 1 ] && grep -qF 'has no Verified: stamp, so retrieval reports it unstamped, not as someone' "$t/u" || r=1; rm -rf "$t"; exit $r
 
 ## check-kb
 
-Purpose: "partial implementation of the CONVENTIONS §13 check table." Within a single root it covers frontmatter lint, `[[slug]]` and router links, slug uniqueness, orphans, stamp placement, Recheck syntax, the `verified:` floor, section provenance (fails from contract 2.5, warns below), `links_to` (fails from 2.6), `agent_ttl`, `kb_contract` and contract gating.
+Purpose: "partial implementation of the CONVENTIONS §13 check table." Within a single root it covers frontmatter lint, `[[slug]]` and router links, slug uniqueness, orphans, stamp placement, Recheck syntax, the `verified:` floor, section provenance (fails from contract 2.5, warns below), `links_to` (fails from 2.6), the short lease (`unasserted_ttl`, and `agent_ttl` below contract 2.7; `agent_ttl:` fails from 2.7), `kb_contract` and contract gating.
 
 Usage: `check-kb <knowledge-root>`
 
@@ -93,11 +96,14 @@ Usage: `check-kb <knowledge-root>`
 - Exempt from the orphan rule, per §3: the root `INDEX.md`, the golden set and `documents/`.
 - Elsewhere, per the header: scope values (check-scope), `[[library:slug]]` (check-xlinks), golden-set integrity (check-golden), secrets, exec bits, embedded facts.
 
+A `[[slug]]` inside a code fence is no longer reported as a dead link, nor is a fenced link naming a path-addressed file (#257): a fence is an example. One fence definition, `factfiles.FENCE`, serves `check-kb`, `check-xlinks` and the stamp checks, and the dead-link check reads links through `check-xlinks`' reader. The change loosens a check and rejects nothing new, so no contract version changes (CONVENTIONS §14). `check-kb`'s file readers (`kb_files`, `unsourced`, `unstamped_keys`, `marked_sections`, `reachable`) moved into `factfiles` (#251); a router that is not valid UTF-8 is read with replacement characters and no longer crashes it.
+
 How rules apply by declared contract version: already covered, [[releases-and-contract-versioning]] § A library declares its version, and rules apply by it. Orphans and the router rule: [[guardrail-verification]].
 
-Source: [[script-check-kb]]
-Verified: 2026-11-21 · by: agent · method: doc-review
+Source: [[script-check-kb]] · [[engine-changelog-v0.6.0]] (#236, #251, #257)
+Verified: 2026-11-24 · by: agent · method: doc-review
 Recheck: t=$(mktemp -d); r=0; "$KB_ENGINE_ROOT/scripts/check-kb" >/dev/null 2>&1; [ $? -eq 2 ] || r=1; "$KB_ENGINE_ROOT/scripts/check-kb" "$t" >/dev/null 2>&1; [ $? -eq 1 ] || r=1; grep -qF 'Exit 0 clean, 1 on any defect.' "$KB_ENGINE_ROOT/scripts/check-kb" || r=1; rm -rf "$t"; exit $r
+Recheck: t=$(mktemp -d); r=0; d="$t/fxz"; mkdir -p "$d"; printf -- '---\nname: x-index\ndescription: d\nmemory_type: reference\ndomain: fxz\nscope: general\nfreshness_horizon: 90d\nverifier_budget: 5\nsweep_interval: 30d\nkb_contract: "2.7"\nlast_swept: never\n---\n# x\n\n- \133f](f.md) — f\n' > "$d/INDEX.md"; printf -- '---\nname: f\ndescription: d\nmemory_type: semantic\ndomain: fxz\nscope: general\nmetadata:\n  type: fact\n  node_type: memory\n  created: 2026-01-01\ntags: [x]\nkeywords: [x]\n---\n# f\n\n## A\n\nExample link syntax:\n\n```\n\133\133no-such-slug]]\n\133\133INDEX]]\n```\n\nSource: manual\n' > "$d/f.md"; "$KB_ENGINE_ROOT/scripts/check-kb" "$d" >/dev/null 2>&1 || r=1; printf '\nSee \133\133no-such-slug]] outside a fence.\n' >> "$d/f.md"; "$KB_ENGINE_ROOT/scripts/check-kb" "$d" >/dev/null 2>&1 && r=1; rm -rf "$t"; exit $r
 
 ## check-scope
 
@@ -143,20 +149,11 @@ Recheck: t=$(mktemp -d); r=0; v=$(printf 'Ab3%sxyzQ9' '$'); printf 'password: %s
 
 ## check-stamps
 
-Purpose: "refuse a commit that claims human verification while announcing that an agent wrote it." A commit whose message carries a Claude co-authorship trailer and which adds a `by: human` stamp is refused.
+`check-stamps` is retired after v0.5.0 (#240, ADR-0022): the lease follows a stamp's evidence, not its `by:`, so there is nothing for it to refuse. The script, the engine's guardrails step, the library guardrails template's "Stamp honesty" step and their cases in `run-checks` are removed; v0.5.0 still ships it. **A library that copied the template must delete its "Stamp honesty" step before it moves its engine pin to the first release without `scripts/check-stamps`, or its CI fails.** What replaced it is the evidence tiers: [[contract-provenance-and-currency]] § Evidence tiers, and [[agent-lifecycle-roles]] § A stamp's lease follows its evidence, not its author. The script's own header, as read at v0.5.0, is the stub [[script-check-stamps]].
 
-Usage: `check-stamps [<range>]     default: HEAD~1..HEAD (HEAD alone on a first commit)`
-
-- In CI, pass the pushed range (before..after). "A repository with no commits yet (a library before its first commit) has nothing to check and skips."
-- Exit codes: "Exit 0 clean, 1 on any offending commit." Observed: not a git repository, or a range that does not resolve, exits 2; no history yet prints a skip and exits 0.
-- Limit, stated by the header: "It cannot stop a determined author: drop the trailer and the check sees nothing." It is "a guard against the accident — an agent restamping in passing — not a control against a person who means it." It does not derive `by:` from the git committer identity, because "an agent commits under the human's own git identity".
-- Why `by: human` is worth guarding: §7 gives a human stamp "TEN TIMES the TTL of an agent one".
-
-The contract's statement of what `by:` can and cannot prove is §7 of CONVENTIONS.md; no library section covers this script.
-
-Source: [[script-check-stamps]]
-Verified: 2026-11-21 · by: agent · method: doc-review
-Recheck: t=$(mktemp -d); r=0; export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 GIT_AUTHOR_NAME=a GIT_AUTHOR_EMAIL=a@b.c GIT_COMMITTER_NAME=a GIT_COMMITTER_EMAIL=a@b.c; git init -q "$t/g"; cd "$t/g"; printf 'Verified: 2026-11-01 · by: agent · method: manual\n' > f.md; git add f.md; git commit -qm one; sed -i 's/by: agent/by: human/' f.md; git add f.md; git commit -qm 'two' -m 'Co-Authored-By: Claude <x@y.z>'; "$KB_ENGINE_ROOT/scripts/check-stamps" >/dev/null 2>&1; [ $? -eq 1 ] || r=1; git commit -q --amend -m two; "$KB_ENGINE_ROOT/scripts/check-stamps" >/dev/null 2>&1 || r=1; cd /; "$KB_ENGINE_ROOT/scripts/check-stamps" >/dev/null 2>&1; [ $? -eq 2 ] || r=1; rm -rf "$t"; exit $r
+Source: [[script-check-stamps]] (read at v0.5.0) · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#240)
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: [ ! -e "$KB_ENGINE_ROOT/scripts/check-stamps" ] && grep -qF '`check-stamps` is retired (#240, ADR-0022).' "$KB_ENGINE_ROOT/CHANGELOG.md" && ! grep -qF 'Stamp honesty' "$KB_ENGINE_ROOT/documents/library-guardrails.yml" && ! grep -qF 'check-stamps' "$KB_ENGINE_ROOT/.github/workflows/guardrails.yml"
 
 ## check-tool-scope
 

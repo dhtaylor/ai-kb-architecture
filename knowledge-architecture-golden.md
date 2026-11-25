@@ -808,9 +808,9 @@ contradiction lands.
   expected_excerpt: fact not found — check KB
 
 - case: positive
-  question: Which check refuses a commit that stamps by: human while its message carries a Claude co-authorship trailer, and can it be evaded?
+  question: Is the check that refused a commit stamping by: human under an agent co-authorship trailer still in the engine?
   expected_file: script-reference-checks.md
-  expected_excerpt: "It cannot stop a determined author: drop the trailer and the check sees nothing."
+  expected_excerpt: "is retired after v0.5.0 (#240, ADR-0022)"
 
 - case: positive
   question: Does check-embedded-facts catch an inlined table name or enum value?
@@ -1050,7 +1050,7 @@ contradiction lands.
 - case: positive
   question: How many checks does the contract list for verifying a domain, and are they all built?
   expected_file: contract-retrieval-and-verification.md
-  expected_excerpt: All twenty-eight are built.
+  expected_excerpt: All twenty-seven are built.
 
 - case: positive
   question: What does the stamp honesty check refuse?
@@ -1160,7 +1160,7 @@ contradiction lands.
 - case: positive
   question: Does a kb-retrieve subagent's context carry the nudge that a library is behind the engine's contract?
   expected_file: retrieval-agent-behavior.md
-  expected_excerpt: "the session-start context named each behind library, and the `--subagent` context named none"
+  expected_excerpt: "the nudge names no library that is merely behind, in either context"
 
 - case: positive
   question: Can a sampled retrieval run be graded while it is still running?
@@ -1304,3 +1304,72 @@ contradiction lands.
   question: Who decided that the engine's state should live at fixed paths?
   expected_file: ""
   expected_excerpt: "fact not found — check KB"
+
+# Added 2026-11-24, fold of the engine's Unreleased change notes (v0.6.0) and ADR-0022: the lease follows the evidence, contract 2.7, check-stamps retired, coverage in the nudge, what retrieval says backs a fact, expected_evidence.
+- case: positive
+  question: Does a stamp that says by human get a longer lease than one an agent wrote?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "a person's stamp buys no longer lease than an agent's"
+  expected_evidence: check
+
+- case: positive
+  question: Is a library below full assertion coverage named in the session-start nudge when nothing else is due?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "Coverage is a measure, not something due, but a library below full coverage is named in the nudge even when nothing is due"
+  expected_evidence: check
+
+- case: positive
+  question: Can a library that declares contract 2.7 still name its short lease agent_ttl?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "A 2.7 library that still declares agent_ttl fails check-kb."
+  expected_evidence: check
+
+- case: positive
+  question: What must a library that copied the guardrails template do before it moves its engine pin past v0.5.0?
+  expected_file: script-reference-checks.md
+  expected_excerpt: "A library that copied the template must delete its \"Stamp honesty\" step before it moves its engine pin"
+  expected_evidence: check
+
+- case: positive
+  question: Does kb-retrieve refuse a fact because its section has a stamp but no check behind it?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "never refuse, withhold or soften a fact for lacking a check"
+  expected_evidence: check
+
+- case: positive
+  question: Why does retrieval say a fact carries a check and not that it is asserted?
+  expected_file: contract-retrieval-and-verification.md
+  expected_excerpt: "Retrieval cannot run the weak-assertion lint, so it says"
+  expected_evidence: check
+
+- case: positive
+  question: What does session start say when kb-due fails?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "kb-due failed (exit N), so the knowledge-base nudge is unavailable this session."
+  expected_evidence: check
+
+# Added 2026-11-24, refresh after ai-kb #263 (a library behind on a supported contract is not a decision).
+- case: positive
+  question: Is a library built to contract 2.6, on an engine that knows 2.7, a decision in the weekly report or a clause in the nudge?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "Since #263 it is not told by the session-start nudge and is not a decision in the weekly report"
+  expected_evidence: check
+
+# Added 2026-11-24, refresh after ai-kb #264 (a failed check makes a stamp unasserted until a newer stamp replaces it).
+- case: positive
+  question: Does a fact whose check just failed keep its full lease and its place in assertion coverage?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "A section with an open failed-recheck record takes the short lease and leaves assertion coverage."
+  expected_evidence: check
+
+- case: positive
+  question: When a passing attended kb-verify apply restamps a section whose check had failed, is it asserted again, and does the record close?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "and it is asserted again at once while the record stays open for the Arbiter"
+  expected_evidence: check
+
+- case: positive
+  question: Does kb-retrieve refuse a fact whose check last failed?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "A failed check is no exception: never refuse, withhold or soften a fact for a failed check."
+  expected_evidence: check
