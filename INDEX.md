@@ -5,10 +5,10 @@ memory_type: reference
 domain: knowledge-architecture
 scope: general
 freshness_horizon: 90d
-agent_ttl: 30d
+unasserted_ttl: 30d
 verifier_budget: 15
 sweep_interval: 30d
-kb_contract: "2.6"
+kb_contract: "2.7"
 last_swept: 2026-11-23
 metadata:
   type: index
