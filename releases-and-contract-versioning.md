@@ -49,7 +49,7 @@ Verified: 2026-11-23 · by: agent · method: doc-review
 
 This library is the one exception to a library versioning itself. It is, in essence, the engine's detailed documentation: how the engine works and why. It is folded from the engine before each release, so it describes one engine version, and it is tied to the engine in a way no other library is. Every other library is released separately and versions itself.
 
-Each engine release `vX.Y.Z` tags this library `vX.Y.Z` on the same day, at the library commit verified against that engine. The rule starts at v0.4.0 for both, so this library goes from v0.2.0 to v0.4.0, and no library v0.3.0 exists. Before it, the two never shared a number: engine v0.2.0 with library v0.1.0 on 2026-10-16, and engine v0.3.0 with library v0.2.0 on 2026-10-31. Since then they have shared it: v0.4.0 on 2026-11-12 and v0.5.0 on 2026-11-23.
+Each engine release `vX.Y.Z` tags this library `vX.Y.Z` on the same day, at the library commit verified against that engine. The rule starts at v0.4.0 for both, so this library goes from v0.2.0 to v0.4.0, and no library v0.3.0 exists. Before it, the two never shared a number: engine v0.2.0 with library v0.1.0 on 2026-10-16, and engine v0.3.0 with library v0.2.0 on 2026-10-31. Since then they have shared it: v0.4.0 on 2026-11-12 and v0.5.0 on 2026-11-23, then v0.6.0 on 2026-11-25.
 
 - **Published tags stay as they are.** Library v0.1.0 and v0.2.0 are not moved or renamed, because someone may have pinned them.
 - **The notes still name the engine.** This library's release notes say "verified against ai-kb vX.Y.Z" and name the library contract it declares. "ADR-0016 requires a library's notes to name only the contract. Naming the engine too is this library's rule. A matching number does not replace that proof."
@@ -66,7 +66,8 @@ On release day the two-day freeze covers both repositories. The release script s
 The decision states its costs. The library's number skips v0.3.0, which looks like a missing release to someone reading its tag list, and its v0.4.0 notes say why. A library-only fix has no release of its own. And the library's version number no longer says how much the library changed, so its changelog or release notes have to. It is to be revisited if this library ever needs a release the engine does not, or if a second library joins the release package.
 
 Source: [[adr-0019-engine-and-reference-library-release-together]]
-Verified: 2026-11-23 · by: agent · method: doc-review
+Verified: 2026-11-24 · by: agent · method: doc-review
+Recheck: grep -qF '| 2026-11-25 | v0.6.0 | v0.6.0 |' "$KB_ENGINE_ROOT/documents/decisions/0019-engine-and-reference-library-release-together.md"
 
 ## The contract has its own version, so the engine can tighten a rule without breaking a library
 
