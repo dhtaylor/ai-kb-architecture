@@ -256,5 +256,5 @@ README: "This is early, working software, version 0.6.0, with one author so far.
 The license is MIT and "covers this engine only. Each domain library is its own repository, with its own terms."
 
 Source: [[engine-readme]] · [[conventions-contract-versions]] (contract 2.7)
-Verified: 2026-11-25 · by: agent · method: doc-review
+Verified: 2026-11-24 · by: agent · method: doc-review
 Recheck: grep -qE 'This is early, working software, version 0\.[0-9]+\.[0-9]+, with one author so far\.' "$KB_ENGINE_ROOT/README.md" && grep -qF 'the contract (version 2.7), the ADRs,' "$KB_ENGINE_ROOT/README.md"
