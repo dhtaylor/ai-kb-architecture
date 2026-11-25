@@ -1373,3 +1373,10 @@ contradiction lands.
   expected_file: retrieval-agent-behavior.md
   expected_excerpt: "A failed check is no exception: never refuse, withhold or soften a fact for a failed check."
   expected_evidence: check
+
+# Added 2026-11-25, fold of ADR-0019's amendment for v0.6.1: the library is pinned to the new engine tag before it is tagged.
+- case: positive
+  question: On release day, at which commit is ai-kb-architecture tagged?
+  expected_file: releases-and-contract-versioning.md
+  expected_excerpt: "Tag this library `vX.Y.Z` at the commit step 4 merged"
+  expected_evidence: check
