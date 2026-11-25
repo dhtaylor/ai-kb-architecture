@@ -283,7 +283,7 @@ Superseded: until engine v0.5.0 this bullet was "Trust tiers" (agent TTL "**1/10
 
 Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#264) · [[adr-0005-currency-cadence]] (its trust tiers, superseded)
 Verified: 2026-11-24 · by: agent · method: doc-review
-Recheck: grep -qF '`freshness_horizon`. **Passing** means the assertion lint above does not flag it and the library'"'"'s' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF 'stamp**, someone'"'"'s word, and stays fresh for a tenth of the horizon, whether `by:` says `human` or' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF '**High-blast-radius** facts follow the same evidence rules, and are gated by consequence: **an' "$KB_ENGINE_ROOT/CONVENTIONS.md" && ! grep -qF 'Agent-verified TTL is materially shorter' "$KB_ENGINE_ROOT/CONVENTIONS.md"
+Recheck: grep -qF '`freshness_horizon`. **Passing** means the assertion lint above does not flag it and the library'"'"'s' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF 'stamp. Such a record has `category: stale-recheck` and `status: open`, its `file:` and `section:`' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF 'unreadable queue and an unreadable record date demote nothing.' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF 'stamp**, someone'"'"'s word, and stays fresh for a tenth of the horizon, whether `by:` says `human` or' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF '**High-blast-radius** facts follow the same evidence rules, and are gated by consequence: **an' "$KB_ENGINE_ROOT/CONVENTIONS.md" && ! grep -qF 'Agent-verified TTL is materially shorter' "$KB_ENGINE_ROOT/CONVENTIONS.md"
 
 ## Absent is not fresh, and the verified floor over nothing or over a gap
 

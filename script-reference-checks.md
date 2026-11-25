@@ -14,7 +14,7 @@ keywords: [script reference, exit codes, usage, check-blast, check-embedded-fact
 ---
 # Script reference: the checks
 
-One section per script in the engine's `scripts/` folder, read at engine commit `5433f08`. Each gives the purpose in the header's own words, the usage line as written, defaults, exit codes and what the script never does. Why a check exists and what it found is in the design files linked from each section; this file does not repeat it. The data files `secret-patterns.txt` and `pii-allowlist.txt` are read by the scans below and are not documented here. The `kb-*` scripts and the `kbengine` package are in [[script-reference-tools]].
+One section per script in the engine's `scripts/` folder, last re-read at engine commit `a9d98b0` (each stub records the commit it was read at). Each gives the purpose in the header's own words, the usage line as written, defaults, exit codes and what the script never does. Why a check exists and what it found is in the design files linked from each section; this file does not repeat it. The data files `secret-patterns.txt` and `pii-allowlist.txt` are read by the scans below and are not documented here. The `kb-*` scripts and the `kbengine` package are in [[script-reference-tools]].
 
 Where a header states no exit code, the section says so. A line marked "Observed" was seen by running the script at that commit, and is not in the header.
 

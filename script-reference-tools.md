@@ -14,7 +14,7 @@ keywords: [script reference, exit codes, usage, defaults, kb-apply, kb-backup, k
 ---
 # Script reference: the kb-* tools and the kbengine package
 
-One section per `kb-*` script in the engine's `scripts/` folder, read at engine commit `5433f08`, then the `kbengine` package. Each gives the purpose in the header's own words, the usage as written, defaults, exit codes and what the script never does. The design behind a script is in the design files linked from its section and is not repeated. The check scripts are in [[script-reference-checks]]. A line marked "Observed" was seen by running the script at that commit and is not in the header.
+One section per `kb-*` script in the engine's `scripts/` folder, last re-read at engine commit `a9d98b0` (each stub records the commit it was read at), then the `kbengine` package. Each gives the purpose in the header's own words, the usage as written, defaults, exit codes and what the script never does. The design behind a script is in the design files linked from its section and is not repeated. The check scripts are in [[script-reference-checks]]. A line marked "Observed" was seen by running the script at that commit and is not in the header.
 
 ## kb-apply
 

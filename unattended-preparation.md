@@ -73,7 +73,7 @@ Recheck: grep -qF 'TOOLS = "Read,Grep,Glob"' "$KB_ENGINE_ROOT/scripts/kb-prepare
 - each open queue item, by category and location;
 - rechecks that are due but marked `Recheck (attended):`, which a scheduled run skips (see [[agent-lifecycle-roles]]);
 - a sweep that is due, or notes awaiting distillation, that no packet covers yet;
-- a library ahead of the engine's contract, or on one the engine cannot serve; one merely behind on a supported contract is not a decision (#263).
+- a library ahead of the engine's contract, or on one the engine cannot serve; one merely behind on a supported contract is not a decision (#263). Superseded: until #263 this bullet also listed "a library behind the contract".
 
 The report opens with assertion coverage for every library (#239, ADR-0022): the sections with an asserted stamp over the sections that cite a source, "0 of N" when none is asserted, listed even for a library with nothing to decide. It is a measure, not a decision, so it never counts toward the decisions waiting. Which items a library has, and which of them are decisions, is decided in one place, `Attention.items` ([[agent-lifecycle-roles]] § Cadence is surfaced at session start), and `kb-report` words them imperatively where `kb-due` words them tersely (#253).
 
