@@ -243,8 +243,19 @@ Recheck: grep -qF 'a page cannot state twenty different specific facts in one' "
 
 - **Evidence tiers.** The evidence behind a stamp sets its lease; who wrote it does not
   (ADR-0022). An **asserted
-  stamp**, one backed by a passing `Recheck:` that the assertion lint above does not flag, attended
-  or not, stays fresh for the full `freshness_horizon`. Every other stamp is an **unasserted
+  stamp**, one backed by a passing `Recheck:`, attended or not, stays fresh for the full
+  `freshness_horizon`. **Passing** means the assertion lint above does not flag it and the library's
+  `needs-attention.md` holds no open failed-recheck record raised against the section's current
+  stamp. Such a record has `category: stale-recheck` and `status: open`, its `file:` and `section:`
+  name the section, and its `stamp:` equals the stamp's content after `Verified:` (`<date> · by:
+  <by> · method: <method>`, as `kb-verify` writes it). A failed check is reported and never applied
+  (above), so the record is how the failure reaches the stamp: the section is unasserted, on the
+  short lease and out of assertion coverage. It stays so until a newer stamp replaces the one the
+  record was raised against, such as a passing attended `kb-verify --apply`, which makes it asserted
+  again at once. The record itself stays open as the Arbiter's decision, and nothing in the engine
+  closes one. A record with no `stamp:` (an older one) covers a stamp dated on or before the
+  record's `date:`. A `stale-recheck-error` (a timeout, or a command that could not run), an
+  unreadable queue and an unreadable record date demote nothing. Every other stamp is an **unasserted
   stamp**, someone's word, and stays fresh for a tenth of the horizon, whether `by:` says `human` or
   `agent`. The lint costs tier: an assertion it flags is demoted to unasserted, which stays a warning
   for the sweep and now has a consequence. A domain may set the short lease with `unasserted_ttl`
@@ -268,11 +279,11 @@ Recheck: grep -qF 'a page cannot state twenty different specific facts in one' "
   nobody reads twice. Both first sweeps read it that way and filed 11 such items; the category was
   underspecified, and this paragraph is the repair.
 
-Superseded: until engine v0.5.0 this bullet was "Trust tiers" (agent TTL "**1/10th**" of the horizon, `agent_ttl` to change it, human re-verification for a high-blast-radius fact); ADR-0022 replaced it with evidence tiers, and contract 2.7 renames the field (see [[releases-and-contract-versioning]]).
+Superseded: until engine v0.5.0 this bullet was "Trust tiers" (agent TTL "**1/10th**" of the horizon, `agent_ttl` to change it, human re-verification for a high-blast-radius fact); ADR-0022 replaced it with evidence tiers, and contract 2.7 renames the field (see [[releases-and-contract-versioning]]). Superseded in part: until #264 "passing" only meant the lint did not flag the assertion.
 
-Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[adr-0005-currency-cadence]] (its trust tiers, superseded)
+Source: [[conventions-contract-rules]] · [[adr-0022-evidence-not-identity-sets-the-lease]] · [[engine-changelog-v0.6.0]] (#264) · [[adr-0005-currency-cadence]] (its trust tiers, superseded)
 Verified: 2026-11-24 · by: agent · method: doc-review
-Recheck: grep -qF 'stamp**, someone'"'"'s word, and stays fresh for a tenth of the horizon, whether `by:` says `human` or' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF '**High-blast-radius** facts follow the same evidence rules, and are gated by consequence: **an' "$KB_ENGINE_ROOT/CONVENTIONS.md" && ! grep -qF 'Agent-verified TTL is materially shorter' "$KB_ENGINE_ROOT/CONVENTIONS.md"
+Recheck: grep -qF '`freshness_horizon`. **Passing** means the assertion lint above does not flag it and the library'"'"'s' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF 'stamp**, someone'"'"'s word, and stays fresh for a tenth of the horizon, whether `by:` says `human` or' "$KB_ENGINE_ROOT/CONVENTIONS.md" && grep -qF '**High-blast-radius** facts follow the same evidence rules, and are gated by consequence: **an' "$KB_ENGINE_ROOT/CONVENTIONS.md" && ! grep -qF 'Agent-verified TTL is materially shorter' "$KB_ENGINE_ROOT/CONVENTIONS.md"
 
 ## Absent is not fresh, and the verified floor over nothing or over a gap
 

@@ -1354,3 +1354,22 @@ contradiction lands.
   expected_file: releases-and-contract-versioning.md
   expected_excerpt: "Since #263 it is not told by the session-start nudge and is not a decision in the weekly report"
   expected_evidence: check
+
+# Added 2026-11-24, refresh after ai-kb #264 (a failed check makes a stamp unasserted until a newer stamp replaces it).
+- case: positive
+  question: Does a fact whose check just failed keep its full lease and its place in assertion coverage?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "A section with an open failed-recheck record takes the short lease and leaves assertion coverage."
+  expected_evidence: check
+
+- case: positive
+  question: When a passing attended kb-verify apply restamps a section whose check had failed, is it asserted again, and does the record close?
+  expected_file: agent-lifecycle-roles.md
+  expected_excerpt: "and it is asserted again at once while the record stays open for the Arbiter"
+  expected_evidence: check
+
+- case: positive
+  question: Does kb-retrieve refuse a fact whose check last failed?
+  expected_file: retrieval-agent-behavior.md
+  expected_excerpt: "A failed check is no exception: never refuse, withhold or soften a fact for a failed check."
+  expected_evidence: check

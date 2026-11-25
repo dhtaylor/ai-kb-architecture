@@ -265,10 +265,3 @@ The contract says `kb-verify` reports a fetched fragment of four words or fewer,
 
 Source: [[conventions-contract-rules]] (§7) · [[adr-0022-evidence-not-identity-sets-the-lease]]
 Verified: 2026-11-24 · by: agent · method: doc-review
-
-## Does an asserted stamp need the check to have passed, or only to exist and not be flagged?
-
-ADR-0022 and CONVENTIONS §7 say an asserted stamp is one "backed by a passing `Recheck:` that the assertion lint above does not flag". `kbengine.lease` marks a stamp asserted when it carries a `Recheck:` the lint does not flag, whatever the last run found, and assertion coverage counts a section "however old" its stamp. What a failed check does to the stamp's tier before a person acts on the queue item is not stated in the sources read.
-
-Source: [[adr-0022-evidence-not-identity-sets-the-lease]] · [[conventions-contract-rules]] (§7) · [[scripts-kbengine-package]]
-Verified: 2026-11-24 · by: agent · method: doc-review
