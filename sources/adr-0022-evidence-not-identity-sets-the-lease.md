@@ -18,5 +18,6 @@ keywords: [ADR-0022, asserted stamp, unasserted stamp, lease, evidence tier, una
 - **Date:** 2026-11-23
 - **Date ingested:** 2026-11-24
 - **Artifact location:** `ai-kb:documents/decisions/0022-evidence-not-identity-sets-the-lease.md` at engine commit `303082a`. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record. Status Accepted; target v0.6.0.
+- **Re-read:** on 2026-11-24 at engine commit `a9d98b0` (main after #264), the new implementation bullet, "Passing" means no open failed-recheck record raised against the current stamp (2026-11-24, #264). Folded into [[agent-lifecycle-roles]] and [[contract-provenance-and-currency]].
 
 The engine's decision record for what sets a stamp's lease. Folded from it: the problem, the options weighed, the nine decisions, the consequences and the section on what changed at implementation. Not folded: the decider, the figures for the six libraries registered on the engine's machine on 2026-11-23 beyond the headline.
