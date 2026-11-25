@@ -49,7 +49,7 @@ Verified: 2026-11-23 · by: agent · method: doc-review
 
 This library is the one exception to a library versioning itself. It is, in essence, the engine's detailed documentation: how the engine works and why. It is folded from the engine before each release, so it describes one engine version, and it is tied to the engine in a way no other library is. Every other library is released separately and versions itself.
 
-Each engine release `vX.Y.Z` tags this library `vX.Y.Z` on the same day, at the library commit verified against that engine. The rule starts at v0.4.0 for both, so this library goes from v0.2.0 to v0.4.0, and no library v0.3.0 exists. Before it, the two never shared a number: engine v0.2.0 with library v0.1.0 on 2026-10-16, and engine v0.3.0 with library v0.2.0 on 2026-10-31. Since then they have shared it: v0.4.0 on 2026-11-12 and v0.5.0 on 2026-11-23, then v0.6.0 on 2026-11-25.
+Each engine release `vX.Y.Z` tags this library `vX.Y.Z` on the same day, at the library commit verified against that engine. The rule starts at v0.4.0 for both, so this library goes from v0.2.0 to v0.4.0, and no library v0.3.0 exists. Before it, the two never shared a number: engine v0.2.0 with library v0.1.0 on 2026-10-16, and engine v0.3.0 with library v0.2.0 on 2026-10-31. Since then they have shared it: v0.4.0 on 2026-11-12 and v0.5.0 on 2026-11-23, then v0.6.0 and v0.6.1 on 2026-11-25.
 
 - **Published tags stay as they are.** Library v0.1.0 and v0.2.0 are not moved or renamed, because someone may have pinned them.
 - **The notes still name the engine.** This library's release notes say "verified against ai-kb vX.Y.Z" and name the library contract it declares. "ADR-0016 requires a library's notes to name only the contract. Naming the engine too is this library's rule. A matching number does not replace that proof."
@@ -57,17 +57,20 @@ Each engine release `vX.Y.Z` tags this library `vX.Y.Z` on the same day, at the 
 
 On release day the two-day freeze covers both repositories. The release script stops at the first step that fails:
 
-1. Preflight: both `main` branches are still the commits the fresh-clone check passed, neither repository has tag `vX.Y.Z` yet, both working trees are clean, and the release pull request is green with the checked commit as its head.
+1. Preflight: both `main` branches are still the commits the fresh-clone check passed, neither repository has tag `vX.Y.Z` yet, both working trees are clean, and the release pull request is green with the checked commit as its head. This library's release pull request is open, and it differs from the library commit the fresh-clone check passed only by what step 4 needs the tag for: its CI engine pin, and whatever that release's upgrade note says moves with the pin.
 2. Merge the engine's release pull request, and confirm the merged tree matches the checked head.
 3. Tag the engine `vX.Y.Z`, and publish its release from the changelog's `vX.Y.Z` section.
-4. Tag this library `vX.Y.Z` at its verified commit, with the message "verified against ai-kb vX.Y.Z", and publish its release from its library notes.
-5. Cross-link the two releases: the engine's notes name the library release, and the library's notes name the engine release.
+4. Pin this library to the new tag: its release pull request moves its CI to clone engine `vX.Y.Z`, now that the tag exists, and merges once that CI passes. That run, against the published tag, is what "verified against ai-kb vX.Y.Z" rests on. If it fails, the release stops: the engine is released and this library is not, until a fix merges.
+5. Tag this library `vX.Y.Z` at the commit step 4 merged, never before it, with the message "verified against ai-kb vX.Y.Z", and publish its release from its library notes.
+6. Cross-link the two releases: the engine's notes name the library release, and the library's notes name the engine release.
+
+Step 4 was added on 2026-11-25, after v0.6.0. This library's CI clones the engine by tag, and the tag does not exist until step 3, so the library commit the fresh-clone check passed still pins the previous engine. At v0.6.0 this library was tagged at that commit: its tag pins engine v0.5.0, keeps the "Stamp honesty" step and declares contract 2.6, and its move to v0.6.0 landed on `main` after the tag. v0.6.1 is the first release made with the amended steps, so use this library's v0.6.1 rather than its v0.6.0.
 
 The decision states its costs. The library's number skips v0.3.0, which looks like a missing release to someone reading its tag list, and its v0.4.0 notes say why. A library-only fix has no release of its own. And the library's version number no longer says how much the library changed, so its changelog or release notes have to. It is to be revisited if this library ever needs a release the engine does not, or if a second library joins the release package.
 
 Source: [[adr-0019-engine-and-reference-library-release-together]]
-Verified: 2026-11-24 · by: agent · method: doc-review
-Recheck: grep -qF '| 2026-11-25 | v0.6.0 | v0.6.0 |' "$KB_ENGINE_ROOT/documents/decisions/0019-engine-and-reference-library-release-together.md"
+Verified: 2026-11-25 · by: agent · method: doc-review
+Recheck: f="$KB_ENGINE_ROOT/documents/decisions/0019-engine-and-reference-library-release-together.md"; grep -qF '| 2026-11-25 | v0.6.1 | v0.6.1 |' "$f" && grep -qF '4. **Pin the library to the new tag.**' "$f" && grep -qF 'at the commit step 4 merged, never before it' "$f"
 
 ## The contract has its own version, so the engine can tighten a rule without breaking a library
 

@@ -9,7 +9,7 @@ metadata:
   node_type: citation
   created: 2026-11-06
 tags: [knowledge-architecture, source]
-keywords: [release tag, reference library, release package, same tag, release day, v0.4.0]
+keywords: [release tag, reference library, release package, same tag, release day, v0.4.0, v0.6.1, pin the library]
 ---
 # Source: ADR-0019: The engine and its reference library release together, under one tag
 
@@ -20,5 +20,6 @@ keywords: [release tag, reference library, release package, same tag, release da
 - **Artifact location:** `ai-kb:documents/decisions/0019-engine-and-reference-library-release-together.md`, read at engine commit `e2a2851` on 2026-11-06. Not archived in this library: it is a tracked, versioned document in the engine repository, and a copy would carry the maintainer's name, which this public library does not record.
 - **Re-read:** on 2026-11-23 at tag `v0.5.0` (`3b60c08`). Since `e2a2851` the release table gained the v0.4.0 and v0.5.0 rows, and the notes bullet now says ADR-0016 requires a library's notes to name only the contract, and naming the engine too is this library's rule (it said "as ADR-0015 and ADR-0016 require").
 - **Re-read:** on 2026-11-25 at tag `v0.6.0` (commit `301f49f`): the release table gained the row `| 2026-11-25 | v0.6.0 | v0.6.0 |`. Folded into [[releases-and-contract-versioning]].
+- **Re-read:** on 2026-11-25 at tag `v0.6.1` (commit `4a35c4d`): a dated amendment adds release-day step 4, which pins the library's CI to the new engine tag and merges it once that CI passes, and step 5 tags the library at that merge. Preflight now checks the library's release pull request differs from the checked commit only by its pin and what moves with it. The amendment says why: at v0.6.0 the library was tagged before its pin moved. The release table gained the row `| 2026-11-25 | v0.6.1 | v0.6.1 |`. Folded into [[releases-and-contract-versioning]].
 
 The engine's decision record making this library take the engine's release tag. Folded from it: why this library alone is tied to the engine, the shared tag and its first use, what happens to published tags, what the library's notes still record, library-only fixes, the release-day steps, and the stated costs. Not folded: the owner's other libraries having no release cycle, which is a fact about one maintainer's machine, not about the engine.

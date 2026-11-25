@@ -22,5 +22,6 @@ keywords: [README, getting started, install, kb-bootstrap, kb-init, how it is us
 - **Re-read:** on 2026-11-24 at engine commit `303082a`, the status section and the path table. Folded into [[using-ai-kb]]: the built-and-tested line lists the contract as version 2.7 (it read 2.6), the `check-stamps` bullet is gone from the list of checks, and the README still reads version 0.5.0 and "ADRs 1 to 17". Nothing else folded earlier changed.
 - **Re-read:** on 2026-11-24 at engine commit `324e2ce` (main after #263 and #265), the README after the docs fixes: the path table says the ADRs are "numbered from ADR-0001" and the status line says "the ADRs" where it gave a range. Folded into [[using-ai-kb]].
 - **Re-read:** on 2026-11-25 at tag `v0.6.0` (commit `301f49f`): the status line now says version 0.6.0 where it said 0.5.0. Folded into [[using-ai-kb]]. Nothing else changed since `a9d98b0`.
+- **Re-read:** on 2026-11-25 at tag `v0.6.1` (commit `4a35c4d`): the status line now says version 0.6.1. Folded into [[using-ai-kb]]. Nothing else changed since `v0.6.0`.
 
 The engine's front page. Folded from it: the repository's paths, getting started, the four-step use, the list of guardrail checks, and the status section. Not folded: the evaluation scores and the plan's section numbers in the status section, which belong with the evaluation records.
